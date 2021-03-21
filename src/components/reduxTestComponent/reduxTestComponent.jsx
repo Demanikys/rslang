@@ -3,14 +3,7 @@ import { connect } from 'react-redux'
 import './reduxTestComponent.scss'
 import { add, red } from '../../store/actions/reduxTestComponent'
 
-
-interface Props {
-    counter: number,
-    increaseCounter: Function,
-    reduceCounter: Function
-}
-
-const ReduxTestComponent: React.FC<Props> = (props) => {
+const ReduxTestComponent = (props) => {
     return (
         <div className='test'>
             <div>Counter: {props.counter}</div>
@@ -20,13 +13,13 @@ const ReduxTestComponent: React.FC<Props> = (props) => {
     )
 }
 
-function mapStateToProps(state: any) {
+function mapStateToProps(state) {
     return {
         counter: state.ReduxTestComponent.counter
     }
 }
 
-function mapDispatchToProps(dispatch: any) {
+function mapDispatchToProps(dispatch) {
     return {
         increaseCounter: () => dispatch(add()),
         reduceCounter: () => dispatch(red())

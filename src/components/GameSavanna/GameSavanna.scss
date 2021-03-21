@@ -1,0 +1,45 @@
+.game{
+    width: 100%;
+    height: 100vh;
+    background-image: url('../../assets/backgrounds/bg-savanna-game.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    transition: background-position-y ease 1s;
+
+    &_fullscreen_btn{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+    &_btn{
+        background: green;
+        &:focus{
+            outline: none;
+        }
+        &:not(:first-child){
+            margin-left: 15px;
+        }
+    }
+
+    &_current_word{
+        width: max-content;
+        position: absolute;
+        left: 50%;
+        top: 0%;
+        transform: translateX(-50%);
+        &_active{
+            top: 45%;
+            transition: top linear 4s;
+        }
+    }
+
+    &_answers_block{
+        position: fixed;
+        top: 60%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+    }
+}

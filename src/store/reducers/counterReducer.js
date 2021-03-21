@@ -1,16 +1,10 @@
 import { ADD, RED } from "../actions/actionTypes"
-import { State } from '../../types'
 
 const initialState = {
     counter: 0
 }
 
-interface Action {
-    type: string
-    payload?: any
-}
-
-export default function counterReducer(state: State = initialState, action: Action) {
+export default function counterReducer(state = initialState, action) {
     switch (action.type) {
         case ADD:
             return {
