@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-03-21T12:15:23.599Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15" etag="WDce7gYR37Uwv381qmJd" version="14.4.9" type="github">
+<mxfile host="app.diagrams.net" modified="2021-03-21T12:28:52.335Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15" etag="TLhF0O1oZ0SH2B-pmGAb" version="14.4.9" type="github">
   <diagram id="Ji3kZqEXvKOx1DbVgN0D" name="Page-1">
     <mxGraphModel dx="1113" dy="606" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -90,6 +90,12 @@
         </mxCell>
         <mxCell id="-CJGJMhbpOC7MlB_--XY-23" value="Здесь лежит rootReducer, а также остальные редьюсеры, которые мы подключаем в основной редьюсер." style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="670" y="390" width="140" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="-CJGJMhbpOC7MlB_--XY-24" value="Структура компонента:&lt;br&gt;&lt;br&gt;1) Импорты&lt;br&gt;&lt;br&gt;2) const Component =()=&amp;gt;{&lt;br&gt;...some code&lt;br&gt;&lt;br&gt;return &amp;lt;div className=&#39;Component&#39;&amp;gt;&lt;br&gt;...some code&lt;br&gt;&amp;lt;/div&amp;gt;&lt;br&gt;&lt;br&gt;}&lt;br&gt;&lt;br&gt;3) если используете HOC connect, то здесь mapStateToProps и mapDispatchToProps&lt;br&gt;&lt;br&gt;4) export default Component или export default connect (mapStateToProps, mapDispatchToProps)(Component)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="30" y="780" width="780" height="340" as="geometry" />
+        </mxCell>
+        <mxCell id="-CJGJMhbpOC7MlB_--XY-25" value="Есть паттерны, которые &amp;nbsp;рекомендуют обертывать компонент в див с классом названия компонента с БОЛЬШОЙ БУКВЫ" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="290" y="900" width="330" height="80" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
