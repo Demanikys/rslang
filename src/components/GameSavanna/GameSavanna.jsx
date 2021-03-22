@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import './GameSavanna.scss'
 import words from './words.json'
 
@@ -103,7 +103,7 @@ const GameSavanna = () => {
                 {
                     health.map(item => {
                         return (
-                            <div className='game_health'><img src="assets/icons/pixel-heart.png" alt="heart" /></div>
+                            <div key={item} className='game_health'><img src="assets/icons/pixel-heart.png" alt="heart" /></div>
                         )
                     })
                 }
