@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
-import reportWebVitals from './reportWebVitals';
 import App from './App';
 import rootReducer from './reducers/rootReducer';
 
@@ -19,4 +18,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root'),
 );
-reportWebVitals();
