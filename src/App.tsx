@@ -1,10 +1,9 @@
 import './App.css';
+import ReduxTestComponent from './components/reduxTestComponent'
 
 function App() {
   return (
-    <div className="App">
-      <h1>Hello!</h1>
-    </div>
+    <ReduxTestComponent />
   );
 }
 
