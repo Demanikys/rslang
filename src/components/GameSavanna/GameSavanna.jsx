@@ -11,6 +11,7 @@ const GameSavanna = () => {
     const [currentWord, setCurrentWord] = useState(words[wordCounter])
     const [currentWordAnswers, setCurrentWordAnswers] = useState()
     const [cls, setCls] = useState(['game_current_word'])
+    const [health, setHealth] = useState([1, 2, 3, 4, 5])
 
     useEffect(() => {
         chooseWordsForAnswers(words)
@@ -76,23 +77,39 @@ const GameSavanna = () => {
     const onAnswerClickHandler = (word) => {
         if (word.wordTranslate === currentWord.wordTranslate) {
             if (wordCounter < words.length - 1) {
-                document.removeEventListener('keypress', (event) => {
-                    onKeyPressEventHandler(event)
-                })
                 setCls(['game_current_word'])
                 setWordCounter(wordCounter + 1)
                 onUpBtnClick()
+                const audio = new Audio
+                audio.src = 'assets/sound/savanna_correct_answer.mp3'
+                audio.play()
             } else {
                 console.log('Win')
             }
         } else {
-            console.log('wrong')
+            console.log('1')
+            setHealth(health.slice(0, -1))
+            setCls(['game_current_word'])
+            setWordCounter(wordCounter + 1)
+            const audio = new Audio
+            audio.src = 'assets/sound/savanna_wrong_answer.mp3'
+            audio.play()
         }
     }
 
     return (
         <div className='game game_savanna' style={{ backgroundPositionY: `${backgroundPosition}%` }}>
-            <button className='game_fullscreen_btn game_btn' onClick={(event) => onFullscreenBtnClick(event)}>Fullscreen</button>
+            <div className='game_health_bar'>
+                {
+                    health.map(item => {
+                        return (
+                            <div className='game_health'><img src="assets/icons/pixel-heart.png" alt="heart" /></div>
+                        )
+                    })
+                }
+            </div>
+
+            <button className='game_fullscreen_btn game_btn' onClick={(event) => onFullscreenBtnClick(event)}><img src='assets/icons/full-screen.png' alt='fullscreen_icon' /></button>
             {
                 currentWord
                     ? (
@@ -100,6 +117,7 @@ const GameSavanna = () => {
                     )
                     : null
             }
+            <div className='game_finish_line'></div>
             <div className='game_answers_block'>
                 {currentWordAnswers
                     ? (currentWordAnswers.map((item, index) => {

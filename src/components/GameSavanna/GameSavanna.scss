@@ -7,25 +7,63 @@
     position: relative;
     transition: background-position-y ease 1s;
 
-    &_fullscreen_btn{
-        position: absolute;
-        top: 10px;
-        right: 10px;
-    }
-
     &_btn{
-        background: green;
+        background: #009275;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        padding: 5px;
+        color: #fff;
+        height: 25px;
+        box-sizing: border-box;
+        transition: border ease-in 0.2s;
         &:focus{
             outline: none;
         }
         &:not(:first-child){
             margin-left: 15px;
         }
+        &:hover{
+            cursor: pointer;
+            border: 1px solid #fff;
+        }
+    }
+
+    &_fullscreen_btn{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        padding: 0;
+        transition: transform ease 0.2s;
+        border: none;
+        & img{
+            height: 10px;
+            width: auto;
+        }
+        &:hover{
+            transform: rotate(-45deg);
+            border: none;
+        }
+    }
+
+    &_health_bar{
+        display: flex;
+        position: absolute;
+        top: 10px;
+        right: 30px;
+        & div:not(:last-child){
+            margin-right: 3px;
+        }
+        & img{
+            height: 10px;
+            width: auto;
+        }
     }
 
     &_current_word{
         width: max-content;
         position: absolute;
+        color: #fff;
         left: 50%;
         top: 0%;
         transform: translateX(-50%);
@@ -33,6 +71,17 @@
             top: 45%;
             transition: top linear 4s;
         }
+    }
+
+    &_finish_line{
+        height: 2px;
+        width: 60vw;
+        position: absolute;
+        left: 50%;
+        top: 52%;
+        background: red;
+        transform: translate(-50%);
+        box-shadow: rgba($color: #ff0000, $alpha: 0.5) 0 -10px 10px 10px;
     }
 
     &_answers_block{
