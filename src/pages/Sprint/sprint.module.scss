@@ -1,0 +1,20 @@
+.wrapper {
+  text-align: center;
+  background-color: #fff6cc;
+
+  .pointsNumber {
+    font-size: 26px;
+    color: #16b416;
+  }
+
+  .gameWindow {
+    border-radius: 20px;
+    background-color: white;
+    width: 40%;
+    margin: 0 auto;
+
+    .points {
+      text-align: center;
+    }
+  }
+}
