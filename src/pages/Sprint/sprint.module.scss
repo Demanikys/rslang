@@ -13,6 +13,18 @@
     width: 40%;
     margin: 0 auto;
 
+    .answer {
+      border-radius: 50%;
+      background-color: grey;
+      width: 60px;
+    }
+
+    .answerRight {
+      border-radius: 50%;
+      background-color: green;
+      width: 60px;
+    }
+
     .points {
       text-align: center;
     }

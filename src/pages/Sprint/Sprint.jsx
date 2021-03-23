@@ -8,7 +8,6 @@ const Sprint = () => {
     const arr = [];
     level.forEach((elem, index) => {
       arr.push((index + 1 <= points) + 0);
-      console.log(index, arr, points);
       setLevel(arr);
     });
   }, [points]);
@@ -17,7 +16,12 @@ const Sprint = () => {
       <div className={style.pointsNumber}>
         0
         <div className={style.gameWindow}>
-          {level}
+          {level.map((elem) => {
+            if (elem === 1) {
+              return <span className={style.answerRight}>&nbsp;&nbsp;&nbsp;&nbsp;</span>;
+            }
+            return <span className={style.answer}>&nbsp;&nbsp;&nbsp;&nbsp;</span>;
+          })}
           <div className={style.points}>
             <button
               type="button"
@@ -34,7 +38,6 @@ const Sprint = () => {
               onClick={() => {
                 setLevel(new Array(level.length + 1).fill(0));
                 setPoints(0);
-                console.log(level, points);
               }}
             >
               add level
