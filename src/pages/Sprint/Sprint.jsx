@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import style from './sprint.module.scss';
 
 const Sprint = () => {
+  const [score, setScore] = useState(0);
   const [points, setPoints] = useState(0);
   const [level, setLevel] = useState([0, 0, 0]);
   useEffect(() => {
@@ -11,10 +12,21 @@ const Sprint = () => {
       setLevel(arr);
     });
   }, [points]);
+
+  function resetLevel() {
+    setLevel(new Array(3).fill(0));
+    setPoints(0);
+  }
+
+  function addLevel() {
+    setLevel(new Array(level.length + 1).fill(0));
+    setPoints(0);
+  }
+
   return (
     <div className={style.wrapper}>
       <div className={style.pointsNumber}>
-        0
+        {score}
         <div className={style.gameWindow}>
           {level.map((elem) => {
             if (elem === 1) {
@@ -26,30 +38,23 @@ const Sprint = () => {
             <button
               type="button"
               onClick={() => {
-                if (points + 1 <= level.length) {
+                if (points !== level.length) {
                   setPoints(points + 1);
+                } else {
+                  addLevel();
                 }
+                setScore(score + 10 + points * 5 + level.length);
               }}
             >
-              add point
+              right answer
             </button>
             <button
               type="button"
               onClick={() => {
-                setLevel(new Array(level.length + 1).fill(0));
-                setPoints(0);
+                resetLevel();
               }}
             >
-              add level
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setLevel(new Array(3).fill(0));
-                setPoints(0);
-              }}
-            >
-              reset
+              wrong answer
             </button>
           </div>
         </div>
