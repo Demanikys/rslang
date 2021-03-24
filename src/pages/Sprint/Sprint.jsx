@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import style from './sprint.module.scss';
+import * as Buttons from './components/buttons';
 
 const Sprint = () => {
   const [score, setScore] = useState(0);
@@ -16,11 +17,17 @@ const Sprint = () => {
   function resetLevel() {
     setLevel(new Array(3).fill(0));
     setPoints(0);
+    setScore(0);
   }
 
   function addLevel() {
-    setLevel(new Array(level.length + 1).fill(0));
-    setPoints(0);
+    if (points !== level.length) {
+      setPoints(points + 1);
+    } else {
+      setLevel(new Array(level.length + 1).fill(0));
+      setPoints(0);
+    }
+    setScore(score + 10 + points * 5 + level.length);
   }
 
   return (
@@ -35,27 +42,8 @@ const Sprint = () => {
             return <span className={style.answer}>&nbsp;&nbsp;&nbsp;&nbsp;</span>;
           })}
           <div className={style.points}>
-            <button
-              type="button"
-              onClick={() => {
-                if (points !== level.length) {
-                  setPoints(points + 1);
-                } else {
-                  addLevel();
-                }
-                setScore(score + 10 + points * 5 + level.length);
-              }}
-            >
-              right answer
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                resetLevel();
-              }}
-            >
-              wrong answer
-            </button>
+            <Buttons.RightAnswerButton addLevel={addLevel} />
+            <Buttons.WrongAnswerButton resetLevel={resetLevel} />
           </div>
         </div>
       </div>
