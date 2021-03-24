@@ -1,6 +1,7 @@
 .wrapper {
   text-align: center;
   background-color: #fff6cc;
+  padding: 50px;
 
   .pointsNumber {
     font-size: 26px;
@@ -11,10 +12,17 @@
     border-radius: 20px;
     background-color: white;
     width: 40%;
-    margin: 0 auto;
+    margin: 0 auto 50px;
 
     .wordsWindow {
+      .enWord {
+        font-size: 22px;
+      }
 
+      .ruWord {
+        font-size: 16px;
+        color: grey;
+      }
     }
 
     .answer {

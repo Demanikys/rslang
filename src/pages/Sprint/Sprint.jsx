@@ -30,11 +30,9 @@ const Sprint = () => {
   function resetLevel() {
     setLevel(new Array(3).fill(0));
     setPoints(0);
-    setScore(0);
   }
 
   function addLevel() {
-    console.log(data);
     if (points !== level.length) {
       setPoints(points + 1);
     } else {
@@ -48,27 +46,35 @@ const Sprint = () => {
     <div className={style.wrapper}>
       <div className={style.pointsNumber}>
         {score}
-        <div className={style.gameWindow}>
-          <div className={style.wordsWindow}>
-            is
-            {' '}
+      </div>
+      <div className={style.gameWindow}>
+        {level.map((elem) => {
+          if (elem === 1) {
+            return <span className={style.answerRight}>&nbsp;&nbsp;&nbsp;&nbsp;</span>;
+          }
+          return <span className={style.answer}>&nbsp;&nbsp;&nbsp;&nbsp;</span>;
+        })}
+        <div className={style.wordsWindow}>
+          <div className={style.enWord}>
             {data.en[word.en]}
-            {' '}
-            translates as
-            {' '}
+          </div>
+          <div className={style.ruWord}>
             {data.ru[word.ru]}
-            ?
           </div>
-          {level.map((elem) => {
-            if (elem === 1) {
-              return <span className={style.answerRight}>&nbsp;&nbsp;&nbsp;&nbsp;</span>;
-            }
-            return <span className={style.answer}>&nbsp;&nbsp;&nbsp;&nbsp;</span>;
-          })}
-          <div className={style.points}>
-            <Buttons.RightAnswerButton addLevel={addLevel} />
-            <Buttons.WrongAnswerButton resetLevel={resetLevel} />
-          </div>
+        </div>
+        <div className={style.points}>
+          <Buttons.WrongAnswerButton
+            action={() => {
+              if (word.en !== word.ru) addLevel();
+              else resetLevel();
+            }}
+          />
+          <Buttons.RightAnswerButton
+            action={() => {
+              if (word.en === word.ru) addLevel();
+              else resetLevel();
+            }}
+          />
         </div>
       </div>
     </div>

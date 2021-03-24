@@ -5,13 +5,11 @@ function ThrowError() {
   console.error('Pass right function!');
 }
 
-function RightAnswerButton({ addLevel }) {
+function RightAnswerButton({ action }) {
   return (
     <button
       type="button"
-      onClick={() => {
-        addLevel();
-      }}
+      onClick={() => action()}
     >
       right answer
     </button>
@@ -19,20 +17,18 @@ function RightAnswerButton({ addLevel }) {
 }
 
 RightAnswerButton.propTypes = {
-  addLevel: PropTypes.func,
+  action: PropTypes.func,
 };
 
 RightAnswerButton.defaultProps = {
-  addLevel: ThrowError,
+  action: ThrowError,
 };
 
-function WrongAnswerButton({ resetLevel }) {
+function WrongAnswerButton({ action }) {
   return (
     <button
       type="button"
-      onClick={() => {
-        resetLevel();
-      }}
+      onClick={() => action()}
     >
       wrong answer
     </button>
@@ -40,11 +36,11 @@ function WrongAnswerButton({ resetLevel }) {
 }
 
 WrongAnswerButton.propTypes = {
-  resetLevel: PropTypes.func,
+  action: PropTypes.func,
 };
 
 WrongAnswerButton.defaultProps = {
-  resetLevel: ThrowError,
+  action: ThrowError,
 };
 
 export { RightAnswerButton, WrongAnswerButton };
