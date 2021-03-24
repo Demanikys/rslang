@@ -17,6 +17,7 @@ const Sprint = () => {
   }, [points]);
 
   useEffect(() => {
+    console.log('words');
     const randEnIndex = Math.floor(Math.random() * data.en.length);
     let randRuIndex;
     if (Math.random() > 0.5) {
@@ -25,11 +26,12 @@ const Sprint = () => {
       randRuIndex = randEnIndex;
     }
     setWord({ en: randEnIndex, ru: randRuIndex });
-  }, [points]);
+  }, [points, score]);
 
   function resetLevel() {
     setLevel(new Array(3).fill(0));
     setPoints(0);
+    if (score >= 5) setScore(score - 5);
   }
 
   function addLevel() {
