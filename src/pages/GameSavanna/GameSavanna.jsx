@@ -12,6 +12,7 @@ const GameSavanna = () => {
     const [currentWordAnswers, setCurrentWordAnswers] = useState()
     const [cls, setCls] = useState(['game_current_word'])
     const [health, setHealth] = useState([1, 2, 3, 4, 5])
+    const [sound, setSound] = useState(true)
 
     useEffect(() => {
         chooseWordsForAnswers(words)
@@ -80,25 +81,38 @@ const GameSavanna = () => {
                 setCls(['game_current_word'])
                 setWordCounter(wordCounter + 1)
                 onUpBtnClick()
-                const audio = new Audio
-                audio.src = 'assets/sound/savanna_correct_answer.mp3'
-                audio.play()
+                soundEffectsOnAnswerClick(true)
             } else {
                 console.log('Win')
             }
         } else {
-            console.log('1')
             setHealth(health.slice(0, -1))
             setCls(['game_current_word'])
             setWordCounter(wordCounter + 1)
-            const audio = new Audio
-            audio.src = 'assets/sound/savanna_wrong_answer.mp3'
-            audio.play()
+            soundEffectsOnAnswerClick(false)
         }
+    }
+
+    const soundEffectsOnAnswerClick = (answer) => {
+        if (!sound) {
+            return
+        }
+        const audio = new Audio
+        answer
+            ? audio.src = 'assets/sound/savanna_correct_answer.mp3'
+            : audio.src = 'assets/sound/savanna_wrong_answer.mp3'
+        audio.play()
     }
 
     return (
         <div className='game game_savanna' style={{ backgroundPositionY: `${backgroundPosition}%` }}>
+            <div className="game_sound_switcher" onClick={() => setSound(!sound)}>
+                {
+                    sound
+                        ? (<img src='assets/icons/sound_on_icon.png' alt='sound_on' />)
+                        : (<img src='assets/icons/sound_off_icon.png' alt='sound_off' />)
+                }
+            </div>
             <div className='game_health_bar'>
                 {
                     health.map(item => {

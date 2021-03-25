@@ -9,13 +9,16 @@
 
     &_btn{
         background: #009275;
-        border: 1px solid transparent;
-        border-radius: 4px;
-        padding: 5px;
+        border: 2px solid transparent;
+        border-radius: 10px;
         color: #fff;
-        height: 25px;
+        line-height: 50pxcalc(100vw*0.03 + 25);
+        font-size: calc(100vw*0.03);
+        padding: 0 10px 0;
+        font-style: italic;
         box-sizing: border-box;
         transition: border ease-in 0.2s;
+        max-width: 25vw;
         &:focus{
             outline: none;
         }
@@ -24,7 +27,16 @@
         }
         &:hover{
             cursor: pointer;
-            border: 1px solid #fff;
+            border: 2px solid #fff;
+        }
+    }
+
+    &_sound_switcher{
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        &:hover{
+            cursor: pointer;
         }
     }
 
@@ -36,8 +48,12 @@
         padding: 0;
         transition: transform ease 0.2s;
         border: none;
+        height: 25px;
+        min-width: none;
+        line-height: normal;
+        font-size: 1em;
         & img{
-            height: 10px;
+            height: 25px;
             width: auto;
         }
         &:hover{
@@ -50,12 +66,12 @@
         display: flex;
         position: absolute;
         top: 10px;
-        right: 30px;
+        right: 50px;
         & div:not(:last-child){
             margin-right: 3px;
         }
         & img{
-            height: 10px;
+            height: 25px;
             width: auto;
         }
     }
@@ -64,11 +80,13 @@
         width: max-content;
         position: absolute;
         color: #fff;
+        font-size: 35px;
+        font-weight: bold;
         left: 50%;
         top: 0%;
         transform: translateX(-50%);
         &_active{
-            top: 45%;
+            top: 43%;
             transition: top linear 4s;
         }
     }
@@ -79,16 +97,18 @@
         position: absolute;
         left: 50%;
         top: 52%;
-        background: red;
         transform: translate(-50%);
-        box-shadow: rgba($color: #ff0000, $alpha: 0.5) 0 -10px 10px 10px;
+        box-shadow: rgba($color: #ff0000, $alpha: 0.5) 0 -30px 20px 15px;
     }
 
     &_answers_block{
-        position: fixed;
-        top: 60%;
+        position: absolute;
+        top: 58%;
         left: 50%;
         transform: translate(-50%, -50%);
         display: flex;
+        button{
+            min-width: 15vw;
+        }
     }
 }
