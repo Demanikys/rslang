@@ -15,8 +15,8 @@ const GameResultWindow = (props) => {
     dispatch(resetWrongAnswers());
   }, []);
 
-  const createAnswersMarkDown = (array) => array.map((answer) => (
-    <p>
+  const createAnswersMarkDown = (array) => array.map((answer, index) => (
+    <p key={index}>
       {answer.word}
     </p>
   ));
