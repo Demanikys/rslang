@@ -1,1 +1,1 @@
-export { default } from './AudioGame';
+export { default } from './StartAudioGame';
