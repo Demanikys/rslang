@@ -1,8 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Howl } from 'howler';
-import soundWay from './sound.mp3';
+import { useDispatch } from 'react-redux';
+import soundWay from '../sound.mp3';
 import style from './activeStage.module.scss';
+import { addRightAnswer, addWrongAnswer } from '../../../actions/audioGameAction';
+import playAnswerSound from '../../../components/AudioPlayer/audioPlayer';
 /* eslint-disable react/prop-types */
 
 const createNewArray = () => {
@@ -29,6 +32,7 @@ const ActiveStage = React.memo((props) => {
   const [randomNumber, setRandomNumber] = useState(Math.floor(Math.random() * 5));
   const [randomFakeNumbers, setRandomFakeNumbers] = useState(createNewArray());
   const textEx = useRef();
+  const dispatch = useDispatch();
 
   console.log(word.word);
   useEffect(() => {
@@ -55,6 +59,8 @@ const ActiveStage = React.memo((props) => {
           onClick={() => {
             setCorrect('right');
             setNextBtnStatus(true);
+            dispatch(addRightAnswer(word));
+            playAnswerSound(true).play();
           }}
           variant="outline-light"
           disabled={(correct !== 'default')}
@@ -70,6 +76,8 @@ const ActiveStage = React.memo((props) => {
         onClick={() => {
           setCorrect('wrong');
           setNextBtnStatus(true);
+          dispatch(addWrongAnswer(word));
+          playAnswerSound(false).play();
         }}
         variant="outline-light"
         disabled={(correct !== 'default')}
