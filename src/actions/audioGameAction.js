@@ -27,7 +27,7 @@ export const addWrongAnswer = (answer) => ({
   answer,
 });
 
-export const resetRightAnswers = () => ({ type: RESET_RIGHT_ANSWERS });
+export const resetCorrectAnswers = () => ({ type: RESET_RIGHT_ANSWERS });
 
 export const resetWrongAnswers = () => ({ type: REST_WRONG_ANSWERS });
 

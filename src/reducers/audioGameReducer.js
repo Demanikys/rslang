@@ -10,7 +10,7 @@ const initialState = {
   fakeData: null,
   goodAnswers: 0,
   badAnswers: 0,
-  rightAnswers: [],
+  correctAnswers: [],
   wrongAnswers: [],
 };
 
@@ -29,7 +29,7 @@ const audioGameReducer = (state = initialState, action) => {
     case ADD_RIGHT_ANSWER:
       return {
         ...state,
-        rightAnswers: [...state.rightAnswers, action.answer],
+        correctAnswers: [...state.correctAnswers, action.answer],
       };
     case ADD_WRONG_ANSWER:
       return {
@@ -39,7 +39,7 @@ const audioGameReducer = (state = initialState, action) => {
     case RESET_RIGHT_ANSWERS:
       return {
         ...state,
-        rightAnswers: [],
+        correctAnswers: [],
       };
     case REST_WRONG_ANSWERS:
       return {

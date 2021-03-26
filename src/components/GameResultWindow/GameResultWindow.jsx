@@ -1,32 +1,28 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
-import { resetRightAnswers, resetWrongAnswers } from '../../actions/audioGameAction';
 import style from './gameResultWindow.module.scss';
+import ResultProgressBar from '../ResultPregressBar';
 /* eslint-disable react/prop-types */
 
 const GameResultWindow = (props) => {
-  const { rightAnswers, wrongAnswers } = props;
-  const dispatch = useDispatch();
+  const { correctAnswers, wrongAnswers } = props;
 
-  useEffect(() => () => {
-    dispatch(resetRightAnswers());
-    dispatch(resetWrongAnswers());
-  }, []);
-
-  const createAnswersMarkDown = (array) => array.map((answer) => (
-    <p>
+  const createAnswersMarkDown = (array) => array.map((answer, index) => (
+    <p key={answer.word}>
+      {index + 1}
+      )
       {answer.word}
     </p>
   ));
 
   return (
     <div className={style.resultWindow}>
+      <ResultProgressBar correct={correctAnswers} wrong={wrongAnswers} />
       <div className={style.content}>
         <div className={style.contentResult}>
           <h5>Правльные ответы</h5>
-          {rightAnswers ? createAnswersMarkDown(rightAnswers) : 'nothing'}
+          {correctAnswers ? createAnswersMarkDown(correctAnswers) : 'nothing'}
         </div>
         <div className={style.contentResult}>
           <h5>Неправильные ответы</h5>
