@@ -18,7 +18,7 @@ const GameResultWindow = (props) => {
 
   return (
     <div className={style.resultWindow}>
-      <ResultProgressBar correct={correctAnswers} wrong={wrongAnswers} />
+      <ResultProgressBar correct={correctAnswers.length} wrong={wrongAnswers.length} />
       <div className={style.content}>
         <div className={style.contentResult}>
           <h5>Правльные ответы</h5>
