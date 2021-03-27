@@ -7,9 +7,9 @@ import style from './gameResultWindow.module.scss';
 /* eslint-disable react/prop-types */
 
 const GameResultWindow = (props) => {
+  console.log(props)
   const { rightAnswers, wrongAnswers } = props;
   const dispatch = useDispatch();
-
   useEffect(() => () => {
     dispatch(resetRightAnswers());
     dispatch(resetWrongAnswers());
@@ -26,11 +26,11 @@ const GameResultWindow = (props) => {
       <div className={style.content}>
         <div className={style.contentResult}>
           <h5>Правльные ответы</h5>
-          {rightAnswers ? createAnswersMarkDown(rightAnswers) : 'nothing'}
+          {rightAnswers.length ? createAnswersMarkDown(rightAnswers) : 'nothing'}
         </div>
         <div className={style.contentResult}>
           <h5>Неправильные ответы</h5>
-          {wrongAnswers ? createAnswersMarkDown(wrongAnswers) : 'nothing'}
+          {wrongAnswers.length ? createAnswersMarkDown(wrongAnswers) : 'nothing'}
         </div>
       </div>
       <Button className={style.menu}>

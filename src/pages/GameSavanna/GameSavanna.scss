@@ -6,6 +6,7 @@
     background-size: cover;
     position: relative;
     transition: background-position-y ease 1s;
+    overflow: hidden;
 
     &_btn{
         background: #009275;
@@ -86,8 +87,13 @@
         top: 0%;
         transform: translateX(-50%);
         &_active{
-            top: 43%;
+            top: 45%;
             transition: top linear 4s;
+        }
+        &_fail{
+            top: -100%;
+            transition: top linear 0.5s;
+            
         }
     }
 
@@ -96,19 +102,21 @@
         width: 60vw;
         position: absolute;
         left: 50%;
-        top: 52%;
+        top: 45%;
         transform: translate(-50%);
-        box-shadow: rgba($color: #ff0000, $alpha: 0.5) 0 -30px 20px 15px;
+        box-shadow: rgba($color: #ff0000, $alpha: 0.5) 0 30px 20px 15px;
     }
 
     &_answers_block{
         position: absolute;
-        top: 58%;
+        top: 60%;
         left: 50%;
         transform: translate(-50%, -50%);
         display: flex;
         button{
             min-width: 15vw;
+            max-width: 25vw;
+            word-wrap: break-word;
         }
     }
 }
