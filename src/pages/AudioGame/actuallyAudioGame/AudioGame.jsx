@@ -5,8 +5,9 @@ import ActiveStage from '../activeStage/ActiveStage';
 import style from './audioGame.module.scss';
 import { addWrongAnswer, setAudioGameData, setAudioGameFakeData } from '../../../actions/audioGameAction';
 import GameResultWindow from '../../../components/GameResultWindow';
-import { getRightAnswersAudioGame, getWrongAnswersAudioGame } from '../../../selectors/selectors';
+import { getCorrectAnswersAudioGame, getWrongAnswersAudioGame } from '../../../selectors/selectors';
 import playAnswerSound from '../../../components/AudioPlayer/audioPlayer';
+import ResultProgressBar from '../../../components/ResultPregressBar';
 /* eslint-disable react/prop-types */
 
 const AudioGame = (props) => {
@@ -14,7 +15,7 @@ const AudioGame = (props) => {
   const [activeStage, setActiveStage] = useState(1);
   const [nextBtnStatus, setNextBtnStatus] = useState(false);
   const [correct, setCorrect] = useState('default');
-  const rightAnswers = useSelector(getRightAnswersAudioGame);
+  const correctAnswers = useSelector(getCorrectAnswersAudioGame);
   const wrongAnswers = useSelector(getWrongAnswersAudioGame);
   const dispatch = useDispatch();
 
@@ -47,6 +48,7 @@ const AudioGame = (props) => {
                   setCorrect('wrong');
                   dispatch(addWrongAnswer(words[activeStage - 1]));
                   playAnswerSound(false).play();
+                  console.log('after');
                 }}
                 variant="warning"
               >
@@ -68,11 +70,12 @@ const AudioGame = (props) => {
               </Button>
             )
           }
+          <ResultProgressBar correct={correctAnswers.length} wrong={wrongAnswers.length} />
         </div>
       )
       : (
         <div>
-          <GameResultWindow rightAnswers={rightAnswers} wrongAnswers={wrongAnswers} />
+          <GameResultWindow correctAnswers={correctAnswers} wrongAnswers={wrongAnswers} />
         </div>
       )
   );

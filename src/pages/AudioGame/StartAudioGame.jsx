@@ -4,7 +4,7 @@ import { Button, Spinner } from 'react-bootstrap';
 import { getFakeAudioData, getTruthAudioData } from '../../selectors/selectors';
 import {
   getAudioDataFunc,
-  getAudioFakeDataFunc, resetRightAnswers, resetWrongAnswers,
+  getAudioFakeDataFunc, resetCorrectAnswers, resetWrongAnswers,
   setAudioGameData,
   setAudioGameFakeData,
 } from '../../actions/audioGameAction';
@@ -24,7 +24,7 @@ const StartAudioGame = () => {
     return () => {
       dispatch(setAudioGameData(null));
       dispatch(setAudioGameFakeData(null));
-      dispatch(resetRightAnswers());
+      dispatch(resetCorrectAnswers());
       dispatch(resetWrongAnswers());
     };
   }, []);
