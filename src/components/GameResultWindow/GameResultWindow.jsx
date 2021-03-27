@@ -6,40 +6,23 @@ import ResultProgressBar from '../ResultPregressBar';
 /* eslint-disable react/prop-types */
 
 const GameResultWindow = (props) => {
-<<<<<<< HEAD
-  console.log(props)
-  const { rightAnswers, wrongAnswers } = props;
-  const dispatch = useDispatch();
-  useEffect(() => () => {
-    dispatch(resetRightAnswers());
-    dispatch(resetWrongAnswers());
-  }, []);
-
-  const createAnswersMarkDown = (array) => array.map((answer, index) => (
-    <p key={index}>
-=======
   const { correctAnswers, wrongAnswers } = props;
+  console.log(correctAnswers)
+  console.log(wrongAnswers)
 
   const createAnswersMarkDown = (array) => array.map((answer, index) => (
     <p key={answer.word}>
-      {index + 1}
-      )
->>>>>>> audioGame
-      {answer.word}
+      {`${index + 1}) ${answer.word}`}
     </p>
   ));
 
   return (
     <div className={style.resultWindow}>
-      <ResultProgressBar correct={correctAnswers.length} wrong={wrongAnswers.length} />
+      <ResultProgressBar correct={correctAnswers.length} wrong={wrongAnswers.length || 0} />
       <div className={style.content}>
         <div className={style.contentResult}>
           <h5>Правльные ответы</h5>
-<<<<<<< HEAD
-          {rightAnswers.length ? createAnswersMarkDown(rightAnswers) : 'nothing'}
-=======
           {correctAnswers ? createAnswersMarkDown(correctAnswers) : 'nothing'}
->>>>>>> audioGame
         </div>
         <div className={style.contentResult}>
           <h5>Неправильные ответы</h5>

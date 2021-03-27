@@ -16,7 +16,6 @@ const GameSavanna = () => {
     const [isGameFinished, setIsGameFinished] = useState(false)
     const [correctAnswers, setCorrectAnswers] = useState([])
     const [wrongAnswers, setWrongAnswers] = useState([])
-    // const [isGameStarted, setIsGameStarted] = useState(false)
     let failTimerRef = useRef()
 
     useEffect(() => {
@@ -171,7 +170,7 @@ const GameSavanna = () => {
             </div>
             {
                 isGameFinished
-                    ? <GameResultWindow rightAnswers={correctAnswers} wrongAnswers={wrongAnswers} />
+                    ? <GameResultWindow correctAnswers={correctAnswers} wrongAnswers={wrongAnswers} />
                     : (<div className='game_health_bar'>
                         {
                             health.map(item => {
