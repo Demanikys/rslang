@@ -6,6 +6,7 @@ import MainPage from './pages/MainPage';
 import Menu from './components/Menu';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import StartGallowsGame from './pages/GallowsGame';
 
 const App = () => (
   <BrowserRouter>
@@ -14,6 +15,9 @@ const App = () => (
       <Switch>
         <Route path="/audio-game">
           <AudioGame />
+        </Route>
+        <Route path="/gallows-game">
+          <StartGallowsGame />
         </Route>
         <Route path="/">
           <MainPage />

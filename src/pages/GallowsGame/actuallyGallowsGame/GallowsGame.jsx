@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
-import ActiveStage from '../activeStage/ActiveStage';
-import style from './audioGame.module.scss';
-import GameResultWindow from '../../../components/GameResultWindow';
-import playAnswerSound from '../../../commonFunctions/audioPlayer';
+import style from '../../AudioGame/actuallyAudioGame/audioGame.module.scss';
+import ActiveStageGallows from '../activeStage/ActiveStage';
 import ResultProgressBar from '../../../components/ResultPregressBar';
+import GameResultWindow from '../../../components/GameResultWindow';
 /* eslint-disable react/prop-types */
 
-const AudioGame = (props) => {
-  const { words, fakeWords } = props;
+const GallowsGame = (props) => {
+  const { words } = props;
   const [activeStage, setActiveStage] = useState(1);
   const [nextBtnStatus, setNextBtnStatus] = useState(false);
   const [correct, setCorrectOrNot] = useState('default');
@@ -16,15 +15,14 @@ const AudioGame = (props) => {
   const [wrongAnswers, setWrongAnswers] = useState([]);
 
   return (
-    activeStage !== 21
+    activeStage !== 11
       ? (
         <div className={style.wrapper}>
           <h2 className={style.header}>Audio game</h2>
           {
-            words && fakeWords && (
-              <ActiveStage
+            words && (
+              <ActiveStageGallows
                 word={words[activeStage - 1]}
-                fakeWords={fakeWords}
                 correct={correct}
                 setCorrectOrNot={setCorrectOrNot}
                 setCorrectAnswers={setCorrectAnswers}
@@ -33,23 +31,6 @@ const AudioGame = (props) => {
                 correctAnswers={correctAnswers}
                 wrongAnswers={wrongAnswers}
               />
-            )
-          }
-          {
-            !nextBtnStatus && (
-              <Button
-                onClick={() => {
-                  setNextBtnStatus(true);
-                  setCorrectOrNot('wrong');
-                  setWrongAnswers([...wrongAnswers, words[activeStage - 1]]);
-                  // dispatch(addWrongAnswer(words[activeStage - 1]));
-                  playAnswerSound(false).play();
-                  console.log('after');
-                }}
-                variant="warning"
-              >
-                Don&apos;t know
-              </Button>
             )
           }
           {
@@ -80,4 +61,4 @@ const AudioGame = (props) => {
   );
 };
 
-export default AudioGame;
+export default GallowsGame;

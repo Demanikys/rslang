@@ -1,0 +1,66 @@
+.Keyboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-areas:
+    '. . . .'
+    '. . . .'
+    '. . . .';
+  order: 3;
+  flex: 0 1 auto;
+  margin: 0 auto;
+
+  button {
+    color: black;
+    margin: 8px;
+  }
+  #vowel {
+    background: linear-gradient(to top, #c1dfc4 0%, #26a69a 100%);
+  }
+  #vowel:hover {
+    transform: scale(1.1);
+  }
+  #consonant {
+    background: linear-gradient(-20deg, #d6b4a7 30%, tomato 100%);
+  }
+  #consonant:hover {
+    transform: scale(1.1);
+  }
+  #consonant.autoplay {
+    font-size: 0.6rem;
+    word-wrap: wrap;
+    background: linear-gradient(
+      -20deg,
+      #a581a5 30%,
+      rgb(204, 90, 214) 100%
+    );
+  }
+}
+
+@media (max-width: 1150px) {
+  .Keyboard {
+    grid-template-columns: 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr;
+    grid-template-areas:
+      '. . . . . . . . .'
+      '. . . . . . . . .'
+      '. . . . . . . . .';
+    order: 4;
+    flex: 0 1 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 700px) {
+  .Keyboard {
+    #vowel,
+    #consonant {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #consonant.autoplay {
+      font-size: 0.3rem;
+    }
+  }
+}

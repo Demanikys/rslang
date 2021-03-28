@@ -11,6 +11,7 @@ const Menu = () => (
     <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="mr-auto">
         <Link to="/audio-game">Аудиовызов</Link>
+        <Link to="/gallows-game">Виселица</Link>
       </Nav>
     </Navbar.Collapse>
   </Navbar>

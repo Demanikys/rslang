@@ -1,11 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Howl } from 'howler';
-import { useDispatch } from 'react-redux';
 import soundWay from '../sound.mp3';
 import style from './activeStage.module.scss';
-import { addRightAnswer, addWrongAnswer } from '../../../actions/audioGameAction';
-import playAnswerSound from '../../../components/AudioPlayer/audioPlayer';
+import playAnswerSound from '../../../commonFunctions/audioPlayer';
 /* eslint-disable react/prop-types */
 
 const createNewArray = () => {
@@ -25,14 +23,14 @@ const createNewArray = () => {
 
 const ActiveStage = React.memo((props) => {
   const {
-    word, fakeWords, correct, setCorrect,
-    setNextBtnStatus,
+    word, fakeWords, correct, setCorrectOrNot,
+    setNextBtnStatus, setCorrectAnswers, setWrongAnswers,
+    wrongAnswers, correctAnswers,
   } = props;
-  const rightAnswer = useRef();
   const [randomNumber, setRandomNumber] = useState(Math.floor(Math.random() * 5));
   const [randomFakeNumbers, setRandomFakeNumbers] = useState(createNewArray());
   const textEx = useRef();
-  const dispatch = useDispatch();
+  const correctAnswerRef = useRef();
 
   console.log(word.word);
   useEffect(() => {
@@ -55,11 +53,11 @@ const ActiveStage = React.memo((props) => {
       return (
         <Button
           key={word.word}
-          ref={rightAnswer}
+          ref={correctAnswerRef}
           onClick={() => {
-            setCorrect('right');
+            setCorrectOrNot('right');
             setNextBtnStatus(true);
-            dispatch(addRightAnswer(word));
+            setCorrectAnswers([...correctAnswers, word]);
             playAnswerSound(true).play();
           }}
           variant="outline-light"
@@ -74,9 +72,9 @@ const ActiveStage = React.memo((props) => {
       <Button
         key={fakeWords[randomFakeNumbers[i]].word}
         onClick={() => {
-          setCorrect('wrong');
+          setCorrectOrNot('wrong');
           setNextBtnStatus(true);
-          dispatch(addWrongAnswer(word));
+          setWrongAnswers([...wrongAnswers, word]);
           playAnswerSound(false).play();
         }}
         variant="outline-light"

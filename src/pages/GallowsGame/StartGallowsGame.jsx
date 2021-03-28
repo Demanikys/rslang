@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
-import AudioGame from './actuallyAudioGame/AudioGame';
-import style from './actuallyAudioGame/audioGame.module.scss';
-import getWords from '../../commonFunctions/getData';
+import style from '../AudioGame/actuallyAudioGame/audioGame.module.scss';
+import GallowsGame from './actuallyGallowsGame/GallowsGame';
+// import data from '../AudioGame/words.json';
 
-const StartAudioGame = () => {
+const StartGallowsGame = () => {
   const [words, setWords] = useState(null);
-  const [fakeWords, setFakeWords] = useState(null);
   const [startGame, setStartGame] = useState(false);
 
   useEffect(() => {
     fetch('https://newrslangapi.herokuapp.com/words')
       .then((response) => response.json())
       .then((response) => setWords(response));
-
-    setFakeWords(getWords());
   }, []);
 
   return (
@@ -30,27 +27,27 @@ const StartAudioGame = () => {
           <p>1. Кликните по нему мышью;</p>
           <p>2. Используйте клавиши 1, 2, 3, 4, 5.</p>
           {
-      (words && fakeWords
-        ? <Button onClick={() => setStartGame(true)} variant="primary">Начать игру</Button>
-        : (
-          <Button variant="primary" disabled>
-            <Spinner
-              as="span"
-              animation="border"
-              size="sm"
-              role="status"
-              aria-hidden="true"
-            />
-            <span className="sr-only">Loading...</span>
-          </Button>
-        ))
-    }
+            (words
+              ? <Button onClick={() => setStartGame(true)} variant="primary">Начать игру</Button>
+              : (
+                <Button variant="primary" disabled>
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  <span className="sr-only">Loading...</span>
+                </Button>
+              ))
+          }
         </div>
       )
       : (
-        <AudioGame words={words} fakeWords={fakeWords} />
+        <GallowsGame words={words} />
       )
   );
 };
 
-export default StartAudioGame;
+export default StartGallowsGame;

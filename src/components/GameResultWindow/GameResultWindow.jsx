@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import style from './gameResultWindow.module.scss';
 import ResultProgressBar from '../ResultPregressBar';
-/* eslint-disable react/prop-types */
 
 const GameResultWindow = (props) => {
   const { correctAnswers, wrongAnswers } = props;
@@ -34,6 +34,11 @@ const GameResultWindow = (props) => {
       </Button>
     </div>
   );
+};
+
+GameResultWindow.propTypes = {
+  correctAnswers: PropTypes.objectOf(PropTypes.object).isRequired,
+  wrongAnswers: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 export default GameResultWindow;

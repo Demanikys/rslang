@@ -1,6 +1,6 @@
 import { Howl } from 'howler';
-import correct from '../../assets/sounds/correct-answer.mp3';
-import wrong from '../../assets/sounds/wrong-answer.mp3';
+import correct from '../assets/sounds/correct-answer.mp3';
+import wrong from '../assets/sounds/wrong-answer.mp3';
 
 const playAnswerSound = (status) => {
   if (status) {

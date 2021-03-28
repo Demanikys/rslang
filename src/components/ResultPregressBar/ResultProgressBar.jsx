@@ -5,7 +5,6 @@ import style from './resultProgressBar.scss';
 
 const ResultProgressBar = (props) => {
   const { correct, wrong } = props;
-  console.log(correct, wrong);
 
   return (
     <ProgressBar className={style.progress}>
