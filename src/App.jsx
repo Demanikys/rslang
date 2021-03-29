@@ -6,6 +6,7 @@ import MainPage from './pages/MainPage';
 import Menu from './components/Menu';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import GameSavanna from './pages/GameSavanna'
 
 const App = () => (
   <BrowserRouter>
@@ -14,6 +15,9 @@ const App = () => (
       <Switch>
         <Route path="/audio-game">
           <AudioGame />
+        </Route>
+        <Route path="/savanna-game">
+          <GameSavanna />
         </Route>
         <Route path="/">
           <MainPage />
