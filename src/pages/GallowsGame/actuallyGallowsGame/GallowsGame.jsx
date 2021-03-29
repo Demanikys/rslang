@@ -9,10 +9,10 @@ import GameResultWindow from '../../../components/GameResultWindow';
 const GallowsGame = (props) => {
   const { words } = props;
   const [activeStage, setActiveStage] = useState(1);
-  const [nextBtnStatus, setNextBtnStatus] = useState(false);
-  const [correct, setCorrectOrNot] = useState('default');
+  const [nextBtnStatus, setNextBtnStatus] = useState(true);
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const [wrongAnswers, setWrongAnswers] = useState([]);
+  const [newGame, setNewGame] = useState(true);
 
   return (
     activeStage !== 11
@@ -23,30 +23,27 @@ const GallowsGame = (props) => {
             words && (
               <ActiveStageGallows
                 word={words[activeStage - 1]}
-                correct={correct}
-                setCorrectOrNot={setCorrectOrNot}
                 setCorrectAnswers={setCorrectAnswers}
                 setWrongAnswers={setWrongAnswers}
                 setNextBtnStatus={setNextBtnStatus}
                 correctAnswers={correctAnswers}
                 wrongAnswers={wrongAnswers}
+                newGame={newGame}
+                setNewGame={setNewGame}
               />
             )
           }
-          {
-            nextBtnStatus && (
-              <Button
-                onClick={() => {
-                  setActiveStage(activeStage + 1);
-                  setNextBtnStatus(false);
-                  setCorrectOrNot('default');
-                }}
-                variant="warning"
-              >
-                Next
-              </Button>
-            )
-          }
+          <Button
+            onClick={() => {
+              setActiveStage(activeStage + 1);
+              setNextBtnStatus(true);
+              setNewGame(true);
+            }}
+            variant="warning"
+            disabled={nextBtnStatus}
+          >
+            Next
+          </Button>
           <ResultProgressBar correct={correctAnswers.length} wrong={wrongAnswers.length} />
         </div>
       )

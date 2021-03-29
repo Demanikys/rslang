@@ -12,15 +12,20 @@ import style from './activeStage.module.scss';
 import playAnswerSound
   from '../../../commonFunctions/audioPlayer';
 import Keyboard from '../Keyboard';
+import Answers from '../activeStageAnswers/Answers';
 /* eslint-disable react/prop-types */
 
 const ActiveStageGallows = React.memo((props) => {
-  const { correct, word } = props;
+  const {
+    word, setNextBtnStatus, newGame, setNewGame,
+  } = props;
   const [maxMistakes] = useState(7);
   const [mistakesCounter, setMistakesCounter] = useState(0);
   const [checkedLetters, setCheckedLetters] = useState([]);
+  const [wrong, setWrong] = useState(false);
+  const [correct, setCorrect] = useState(false);
 
-  if (maxMistakes === mistakesCounter) console.log('sdfsdfsdfsdfsdfsdfsdfsdf');
+  // if (maxMistakes === mistakesCounter) console.log('sdfsdfsdfsdfsdfsdfsdfsdf');
 
   const images = [
     hangmanOne, hangmanTwo, hangmanThree,
@@ -30,28 +35,43 @@ const ActiveStageGallows = React.memo((props) => {
   console.log(word.word);
 
   useEffect(() => {
-    if (checkedLetters.length === word.word.length) console.log('victory');
+    if (checkedLetters.length === word.word.length) {
+      setNextBtnStatus(false);
+      setNewGame(false);
+      setCorrect(true);
+    }
   }, [checkedLetters]);
+
+  useEffect(() => {
+    if (newGame === true) {
+      setCheckedLetters([]);
+      setCorrect(false);
+      setWrong(false);
+    }
+  }, [newGame]);
+
+  useEffect(() => {
+    if ((maxMistakes - 1) === mistakesCounter) {
+      setNextBtnStatus(false);
+      setNewGame(false);
+      setWrong(true);
+    }
+  }, [mistakesCounter]);
 
   return (
     <div>
-      {correct === 'default' && (
       <div>
         <img src={images[mistakesCounter]} alt="hangman" />
+        <Answers word={word.word} checkedLetters={checkedLetters} correct={correct} wrong={wrong} />
         <Keyboard
           mistakesCounter={mistakesCounter}
           word={word.word}
           setMistakesCounter={setMistakesCounter}
           setCheckedLetters={setCheckedLetters}
           checkedLetters={checkedLetters}
+          newGame={newGame}
         />
       </div>
-      )}
-      {(correct === 'right' || correct === 'wrong') && (
-      <div>
-        result
-      </div>
-      )}
     </div>
   );
 });

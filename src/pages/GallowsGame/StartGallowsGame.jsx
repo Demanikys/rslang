@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Spinner } from 'react-bootstrap';
-import style from '../AudioGame/actuallyAudioGame/audioGame.module.scss';
 import GallowsGame from './actuallyGallowsGame/GallowsGame';
+import PresentComponent from '../../components/PresentComponent';
 // import data from '../AudioGame/words.json';
 
 const StartGallowsGame = () => {
@@ -17,32 +16,15 @@ const StartGallowsGame = () => {
   return (
     !startGame
       ? (
-        <div className={style.wrapper}>
-          <h2 className={style.header}>АУДИОВЫЗОВ</h2>
-          <h4>Мини-игра «Аудиовызов» - это тренировка, развивающая навыки речи и перевода.</h4>
-          <p>
-            Вы слышите слово и видите 5 вариантов перевода.
-            Выбрать правильный ответ можно двумя способами:
-          </p>
-          <p>1. Кликните по нему мышью;</p>
-          <p>2. Используйте клавиши 1, 2, 3, 4, 5.</p>
-          {
-            (words
-              ? <Button onClick={() => setStartGame(true)} variant="primary">Начать игру</Button>
-              : (
-                <Button variant="primary" disabled>
-                  <Spinner
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                  />
-                  <span className="sr-only">Loading...</span>
-                </Button>
-              ))
-          }
-        </div>
+        <PresentComponent
+          setStartGame={setStartGame}
+          words={words}
+          gameName="Виселица"
+          gameDescription="Мини-игра «Виселица» - это тренировка, которая помогает запоминать правильное написание слов."
+          gameRules="Вы видите картинку. Вам предстоит выбрать все буквы, которые используются в этом слове. Это можно сделать с помощью:"
+          gameOpportunityOne="1. Кликайте по буквам;"
+          gameOpportunityTwo="2. Используйте буквы на клавиатуре."
+        />
       )
       : (
         <GallowsGame words={words} />

@@ -1,12 +1,12 @@
 import React from 'react';
-import './Keyboard.scss';
 import { Button } from 'react-bootstrap';
+import style from './Keyboard.module.scss';
 /* eslint-disable react/prop-types */
 
 const Keyboard = (props) => {
   const {
     mistakesCounter, word, setMistakesCounter,
-    setCheckedLetters, checkedLetters,
+    setCheckedLetters, checkedLetters, newGame,
   } = props;
 
   const letters = [
@@ -40,6 +40,7 @@ const Keyboard = (props) => {
 
   const checkLetter = (e) => {
     const letter = e.target.innerHTML;
+    e.target.disabled = true;
 
     if (word.includes(letter)) {
       const addToCheck = [];
@@ -55,13 +56,14 @@ const Keyboard = (props) => {
   };
 
   return (
-    <div className="Keyboard">
-      <div>
+    <div className={style.keyboardWrapper}>
+      <div className={style.keyboard}>
         {letters.map((letter, index) => (
           <Button
             key={letter[index]}
-            className="btn-floating btn-large waves-effect waves-teal"
+            className={style.keyboard_button}
             onClick={checkLetter}
+            disabled={!newGame}
           >
             {letter}
           </Button>
