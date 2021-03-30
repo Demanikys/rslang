@@ -10,6 +10,7 @@ const Menu = () => (
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
     <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="mr-auto">
+        <Link to="/textbook/1">Учебник</Link>
         <Link to="/audio-game">Аудиовызов</Link>
         <Link to="/savanna-game">Саванна</Link>
       </Nav>

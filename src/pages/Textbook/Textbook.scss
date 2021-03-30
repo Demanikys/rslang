@@ -1,0 +1,11 @@
+.textbook{
+    display: flex;
+    &_nav{
+        flex-basis: 15%;
+        background: rgb(149, 238, 6);
+    }
+    &_content{
+        flex-grow: 1;
+        background: rgb(255, 230, 0);
+    }
+}
