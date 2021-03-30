@@ -10,22 +10,22 @@ import hangmanSix from '../../../assets/images/hangman/Hangman-5.png';
 import hangmanSeven from '../../../assets/images/hangman/Hangman-6.png';
 import style from './activeStage.module.scss';
 import playAnswerSound
-  from '../../../commonFunctions/audioPlayer';
+  from '../../../utilities/audioPlayer';
 import Keyboard from '../Keyboard';
 import Answers from '../activeStageAnswers/Answers';
 /* eslint-disable react/prop-types */
 
 const ActiveStageGallows = React.memo((props) => {
   const {
-    word, setNextBtnStatus, newGame, setNewGame,
+    word, setNextBtnStatus, newGame,
+    setNewGame, setCorrectAnswers, setWrongAnswers,
+    correctAnswers, wrongAnswers,
   } = props;
   const [maxMistakes] = useState(7);
   const [mistakesCounter, setMistakesCounter] = useState(0);
   const [checkedLetters, setCheckedLetters] = useState([]);
   const [wrong, setWrong] = useState(false);
   const [correct, setCorrect] = useState(false);
-
-  // if (maxMistakes === mistakesCounter) console.log('sdfsdfsdfsdfsdfsdfsdfsdf');
 
   const images = [
     hangmanOne, hangmanTwo, hangmanThree,
@@ -39,6 +39,7 @@ const ActiveStageGallows = React.memo((props) => {
       setNextBtnStatus(false);
       setNewGame(false);
       setCorrect(true);
+      setCorrectAnswers([...correctAnswers, word]);
     }
   }, [checkedLetters]);
 
@@ -47,6 +48,7 @@ const ActiveStageGallows = React.memo((props) => {
       setCheckedLetters([]);
       setCorrect(false);
       setWrong(false);
+      setMistakesCounter(0);
     }
   }, [newGame]);
 
@@ -55,6 +57,7 @@ const ActiveStageGallows = React.memo((props) => {
       setNextBtnStatus(false);
       setNewGame(false);
       setWrong(true);
+      setWrongAnswers([...wrongAnswers, word]);
     }
   }, [mistakesCounter]);
 
@@ -62,6 +65,17 @@ const ActiveStageGallows = React.memo((props) => {
     <div>
       <div>
         <img src={images[mistakesCounter]} alt="hangman" />
+        <img width="100px" height="100px" src={`https://newrslangapi.herokuapp.com/${word.image}`} alt="" />
+        <div>
+          <span>
+            max mistakes:
+            {maxMistakes - 1}
+          </span>
+          <span>
+            mistakes:
+            {mistakesCounter}
+          </span>
+        </div>
         <Answers word={word.word} checkedLetters={checkedLetters} correct={correct} wrong={wrong} />
         <Keyboard
           mistakesCounter={mistakesCounter}

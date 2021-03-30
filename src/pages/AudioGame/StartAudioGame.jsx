@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AudioGame from './actuallyAudioGame/AudioGame';
-import getWords from '../../commonFunctions/getData';
+import getWords from '../../utilities/getData';
 import PresentComponent from '../../components/PresentComponent';
 
 const StartAudioGame = () => {

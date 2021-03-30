@@ -14,8 +14,11 @@ const GallowsGame = (props) => {
   const [wrongAnswers, setWrongAnswers] = useState([]);
   const [newGame, setNewGame] = useState(true);
 
+  console.log(correctAnswers);
+  console.log(wrongAnswers);
+
   return (
-    activeStage !== 11
+    activeStage !== 6
       ? (
         <div className={style.wrapper}>
           <h2 className={style.header}>Audio game</h2>

@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import ActiveStage from '../activeStage/ActiveStage';
 import style from './audioGame.module.scss';
 import GameResultWindow from '../../../components/GameResultWindow';
-import playAnswerSound from '../../../commonFunctions/audioPlayer';
+import playAnswerSound from '../../../utilities/audioPlayer';
 import ResultProgressBar from '../../../components/ResultPregressBar';
 /* eslint-disable react/prop-types */
 

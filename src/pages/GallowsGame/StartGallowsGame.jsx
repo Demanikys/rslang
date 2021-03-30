@@ -8,7 +8,7 @@ const StartGallowsGame = () => {
   const [startGame, setStartGame] = useState(false);
 
   useEffect(() => {
-    fetch('https://newrslangapi.herokuapp.com/words')
+    fetch('https://newrslangapi.herokuapp.com/words/?group=0&page=0')
       .then((response) => response.json())
       .then((response) => setWords(response));
   }, []);

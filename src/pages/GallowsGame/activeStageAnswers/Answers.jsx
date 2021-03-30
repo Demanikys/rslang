@@ -10,7 +10,7 @@ const Answers = (props) => {
     const lettersHtml = [];
 
     for (let i = 0; i < word.length; i += 1) {
-      lettersHtml.push(<div className={style.letter} />);
+      lettersHtml.push(<div key={word.word} className={style.letter} />);
     }
 
     return lettersHtml;
@@ -25,6 +25,7 @@ const Answers = (props) => {
         if (checkedLetters.includes(i)) {
           lettersHtml.push(
             <div
+              key={word.word}
               className={`${style.letter} ${correct ? style.correct : null} ${wrong ? style.wrong : null}`}
             >
               {word[i]}
@@ -33,6 +34,7 @@ const Answers = (props) => {
         } else {
           lettersHtml.push(
             <div
+              key={word.word}
               className={`${style.letter} ${wrong ? style.wrong : null}`}
             />,
           );

@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Howl } from 'howler';
-import soundWay from '../sound.mp3';
 import style from './activeStage.module.scss';
-import playAnswerSound from '../../../commonFunctions/audioPlayer';
+import playAnswerSound from '../../../utilities/audioPlayer';
 /* eslint-disable react/prop-types */
 
 const createNewArray = () => {
@@ -31,6 +30,12 @@ const ActiveStage = React.memo((props) => {
   const [randomFakeNumbers, setRandomFakeNumbers] = useState(createNewArray());
   const textEx = useRef();
   const correctAnswerRef = useRef();
+  const wordSound = new Howl({
+    src: `https://newrslangapi.herokuapp.com/${word.audio}`,
+  });
+  const wordExampleSound = new Howl({
+    src: `https://newrslangapi.herokuapp.com/${word.audioExample}`,
+  });
 
   console.log(word.word);
   useEffect(() => {
@@ -44,9 +49,9 @@ const ActiveStage = React.memo((props) => {
     }
   }, [correct]);
 
-  const sound = new Howl({
-    src: soundWay,
-  });
+  useEffect(() => {
+    wordSound.play();
+  }, []);
 
   const renderButtons = [1, 2, 3, 4, 5].map((el, i) => {
     if (i === randomNumber) {
@@ -98,7 +103,7 @@ const ActiveStage = React.memo((props) => {
           className="bi bi-volume-up-fill"
           viewBox="0 0 16 16"
           onClick={() => {
-            sound.play();
+            wordSound.play();
           }}
         >
           <path
@@ -126,7 +131,7 @@ const ActiveStage = React.memo((props) => {
                   className="bi bi-volume-up-fill"
                   viewBox="0 0 16 16"
                   onClick={() => {
-                    sound.play();
+                    wordSound.play();
                   }}
                 >
                   <path
@@ -153,7 +158,7 @@ const ActiveStage = React.memo((props) => {
                   className="bi bi-volume-up-fill"
                   viewBox="0 0 16 16"
                   onClick={() => {
-                    sound.play();
+                    wordExampleSound.play();
                   }}
                 >
                   <path

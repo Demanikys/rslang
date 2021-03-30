@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import style from './Keyboard.module.scss';
+import playAnswerSound from '../../../utilities/audioPlayer';
 /* eslint-disable react/prop-types */
 
 const Keyboard = (props) => {
@@ -49,8 +50,10 @@ const Keyboard = (props) => {
           addToCheck.push(i);
         }
       }
+      playAnswerSound(true).play();
       setCheckedLetters([...checkedLetters, ...addToCheck]);
     } else {
+      playAnswerSound(false).play();
       setMistakesCounter(mistakesCounter + 1);
     }
   };
