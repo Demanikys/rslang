@@ -18,7 +18,6 @@ const Answers = (props) => {
 
   useEffect(() => {
     setLetters(() => {
-      console.log(wrong, 'whyyyyy');
       const lettersHtml = [];
 
       for (let i = 0; i < word.length; i += 1) {

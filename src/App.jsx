@@ -7,6 +7,7 @@ import Menu from './components/Menu';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import StartGallowsGame from './pages/GallowsGame';
+import GameSavanna from './pages/GameSavanna';
 
 const App = () => (
   <BrowserRouter>
@@ -18,6 +19,9 @@ const App = () => (
         </Route>
         <Route path="/gallows-game">
           <StartGallowsGame />
+        </Route>
+        <Route path="/savanna-game">
+          <GameSavanna />
         </Route>
         <Route path="/">
           <MainPage />

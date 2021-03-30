@@ -14,6 +14,7 @@ const AudioGame = (props) => {
   const [correct, setCorrectOrNot] = useState('default');
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const [wrongAnswers, setWrongAnswers] = useState([]);
+  const [value] = useState(5);
 
   return (
     activeStage !== 21
@@ -74,6 +75,7 @@ const AudioGame = (props) => {
           <GameResultWindow
             correctAnswers={correctAnswers}
             wrongAnswers={wrongAnswers}
+            value={value}
           />
         </div>
       )

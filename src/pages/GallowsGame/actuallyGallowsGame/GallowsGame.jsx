@@ -13,9 +13,7 @@ const GallowsGame = (props) => {
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const [wrongAnswers, setWrongAnswers] = useState([]);
   const [newGame, setNewGame] = useState(true);
-
-  console.log(correctAnswers);
-  console.log(wrongAnswers);
+  const [value] = useState(20);
 
   return (
     activeStage !== 6
@@ -47,7 +45,11 @@ const GallowsGame = (props) => {
           >
             Next
           </Button>
-          <ResultProgressBar correct={correctAnswers.length} wrong={wrongAnswers.length} />
+          <ResultProgressBar
+            correct={correctAnswers.length}
+            wrong={wrongAnswers.length}
+            value={value}
+          />
         </div>
       )
       : (
@@ -55,6 +57,7 @@ const GallowsGame = (props) => {
           <GameResultWindow
             correctAnswers={correctAnswers}
             wrongAnswers={wrongAnswers}
+            value={value}
           />
         </div>
       )

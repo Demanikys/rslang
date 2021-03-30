@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import GallowsGame from './actuallyGallowsGame/GallowsGame';
 import PresentComponent from '../../components/PresentComponent';
-// import data from '../AudioGame/words.json';
 
 const StartGallowsGame = () => {
   const [words, setWords] = useState(null);

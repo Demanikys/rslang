@@ -4,12 +4,12 @@ import style from './resultProgressBar.scss';
 /* eslint-disable react/prop-types */
 
 const ResultProgressBar = (props) => {
-  const { correct, wrong } = props;
+  const { correct, wrong, value } = props;
 
   return (
     <ProgressBar className={style.progress}>
-      <ProgressBar label={correct} variant="success" now={correct * 5} key={1} />
-      <ProgressBar label={wrong} variant="danger" now={wrong * 5} key={2} />
+      <ProgressBar label={correct} variant="success" now={correct * value} key={1} />
+      <ProgressBar label={wrong} variant="danger" now={wrong * value} key={2} />
     </ProgressBar>
   );
 };

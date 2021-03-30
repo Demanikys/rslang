@@ -12,6 +12,7 @@ const Menu = () => (
       <Nav className="mr-auto">
         <Link to="/audio-game">Аудиовызов</Link>
         <Link to="/gallows-game">Виселица</Link>
+        <Link to="/savanna-game">Саванна</Link>
       </Nav>
     </Navbar.Collapse>
   </Navbar>

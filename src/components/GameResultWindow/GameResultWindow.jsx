@@ -6,19 +6,21 @@ import style from './gameResultWindow.module.scss';
 import ResultProgressBar from '../ResultPregressBar';
 
 const GameResultWindow = (props) => {
-  const { correctAnswers, wrongAnswers } = props;
+  const { correctAnswers, wrongAnswers, value } = props;
 
   const createAnswersMarkDown = (array) => array.map((answer, index) => (
     <p key={answer.word}>
-      {index + 1}
-      )
-      {answer.word}
+      {`${index + 1}) ${answer.word}`}
     </p>
   ));
 
   return (
     <div className={style.resultWindow}>
-      <ResultProgressBar correct={correctAnswers.length} wrong={wrongAnswers.length} />
+      <ResultProgressBar
+        correct={correctAnswers.length}
+        wrong={wrongAnswers.length || 0}
+        value={value}
+      />
       <div className={style.content}>
         <div className={style.contentResult}>
           <h5>Правльные ответы</h5>
@@ -26,7 +28,7 @@ const GameResultWindow = (props) => {
         </div>
         <div className={style.contentResult}>
           <h5>Неправильные ответы</h5>
-          {wrongAnswers ? createAnswersMarkDown(wrongAnswers) : 'nothing'}
+          {wrongAnswers.length ? createAnswersMarkDown(wrongAnswers) : 'nothing'}
         </div>
       </div>
       <Button className={style.menu}>
@@ -39,6 +41,7 @@ const GameResultWindow = (props) => {
 GameResultWindow.propTypes = {
   correctAnswers: PropTypes.objectOf(PropTypes.object).isRequired,
   wrongAnswers: PropTypes.objectOf(PropTypes.object).isRequired,
+  value: PropTypes.number.isRequired,
 };
 
 export default GameResultWindow;
