@@ -1,28 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import ActiveStage from '../activeStage/ActiveStage';
 import style from './audioGame.module.scss';
-import { addWrongAnswer, setAudioGameData, setAudioGameFakeData } from '../../../actions/audioGameAction';
 import GameResultWindow from '../../../components/GameResultWindow';
-import { getCorrectAnswersAudioGame, getWrongAnswersAudioGame } from '../../../selectors/selectors';
-import playAnswerSound from '../../../components/AudioPlayer/audioPlayer';
+import playAnswerSound from '../../../utilities/audioPlayer';
 import ResultProgressBar from '../../../components/ResultPregressBar';
-/* eslint-disable react/prop-types */
 
 const AudioGame = (props) => {
   const { words, fakeWords } = props;
   const [activeStage, setActiveStage] = useState(1);
   const [nextBtnStatus, setNextBtnStatus] = useState(false);
-  const [correct, setCorrect] = useState('default');
-  const correctAnswers = useSelector(getCorrectAnswersAudioGame);
-  const wrongAnswers = useSelector(getWrongAnswersAudioGame);
-  const dispatch = useDispatch();
-
-  useEffect(() => () => {
-    dispatch(setAudioGameData(null));
-    dispatch(setAudioGameFakeData(null));
-  }, []);
+  const [correct, setCorrectOrNot] = useState('default');
+  const [correctAnswers, setCorrectAnswers] = useState([]);
+  const [wrongAnswers, setWrongAnswers] = useState([]);
+  const [value] = useState(5);
 
   return (
     activeStage !== 21
@@ -35,8 +27,12 @@ const AudioGame = (props) => {
                 word={words[activeStage - 1]}
                 fakeWords={fakeWords}
                 correct={correct}
-                setCorrect={setCorrect}
+                setCorrectOrNot={setCorrectOrNot}
+                setCorrectAnswers={setCorrectAnswers}
+                setWrongAnswers={setWrongAnswers}
                 setNextBtnStatus={setNextBtnStatus}
+                correctAnswers={correctAnswers}
+                wrongAnswers={wrongAnswers}
               />
             )
           }
@@ -45,8 +41,9 @@ const AudioGame = (props) => {
               <Button
                 onClick={() => {
                   setNextBtnStatus(true);
-                  setCorrect('wrong');
-                  dispatch(addWrongAnswer(words[activeStage - 1]));
+                  setCorrectOrNot('wrong');
+                  setWrongAnswers([...wrongAnswers, words[activeStage - 1]]);
+                  // dispatch(addWrongAnswer(words[activeStage - 1]));
                   playAnswerSound(false).play();
                   console.log('after');
                 }}
@@ -62,7 +59,7 @@ const AudioGame = (props) => {
                 onClick={() => {
                   setActiveStage(activeStage + 1);
                   setNextBtnStatus(false);
-                  setCorrect('default');
+                  setCorrectOrNot('default');
                 }}
                 variant="warning"
               >
@@ -70,15 +67,28 @@ const AudioGame = (props) => {
               </Button>
             )
           }
-          <ResultProgressBar correct={correctAnswers.length} wrong={wrongAnswers.length} />
+          <ResultProgressBar
+            correct={correctAnswers.length}
+            wrong={wrongAnswers.length}
+            value={value}
+          />
         </div>
       )
       : (
         <div>
-          <GameResultWindow correctAnswers={correctAnswers} wrongAnswers={wrongAnswers} />
+          <GameResultWindow
+            correctAnswers={correctAnswers}
+            wrongAnswers={wrongAnswers}
+            value={value}
+          />
         </div>
       )
   );
+};
+
+AudioGame.propTypes = {
+  words: PropTypes.arrayOf(PropTypes.object).isRequired,
+  fakeWords: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default AudioGame;

@@ -1,222 +1,220 @@
-import React, { useEffect, useRef, useState } from 'react'
-import './GameSavanna.scss'
-import words from './words.json'
-import GameResultWindow from '../../components/GameResultWindow'
+import React, { useEffect, useRef, useState } from 'react';
+import './GameSavanna.scss';
+import { Button } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import GameResultWindow from '../../components/GameResultWindow';
+import playAnswerSound from '../../utilities/audioPlayer';
 
-const GameSavanna = () => {
+const GameSavanna = (props) => {
+  const { words } = props;
+  const [wordCounter, setWordCounter] = useState(0);
+  const [backgroundPosition, setBackgroundPosition] = useState(100);
+  const [currentWord, setCurrentWord] = useState(words[wordCounter]);
+  const [currentWordAnswers, setCurrentWordAnswers] = useState();
+  const [cls, setCls] = useState(['game_current_word']);
+  const [health, setHealth] = useState([1, 2, 3, 4, 5]);
+  const [sound, setSound] = useState(true);
+  const [answerBtnsState, setAnswerBtnsState] = useState(true);
+  const [isGameFinished, setIsGameFinished] = useState(false);
+  const [correctAnswers, setCorrectAnswers] = useState([]);
+  const [wrongAnswers, setWrongAnswers] = useState([]);
+  const [value] = useState(5);
+  const failTimerRef = useRef();
 
-    const [wordCounter, setWordCounter] = useState(0)
-    const [backgroundPosition, setBackgroundPosition] = useState(100)
-    const [currentWord, setCurrentWord] = useState(words[wordCounter])
-    const [currentWordAnswers, setCurrentWordAnswers] = useState()
-    const [cls, setCls] = useState(['game_current_word'])
-    const [health, setHealth] = useState([1, 2, 3, 4, 5])
-    const [sound, setSound] = useState(true)
-    const [answerBtnsState, setAnswerBtnsState] = useState(true)
-    const [isGameFinished, setIsGameFinished] = useState(false)
-    const [correctAnswers, setCorrectAnswers] = useState([])
-    const [wrongAnswers, setWrongAnswers] = useState([])
-    let failTimerRef = useRef()
+  const chooseWordsForAnswers = (localWords) => {
+    const answers = [currentWord];
+    for (let i = 0; i < 3;) {
+      const word = localWords[Math.floor(Math.random() * localWords.length)];
+      if (!answers.includes(word)) {
+        answers.push(word);
+        i += 1;
+      }
+    }
+    setCurrentWordAnswers(answers.sort(() => Math.random() - 0.5));
+  };
 
-    useEffect(() => {
-        words.sort(() => Math.random() - .5)
-        return () => {
-            clearTimeout(failTimerRef.current)
-        }
-    }, [])
+  const isGameOver = () => {
+    if (health.length === 0 || wordCounter >= words.length) {
+      setIsGameFinished(true);
+      clearTimeout(failTimerRef.current);
+    }
+  };
 
-    useEffect(() => {
-        if (isGameFinished) {
-            return
-        }
-        chooseWordsForAnswers(words)
-        setTimeout(() => {
-            setCls(['game_current_word', 'game_current_word_active'])
-            setAnswerBtnsState(true)
-        }, 100)
-    }, [currentWord])
+  useEffect(() => {
+    words.sort(() => Math.random() - 0.5);
+    return () => {
+      clearTimeout(failTimerRef.current);
+    };
+  }, []);
 
-    useEffect(() => {
-        isGameOver()
-        if (isGameFinished) {
-            return
-        }
-        setCurrentWord(words[wordCounter])
+  useEffect(() => {
+    if (isGameFinished) {
+      return;
+    }
+    chooseWordsForAnswers(words);
+    setTimeout(() => {
+      setCls(['game_current_word', 'game_current_word_active']);
+      setAnswerBtnsState(true);
+    }, 100);
+  }, [currentWord]);
 
-    }, [wordCounter, isGameFinished])
+  const onCorrectAnswerClick = () => {
+    setCorrectAnswers([...correctAnswers, currentWord]);
+    if (backgroundPosition !== 0) {
+      if (backgroundPosition - 100 / words.length < 0) {
+        setBackgroundPosition(0);
+      } else {
+        setBackgroundPosition(backgroundPosition - 100 / words.length);
+      }
+    }
+  };
 
-    useEffect(() => {
-        if (isGameFinished) {
-            return
-        }
-        failTimerRef.current = setTimeout(() => {
-            setCls(['game_current_word', 'game_current_word_fail'])
-            setHealth(health.slice(0, -1))
-            soundEffectsOnAnswerClick(false)
-            setAnswerBtnsState(false)
-            setWrongAnswers([...wrongAnswers, currentWord])
-            setTimeout(() => {
-                setCls(['game_current_word'])
-                setWordCounter(wordCounter + 1)
-            }, 500)
-        }, 4200)
-        return () => clearTimeout(failTimerRef.current)
-    }, [currentWord])
-
-    const onKeyPressEventHandler = (event) => {
-        switch (event.code) {
-            case 'Digit1':
-                onAnswerClickHandler(currentWordAnswers[0])
-                break
-            case 'Digit2':
-                onAnswerClickHandler(currentWordAnswers[1])
-                break
-            case 'Digit3':
-                onAnswerClickHandler(currentWordAnswers[2])
-                break
-            case 'Digit4':
-                onAnswerClickHandler(currentWordAnswers[3])
-                break
-        }
-        clearTimeout(failTimerRef.current)
+  const onAnswerClickHandler = (word) => {
+    if (!answerBtnsState) {
+      return;
     }
 
-    document.onkeypress = onKeyPressEventHandler
-
-    const onFullscreenBtnClick = (event) => {
-        if (document.fullscreenElement) {
-            document.exitFullscreen()
-        } else {
-            event.target.closest('.game').requestFullscreen().catch(e => console.log(e))
-        }
+    if (word.wordTranslate === currentWord.wordTranslate) {
+      if (wordCounter < words.length) {
+        setCls(['game_current_word']);
+        setWordCounter(wordCounter + 1);
+        onCorrectAnswerClick();
+        playAnswerSound(true).play();
+      } else {
+        setIsGameFinished(true);
+        clearTimeout(failTimerRef.current);
+      }
+    } else {
+      setHealth(health.slice(0, -1));
+      setCls(['game_current_word']);
+      setWordCounter(wordCounter + 1);
+      playAnswerSound(false).play();
+      setWrongAnswers([...wrongAnswers, currentWord]);
     }
+    clearTimeout(failTimerRef.current);
+  };
 
-    const onCorrectAnswerClick = () => {
-        setCorrectAnswers([...correctAnswers, currentWord])
-        if (backgroundPosition !== 0) {
-            if (backgroundPosition - 100 / words.length < 0) {
-                setBackgroundPosition(0)
-            } else {
-                setBackgroundPosition(backgroundPosition - 100 / words.length)
-            }
-        }
+  useEffect(() => {
+    isGameOver();
+    if (isGameFinished) {
+      return;
     }
+    setCurrentWord(words[wordCounter]);
+  }, [wordCounter, isGameFinished]);
 
-    const chooseWordsForAnswers = (words) => {
-        const answers = [currentWord]
-        for (let i = 0; i < 3;) {
-            let word = words[Math.floor(Math.random() * words.length)]
-            if (!answers.includes(word)) {
-                answers.push(word)
-                i++
-            }
-        }
-        setCurrentWordAnswers(answers.sort(() => Math.random() - 0.5))
+  useEffect(() => {
+    if (isGameFinished) {
+      return;
     }
+    failTimerRef.current = setTimeout(() => {
+      setCls(['game_current_word', 'game_current_word_fail']);
+      setHealth(health.slice(0, -1));
+      playAnswerSound(false).play();
+      setAnswerBtnsState(false);
+      setWrongAnswers([...wrongAnswers, currentWord]);
+      setTimeout(() => {
+        setCls(['game_current_word']);
+        setWordCounter(wordCounter + 1);
+      }, 500);
+    }, 4200);
 
-    const onAnswerClickHandler = (word) => {
-        if (!answerBtnsState) {
-            return
-        }
+    return () => clearTimeout(failTimerRef.current);
+  }, [currentWord]);
 
-        if (word.wordTranslate === currentWord.wordTranslate) {
-            if (wordCounter < words.length - 1) {
-                setCls(['game_current_word'])
-                setWordCounter(wordCounter + 1)
-                onCorrectAnswerClick()
-                soundEffectsOnAnswerClick(true)
-            } else {
-                setIsGameFinished(true)
-                clearTimeout(failTimerRef.current)
-            }
-        } else {
-            setHealth(health.slice(0, -1))
-            setCls(['game_current_word'])
-            setWordCounter(wordCounter + 1)
-            soundEffectsOnAnswerClick(false)
-            setWrongAnswers([...wrongAnswers, currentWord])
-        }
-        clearTimeout(failTimerRef.current)
+  const onKeyPressEventHandler = (event) => {
+    switch (event.code) {
+      case 'Digit1':
+        onAnswerClickHandler(currentWordAnswers[0]);
+        break;
+      case 'Digit2':
+        onAnswerClickHandler(currentWordAnswers[1]);
+        break;
+      case 'Digit3':
+        onAnswerClickHandler(currentWordAnswers[2]);
+        break;
+      case 'Digit4':
+        onAnswerClickHandler(currentWordAnswers[3]);
+        break;
+      default:
+        return;
     }
+    clearTimeout(failTimerRef.current);
+  };
 
-    const soundEffectsOnAnswerClick = (answer) => {
-        if (!sound) {
-            return
-        }
+  document.onkeypress = onKeyPressEventHandler;
 
-        const audio = new Audio
-        answer
-            ? audio.src = 'assets/sound/savanna_correct_answer.mp3'
-            : audio.src = 'assets/sound/savanna_wrong_answer.mp3'
-        audio.play()
+  const onFullscreenBtnClick = (event) => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      event.target.closest('.game').requestFullscreen().catch((e) => console.log(e));
     }
+  };
 
-    const isGameOver = () => {
-        console.log(health.length)
-        if (health.length === 0 || wordCounter >= words.length) {
-            setIsGameFinished(true)
-            clearTimeout(failTimerRef.current)
+  return (
+    <div className="game game_savanna" style={{ backgroundPositionY: `${backgroundPosition}%` }}>
+      <Button className="game_sound_switcher" onClick={() => setSound(!sound)}>
+        {
+          sound
+            ? (<img src="assets/icons/sound_on_icon.png" alt="sound_on" />)
+            : (<img src="assets/icons/sound_off_icon.png" alt="sound_off" />)
         }
-    }
-
-    return (
-        <div className='game game_savanna' style={{ backgroundPositionY: `${backgroundPosition}%` }}>
-            <div className="game_sound_switcher" onClick={() => setSound(!sound)}>
-                {
-                    sound
-                        ? (<img src='assets/icons/sound_on_icon.png' alt='sound_on' />)
-                        : (<img src='assets/icons/sound_off_icon.png' alt='sound_off' />)
-                }
+      </Button>
+      {
+        isGameFinished
+          ? (
+            <GameResultWindow
+              correctAnswers={correctAnswers}
+              wrongAnswers={wrongAnswers}
+              value={value}
+            />
+          )
+          : (
+            <div className="game_health_bar">
+              {
+                health.map((item) => (
+                  <div key={item} className="game_health"><img src="assets/icons/pixel-heart.png" alt="heart" /></div>
+                ))
+              }
             </div>
-            {
-                isGameFinished
-                    ? <GameResultWindow correctAnswers={correctAnswers} wrongAnswers={wrongAnswers} />
-                    : (<div className='game_health_bar'>
-                        {
-                            health.map(item => {
-                                return (
-                                    <div key={item} className='game_health'><img src="assets/icons/pixel-heart.png" alt="heart" /></div>
-                                )
-                            })
-                        }
-                    </div>
-                    )
-            }
+          )
+      }
 
+      <Button className="game_fullscreen_btn game_btn" onClick={(event) => onFullscreenBtnClick(event)}><img src="assets/icons/full-screen.png" alt="fullscreen_icon" /></Button>
 
-            <button className='game_fullscreen_btn game_btn' onClick={(event) => onFullscreenBtnClick(event)}><img src='assets/icons/full-screen.png' alt='fullscreen_icon' /></button>
+      {
+        currentWord && !isGameFinished
+          ? (
+            <div className={cls.join(' ')}>{currentWord.word}</div>
+          )
+          : null
+      }
 
-            {
-                currentWord && !isGameFinished
-                    ? (
-                        <div className={cls.join(' ')}>{currentWord.word}</div>
-                    )
-                    : null
-            }
+      {
+        isGameFinished
+          ? null
+          : (
+            <>
+              <div className="game_finish_line" />
+              <div className="game_answers_block">
+                {currentWordAnswers
+                  ? (currentWordAnswers.map((item) => (
+                    <Button key={item.wordTranslate} className="game_btn" onClick={() => onAnswerClickHandler(item)}>
+                      {item.wordTranslate}
+                    </Button>
+                  )))
+                  : null}
+              </div>
+            </>
+          )
+      }
 
-            {
-                isGameFinished
-                    ? null
-                    : (
-                        <>
-                            <div className='game_finish_line'></div>
-                            <div className='game_answers_block'>
-                                {currentWordAnswers
-                                    ? (currentWordAnswers.map((item, index) => {
-                                        return (
-                                            <button key={index} className='game_btn' onClick={() => onAnswerClickHandler(item)}>
-                                                {item.wordTranslate}
-                                            </button>
-                                        )
-                                    }))
-                                    : null}
-                            </div>
-                        </>
-                    )
-            }
+    </div>
+  );
+};
 
-        </div>
-    )
-}
+GameSavanna.propTypes = {
+  words: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
-export { GameSavanna }
+export default GameSavanna;

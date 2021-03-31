@@ -1,12 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Howl } from 'howler';
-import { useDispatch } from 'react-redux';
-import soundWay from '../sound.mp3';
+import PropTypes from 'prop-types';
 import style from './activeStage.module.scss';
-import { addRightAnswer, addWrongAnswer } from '../../../actions/audioGameAction';
-import playAnswerSound from '../../../components/AudioPlayer/audioPlayer';
-/* eslint-disable react/prop-types */
+import playAnswerSound from '../../../utilities/audioPlayer';
 
 const createNewArray = () => {
   const arr = [];
@@ -25,19 +22,25 @@ const createNewArray = () => {
 
 const ActiveStage = React.memo((props) => {
   const {
-    word, fakeWords, correct, setCorrect,
-    setNextBtnStatus,
+    word, fakeWords, correct, setCorrectOrNot,
+    setNextBtnStatus, setCorrectAnswers, setWrongAnswers,
+    wrongAnswers, correctAnswers,
   } = props;
-  const rightAnswer = useRef();
   const [randomNumber, setRandomNumber] = useState(Math.floor(Math.random() * 5));
   const [randomFakeNumbers, setRandomFakeNumbers] = useState(createNewArray());
   const textEx = useRef();
-  const dispatch = useDispatch();
+  const correctAnswerRef = useRef();
+  const wordSound = new Howl({
+    src: `https://newrslangapi.herokuapp.com/${word.audio}`,
+  });
+  const wordExampleSound = new Howl({
+    src: `https://newrslangapi.herokuapp.com/${word.audioExample}`,
+  });
 
-  console.log(word.word);
   useEffect(() => {
     setRandomNumber(Math.floor(Math.random() * 5));
     setRandomFakeNumbers(createNewArray());
+    wordSound.play();
   }, [word]);
 
   useEffect(() => {
@@ -46,27 +49,23 @@ const ActiveStage = React.memo((props) => {
     }
   }, [correct]);
 
-  const sound = new Howl({
-    src: soundWay,
-  });
-
   const renderButtons = [1, 2, 3, 4, 5].map((el, i) => {
     if (i === randomNumber) {
       return (
         <Button
           key={word.word}
-          ref={rightAnswer}
+          ref={correctAnswerRef}
           onClick={() => {
-            setCorrect('right');
+            setCorrectOrNot('right');
             setNextBtnStatus(true);
-            dispatch(addRightAnswer(word));
+            setCorrectAnswers([...correctAnswers, word]);
             playAnswerSound(true).play();
           }}
           variant="outline-light"
           disabled={(correct !== 'default')}
           className={(correct !== 'default' ? style.rightAnswer : null)}
         >
-          {word.word}
+          {word.wordTranslate}
         </Button>
       );
     }
@@ -74,16 +73,16 @@ const ActiveStage = React.memo((props) => {
       <Button
         key={fakeWords[randomFakeNumbers[i]].word}
         onClick={() => {
-          setCorrect('wrong');
+          setCorrectOrNot('wrong');
           setNextBtnStatus(true);
-          dispatch(addWrongAnswer(word));
+          setWrongAnswers([...wrongAnswers, word]);
           playAnswerSound(false).play();
         }}
         variant="outline-light"
         disabled={(correct !== 'default')}
         className={(correct !== 'default' ? style.wrongAnswer : null)}
       >
-        {fakeWords[randomFakeNumbers[i]].word}
+        {fakeWords[randomFakeNumbers[i]].wordTranslate}
       </Button>
     );
   });
@@ -100,7 +99,7 @@ const ActiveStage = React.memo((props) => {
           className="bi bi-volume-up-fill"
           viewBox="0 0 16 16"
           onClick={() => {
-            sound.play();
+            wordSound.play();
           }}
         >
           <path
@@ -118,6 +117,7 @@ const ActiveStage = React.memo((props) => {
       {
         (correct === 'right' || correct === 'wrong') && (
           <div>
+            <img className={style.image} src={`https://newrslangapi.herokuapp.com/${word.image}`} alt="" />
             <div className={style.wordSoundWrapper}>
               <div className={style.soundIcon}>
                 <svg
@@ -128,7 +128,7 @@ const ActiveStage = React.memo((props) => {
                   className="bi bi-volume-up-fill"
                   viewBox="0 0 16 16"
                   onClick={() => {
-                    sound.play();
+                    wordSound.play();
                   }}
                 >
                   <path
@@ -155,7 +155,7 @@ const ActiveStage = React.memo((props) => {
                   className="bi bi-volume-up-fill"
                   viewBox="0 0 16 16"
                   onClick={() => {
-                    sound.play();
+                    wordExampleSound.play();
                   }}
                 >
                   <path
@@ -180,5 +180,17 @@ const ActiveStage = React.memo((props) => {
     </div>
   );
 });
+
+ActiveStage.propTypes = {
+  word: PropTypes.objectOf(PropTypes.any).isRequired,
+  fakeWords: PropTypes.arrayOf(PropTypes.object).isRequired,
+  correct: PropTypes.string.isRequired,
+  setCorrectOrNot: PropTypes.func.isRequired,
+  setNextBtnStatus: PropTypes.func.isRequired,
+  setCorrectAnswers: PropTypes.func.isRequired,
+  setWrongAnswers: PropTypes.func.isRequired,
+  wrongAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  correctAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 export default ActiveStage;
