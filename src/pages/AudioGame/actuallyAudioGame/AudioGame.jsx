@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import ActiveStage from '../activeStage/ActiveStage';
 import style from './audioGame.module.scss';
 import GameResultWindow from '../../../components/GameResultWindow';
 import playAnswerSound from '../../../utilities/audioPlayer';
 import ResultProgressBar from '../../../components/ResultPregressBar';
-/* eslint-disable react/prop-types */
 
 const AudioGame = (props) => {
   const { words, fakeWords } = props;
@@ -67,7 +67,11 @@ const AudioGame = (props) => {
               </Button>
             )
           }
-          <ResultProgressBar correct={correctAnswers.length} wrong={wrongAnswers.length} />
+          <ResultProgressBar
+            correct={correctAnswers.length}
+            wrong={wrongAnswers.length}
+            value={value}
+          />
         </div>
       )
       : (
@@ -80,6 +84,11 @@ const AudioGame = (props) => {
         </div>
       )
   );
+};
+
+AudioGame.propTypes = {
+  words: PropTypes.arrayOf(PropTypes.object).isRequired,
+  fakeWords: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default AudioGame;

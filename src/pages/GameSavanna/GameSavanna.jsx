@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './GameSavanna.scss';
 import { Button } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import GameResultWindow from '../../components/GameResultWindow';
 import playAnswerSound from '../../utilities/audioPlayer';
-/* eslint-disable react/prop-types */
 
 const GameSavanna = (props) => {
   const { words } = props;
@@ -199,7 +199,7 @@ const GameSavanna = (props) => {
               <div className="game_answers_block">
                 {currentWordAnswers
                   ? (currentWordAnswers.map((item) => (
-                    <Button key={item} className="game_btn" onClick={() => onAnswerClickHandler(item)}>
+                    <Button key={item.wordTranslate} className="game_btn" onClick={() => onAnswerClickHandler(item)}>
                       {item.wordTranslate}
                     </Button>
                   )))
@@ -211,6 +211,10 @@ const GameSavanna = (props) => {
 
     </div>
   );
+};
+
+GameSavanna.propTypes = {
+  words: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default GameSavanna;

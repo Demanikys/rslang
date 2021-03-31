@@ -3,7 +3,6 @@ import correct from '../assets/sounds/correct-answer.mp3';
 import wrong from '../assets/sounds/wrong-answer.mp3';
 
 const playAnswerSound = (status) => {
-  console.log(status, 'dont play');
   if (status) {
     return new Howl({
       src: correct,

@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useRef, useState } from 'react';
-import { Button } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import hangmanOne from '../../../assets/images/hangman/Hangman-0.png';
 import hangmanTwo from '../../../assets/images/hangman/Hangman-1.png';
 import hangmanThree from '../../../assets/images/hangman/Hangman-2.png';
@@ -8,12 +7,8 @@ import hangmanFour from '../../../assets/images/hangman/Hangman-3.png';
 import hangmanFive from '../../../assets/images/hangman/Hangman-4.png';
 import hangmanSix from '../../../assets/images/hangman/Hangman-5.png';
 import hangmanSeven from '../../../assets/images/hangman/Hangman-6.png';
-import style from './activeStage.module.scss';
-import playAnswerSound
-  from '../../../utilities/audioPlayer';
 import Keyboard from '../Keyboard';
 import Answers from '../activeStageAnswers/Answers';
-/* eslint-disable react/prop-types */
 
 const ActiveStageGallows = React.memo((props) => {
   const {
@@ -32,7 +27,6 @@ const ActiveStageGallows = React.memo((props) => {
     hangmanFour, hangmanFive, hangmanSix,
     hangmanSeven,
   ];
-  console.log(word.word);
 
   useEffect(() => {
     if (checkedLetters.length === word.word.length) {
@@ -89,5 +83,16 @@ const ActiveStageGallows = React.memo((props) => {
     </div>
   );
 });
+
+ActiveStageGallows.propTypes = {
+  word: PropTypes.objectOf(PropTypes.any).isRequired,
+  setNextBtnStatus: PropTypes.func.isRequired,
+  newGame: PropTypes.bool.isRequired,
+  setNewGame: PropTypes.func.isRequired,
+  setCorrectAnswers: PropTypes.func.isRequired,
+  setWrongAnswers: PropTypes.func.isRequired,
+  correctAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  wrongAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 export default ActiveStageGallows;

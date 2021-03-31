@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import style from './answers.module.scss';
-/* eslint-disable react/prop-types */
 
 const Answers = (props) => {
   const {
@@ -10,7 +10,7 @@ const Answers = (props) => {
     const lettersHtml = [];
 
     for (let i = 0; i < word.length; i += 1) {
-      lettersHtml.push(<div key={word.word} className={style.letter} />);
+      lettersHtml.push(<div key={word[i]} className={style.letter} />);
     }
 
     return lettersHtml;
@@ -24,7 +24,7 @@ const Answers = (props) => {
         if (checkedLetters.includes(i)) {
           lettersHtml.push(
             <div
-              key={word.word}
+              key={word[i]}
               className={`${style.letter} ${correct ? style.correct : null} ${wrong ? style.wrong : null}`}
             >
               {word[i]}
@@ -33,7 +33,7 @@ const Answers = (props) => {
         } else {
           lettersHtml.push(
             <div
-              key={word.word}
+              key={word[i]}
               className={`${style.letter} ${wrong ? style.wrong : null}`}
             />,
           );
@@ -49,6 +49,13 @@ const Answers = (props) => {
       {letters}
     </div>
   );
+};
+
+Answers.propTypes = {
+  word: PropTypes.string.isRequired,
+  checkedLetters: PropTypes.arrayOf(PropTypes.number).isRequired,
+  correct: PropTypes.bool.isRequired,
+  wrong: PropTypes.bool.isRequired,
 };
 
 export default Answers;

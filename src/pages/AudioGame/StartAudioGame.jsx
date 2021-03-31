@@ -4,7 +4,7 @@ import getWords from '../../utilities/getData';
 import PresentComponent from '../../components/PresentComponent';
 
 const StartAudioGame = () => {
-  const [words, setWords] = useState(null);
+  const [words, setWords] = useState([]);
   const [fakeWords, setFakeWords] = useState(null);
   const [startGame, setStartGame] = useState(false);
 

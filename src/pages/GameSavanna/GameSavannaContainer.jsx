@@ -4,14 +4,14 @@ import './GameSavannaContainer.scss';
 import PresentComponent from '../../components/PresentComponent';
 
 const GameSavannaContainer = () => {
-  const [words, setWords] = useState(null);
+  const [words, setWords] = useState([]);
   const [isGameStarted, setIsGameStarted] = useState(false);
 
   useEffect(() => {
     fetch('https://newrslangapi.herokuapp.com/words')
       .then((response) => response.json())
       .then((response) => setWords(response));
-  });
+  }, []);
 
   return (
     isGameStarted

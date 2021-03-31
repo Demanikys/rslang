@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import style from '../../AudioGame/actuallyAudioGame/audioGame.module.scss';
 import ActiveStageGallows from '../activeStage/ActiveStage';
 import ResultProgressBar from '../../../components/ResultPregressBar';
 import GameResultWindow from '../../../components/GameResultWindow';
-/* eslint-disable react/prop-types */
 
 const GallowsGame = (props) => {
   const { words } = props;
@@ -62,6 +62,10 @@ const GallowsGame = (props) => {
         </div>
       )
   );
+};
+
+GallowsGame.propTypes = {
+  words: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default GallowsGame;

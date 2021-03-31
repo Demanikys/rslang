@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Spinner } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import style from './presentComponent.module.scss';
-/* eslint-disable react/prop-types */
 
 const PresentComponent = (props) => {
   const {
@@ -18,7 +18,7 @@ const PresentComponent = (props) => {
       <p>{gameOpportunityOne}</p>
       <p>{gameOpportunityTwo}</p>
       {
-        (words
+        (words.length
           ? <Button onClick={() => setStartGame(true)} variant="primary">Начать игру</Button>
           : (
             <Button variant="primary" disabled>
@@ -36,6 +36,16 @@ const PresentComponent = (props) => {
       }
     </div>
   );
+};
+
+PresentComponent.propTypes = {
+  words: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setStartGame: PropTypes.func.isRequired,
+  gameName: PropTypes.string.isRequired,
+  gameDescription: PropTypes.string.isRequired,
+  gameRules: PropTypes.string.isRequired,
+  gameOpportunityOne: PropTypes.string.isRequired,
+  gameOpportunityTwo: PropTypes.string.isRequired,
 };
 
 export default PresentComponent;

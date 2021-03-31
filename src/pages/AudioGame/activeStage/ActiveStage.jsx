@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Howl } from 'howler';
+import PropTypes from 'prop-types';
 import style from './activeStage.module.scss';
 import playAnswerSound from '../../../utilities/audioPlayer';
-/* eslint-disable react/prop-types */
 
 const createNewArray = () => {
   const arr = [];
@@ -37,10 +37,10 @@ const ActiveStage = React.memo((props) => {
     src: `https://newrslangapi.herokuapp.com/${word.audioExample}`,
   });
 
-  console.log(word.word);
   useEffect(() => {
     setRandomNumber(Math.floor(Math.random() * 5));
     setRandomFakeNumbers(createNewArray());
+    wordSound.play();
   }, [word]);
 
   useEffect(() => {
@@ -48,10 +48,6 @@ const ActiveStage = React.memo((props) => {
       textEx.current.innerHTML = word.textExample;
     }
   }, [correct]);
-
-  useEffect(() => {
-    wordSound.play();
-  }, []);
 
   const renderButtons = [1, 2, 3, 4, 5].map((el, i) => {
     if (i === randomNumber) {
@@ -69,7 +65,7 @@ const ActiveStage = React.memo((props) => {
           disabled={(correct !== 'default')}
           className={(correct !== 'default' ? style.rightAnswer : null)}
         >
-          {word.word}
+          {word.wordTranslate}
         </Button>
       );
     }
@@ -86,7 +82,7 @@ const ActiveStage = React.memo((props) => {
         disabled={(correct !== 'default')}
         className={(correct !== 'default' ? style.wrongAnswer : null)}
       >
-        {fakeWords[randomFakeNumbers[i]].word}
+        {fakeWords[randomFakeNumbers[i]].wordTranslate}
       </Button>
     );
   });
@@ -121,6 +117,7 @@ const ActiveStage = React.memo((props) => {
       {
         (correct === 'right' || correct === 'wrong') && (
           <div>
+            <img className={style.image} src={`https://newrslangapi.herokuapp.com/${word.image}`} alt="" />
             <div className={style.wordSoundWrapper}>
               <div className={style.soundIcon}>
                 <svg
@@ -183,5 +180,17 @@ const ActiveStage = React.memo((props) => {
     </div>
   );
 });
+
+ActiveStage.propTypes = {
+  word: PropTypes.objectOf(PropTypes.any).isRequired,
+  fakeWords: PropTypes.arrayOf(PropTypes.object).isRequired,
+  correct: PropTypes.string.isRequired,
+  setCorrectOrNot: PropTypes.func.isRequired,
+  setNextBtnStatus: PropTypes.func.isRequired,
+  setCorrectAnswers: PropTypes.func.isRequired,
+  setWrongAnswers: PropTypes.func.isRequired,
+  wrongAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  correctAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 export default ActiveStage;

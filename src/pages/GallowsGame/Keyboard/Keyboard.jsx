@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import style from './Keyboard.module.scss';
 import playAnswerSound from '../../../utilities/audioPlayer';
-/* eslint-disable react/prop-types */
 
 const Keyboard = (props) => {
   const {
@@ -61,9 +61,9 @@ const Keyboard = (props) => {
   return (
     <div className={style.keyboardWrapper}>
       <div className={style.keyboard}>
-        {letters.map((letter, index) => (
+        {letters.map((letter) => (
           <Button
-            key={letter[index]}
+            key={letter}
             className={style.keyboard_button}
             onClick={checkLetter}
             disabled={!newGame}
@@ -74,6 +74,15 @@ const Keyboard = (props) => {
       </div>
     </div>
   );
+};
+
+Keyboard.propTypes = {
+  mistakesCounter: PropTypes.number.isRequired,
+  word: PropTypes.string.isRequired,
+  setMistakesCounter: PropTypes.func.isRequired,
+  setCheckedLetters: PropTypes.func.isRequired,
+  checkedLetters: PropTypes.arrayOf(PropTypes.number).isRequired,
+  newGame: PropTypes.bool.isRequired,
 };
 
 export default Keyboard;

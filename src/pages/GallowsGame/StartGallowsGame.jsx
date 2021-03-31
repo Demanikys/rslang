@@ -3,7 +3,7 @@ import GallowsGame from './actuallyGallowsGame/GallowsGame';
 import PresentComponent from '../../components/PresentComponent';
 
 const StartGallowsGame = () => {
-  const [words, setWords] = useState(null);
+  const [words, setWords] = useState([]);
   const [startGame, setStartGame] = useState(false);
 
   useEffect(() => {

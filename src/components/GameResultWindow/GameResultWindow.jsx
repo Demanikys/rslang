@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import style from './gameResultWindow.module.scss';
 import ResultProgressBar from '../ResultPregressBar';
 
-const GameResultWindow = (props) => {
+const GameResultWindow = React.memo((props) => {
   const { correctAnswers, wrongAnswers, value } = props;
 
   const createAnswersMarkDown = (array) => array.map((answer, index) => (
@@ -24,7 +24,7 @@ const GameResultWindow = (props) => {
       <div className={style.content}>
         <div className={style.contentResult}>
           <h5>Правльные ответы</h5>
-          {correctAnswers ? createAnswersMarkDown(correctAnswers) : 'nothing'}
+          {correctAnswers.length ? createAnswersMarkDown(correctAnswers) : 'nothing'}
         </div>
         <div className={style.contentResult}>
           <h5>Неправильные ответы</h5>
@@ -36,7 +36,7 @@ const GameResultWindow = (props) => {
       </Button>
     </div>
   );
-};
+});
 
 GameResultWindow.propTypes = {
   correctAnswers: PropTypes.objectOf(PropTypes.object).isRequired,
