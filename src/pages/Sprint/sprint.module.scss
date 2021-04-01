@@ -40,5 +40,19 @@
     .points {
       text-align: center;
     }
+
+    .arrowButtons {
+      display: flex;
+      justify-content: space-between;
+      width: 100px;
+      margin: 0 auto;
+      padding: 25px 0;
+
+      .arrowKey {
+        width: 40px;
+        opacity: 0.5;
+        transition: all 0.15s;
+      }
+    }
   }
 }

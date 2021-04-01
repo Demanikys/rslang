@@ -6,10 +6,18 @@ function ThrowError() {
 }
 
 function RightAnswerButton({ action }) {
+  // document.addEventListener('keyup', (e) => {
+  //   if (e.code === 'ArrowRight') {
+  //     console.log('right pressed');
+  //     action();
+  //   }
+  // });
+
   return (
     <button
       type="button"
       onClick={() => action()}
+      onKeyUp={(e) => { console.log(e.code); }}
     >
       right answer
     </button>
@@ -25,6 +33,12 @@ RightAnswerButton.defaultProps = {
 };
 
 function WrongAnswerButton({ action }) {
+  // document.addEventListener('keyup', (e) => {
+  //   if (e.code === 'ArrowLeft') {
+  //     action();
+  //   }
+  // });
+
   return (
     <button
       type="button"

@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import style from './sprint.module.scss';
 import * as Buttons from './components/buttons';
 import data from './words.json';
+import leftArrowKey from './assets/left_arrow.jpg';
+import rightArrowKey from './assets/right_arrow.jpg';
 
 const Sprint = () => {
   const [score, setScore] = useState(0);
   const [points, setPoints] = useState(0);
   const [level, setLevel] = useState([0, 0, 0]);
   const [word, setWord] = useState({});
+  const [wrongCount, setWrongCount] = useState(0);
   useEffect(() => {
     const arr = [];
     level.forEach((elem, index) => {
@@ -17,7 +20,6 @@ const Sprint = () => {
   }, [points]);
 
   useEffect(() => {
-    console.log('words');
     const randEnIndex = Math.floor(Math.random() * data.en.length);
     let randRuIndex;
     if (Math.random() > 0.5) {
@@ -29,9 +31,11 @@ const Sprint = () => {
   }, [points, score]);
 
   function resetLevel() {
+    setWrongCount(wrongCount + 1);
     setLevel(new Array(3).fill(0));
     setPoints(0);
-    if (score >= 5) setScore(score - 5);
+    if (score >= 3 * wrongCount) setScore(score - 3 * wrongCount);
+    else setScore(0);
   }
 
   function addLevel() {
@@ -43,6 +47,26 @@ const Sprint = () => {
     }
     setScore(score + 10 + points * 5 + level.length);
   }
+
+  function leftButtonAction() {
+    if (word.en !== word.ru) addLevel();
+    else resetLevel();
+  }
+
+  function rightButtonAction() {
+    if (word.en === word.ru) addLevel();
+    else resetLevel();
+  }
+
+  function eventHandler(e) {
+    if (e.code === 'ArrowLeft') {
+      leftButtonAction();
+    } else if (e.code === 'ArrowRight') {
+      rightButtonAction();
+    }
+  }
+
+  document.onkeydown = eventHandler;
 
   return (
     <div className={style.wrapper}>
@@ -66,17 +90,15 @@ const Sprint = () => {
         </div>
         <div className={style.points}>
           <Buttons.WrongAnswerButton
-            action={() => {
-              if (word.en !== word.ru) addLevel();
-              else resetLevel();
-            }}
+            action={leftButtonAction}
           />
           <Buttons.RightAnswerButton
-            action={() => {
-              if (word.en === word.ru) addLevel();
-              else resetLevel();
-            }}
+            action={rightButtonAction}
           />
+        </div>
+        <div className={style.arrowButtons}>
+          <img src={leftArrowKey} alt="arrow key" className={style.arrowKey} aria-hidden="true" />
+          <img src={rightArrowKey} alt="arrow key" className={style.arrowKey} aria-hidden="true" />
         </div>
       </div>
     </div>
