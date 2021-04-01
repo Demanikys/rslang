@@ -82,48 +82,73 @@ const Sprint = () => {
 
   document.onkeydown = eventHandler;
 
+  function getVerdict() {
+    const coef = rightCount / wrongCount;
+    if (coef >= 5)
+      return 'Wow! This seems to easy for you';
+    else if (coef >= 1)
+      return 'You did great';
+    else
+      return 'Nice try! But there you made a lot of mistakes! Try again';
+  }
+  
   return (
     <div className={style.wrapper}>
-      <div className={style.timeWrapper}>
-        <div className={style.countdown}>
-          <div className={style.countdown__number}>{time}</div>
-          <svg className={style.countdown__svg}>
-            <circle className={style.countdown__circle} r="18" cx="20" cy="20" />
-          </svg>
-        </div>
-      </div>
-      <div className={style.pointsNumber}>
-        {score}
-      </div>
       {
-        time === 0 ? <div>That all folks!</div>
+        time === 0 ?
+          <div className={style.endGame}>
+            <div className={style.verdict}>
+              { getVerdict() }
+            </div>
+            <div className={style.statistics}>
+              <div className={style.rightStat}>
+                Right words: {rightCount}
+              </div>
+              <div className={style.wrongStat}>
+                Wrong words: {wrongCount}
+              </div>
+            </div>
+          </div>
           : (
-            <div className={style.gameWindow}>
-              {level.map((elem) => {
-                if (elem === 1) {
-                  return <span className={style.answerRight}>&nbsp;&nbsp;&nbsp;&nbsp;</span>;
-                }
-                return <span className={style.answer}>&nbsp;&nbsp;&nbsp;&nbsp;</span>;
-              })}
-              <div className={style.wordsWindow}>
-                <div className={style.enWord}>
-                  {data.en[word.en]}
-                </div>
-                <div className={style.ruWord}>
-                  {data.ru[word.ru]}
+            <div>
+              <div className={style.timeWrapper}>
+                <div className={style.countdown}>
+                  <div className={style.countdown__number}>{time}</div>
+                  <svg className={style.countdown__svg}>
+                    <circle className={style.countdown__circle} r="18" cx="20" cy="20" />
+                  </svg>
                 </div>
               </div>
-              <div className={style.points}>
-                <Buttons.WrongAnswerButton
-                  action={leftButtonAction}
-                />
-                <Buttons.RightAnswerButton
-                  action={rightButtonAction}
-                />
+              <div className={style.pointsNumber}>
+                {score}
               </div>
-              <div className={style.arrowButtons}>
-                <img src={leftArrowKey} alt="arrow key" className={style.arrowKey} aria-hidden="true" />
-                <img src={rightArrowKey} alt="arrow key" className={style.arrowKey} aria-hidden="true" />
+              <div className={style.gameWindow}>
+                {level.map((elem) => {
+                  if (elem === 1) {
+                    return <span className={style.answerRight}>&nbsp;&nbsp;&nbsp;&nbsp;</span>;
+                  }
+                  return <span className={style.answer}>&nbsp;&nbsp;&nbsp;&nbsp;</span>;
+                })}
+                <div className={style.wordsWindow}>
+                  <div className={style.enWord}>
+                    {data.en[word.en]}
+                  </div>
+                  <div className={style.ruWord}>
+                    {data.ru[word.ru]}
+                  </div>
+                </div>
+                <div className={style.points}>
+                  <Buttons.WrongAnswerButton
+                    action={leftButtonAction}
+                  />
+                  <Buttons.RightAnswerButton
+                    action={rightButtonAction}
+                  />
+                </div>
+                <div className={style.arrowButtons}>
+                  <img src={leftArrowKey} alt="arrow key" className={style.arrowKey} aria-hidden="true" />
+                  <img src={rightArrowKey} alt="arrow key" className={style.arrowKey} aria-hidden="true" />
+                </div>
               </div>
             </div>
           )

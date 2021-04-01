@@ -33,7 +33,7 @@
 
     .countdown__circle {
       stroke-dasharray: 113px;
-      stroke-dashoffset: 0px;
+      stroke-dashoffset: 0;
       stroke-linecap: round;
       stroke-width: 2px;
       stroke: black;
@@ -43,7 +43,7 @@
 
     @keyframes countdown {
       from {
-        stroke-dashoffset: 0px;
+        stroke-dashoffset: 0;
       }
       to {
         stroke-dashoffset: 113px;
@@ -100,6 +100,33 @@
         width: 40px;
         opacity: 0.5;
         transition: all 0.15s;
+      }
+    }
+  }
+
+  .endGame {
+    background: white;
+    border-radius: 10px;
+    width: 40%;
+    margin: 0 auto;
+    padding: 20px;
+
+    .verdict {
+      display: block;
+      margin: 0 auto 20px auto;
+      width: 50%;
+    }
+
+    .statistics {
+      width: 70%;
+      margin: 0 auto;
+
+      .rightStat {
+        // TODO: insert some styles
+      }
+
+      .wrongStat {
+        // TODO: insert some styles
       }
     }
   }
