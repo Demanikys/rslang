@@ -13,6 +13,8 @@ const Menu = () => (
         <NavDropdown id="collasible-nav-dropdown" title="Игры">
           <NavDropdown.Item href="/sprint">Спринт</NavDropdown.Item>
           <NavDropdown.Item href="/audio-game">Аудиовызов</NavDropdown.Item>
+          <NavDropdown.Item href="/gallows-game">Виселица</NavDropdown.Item>
+          <NavDropdown.Item href="/savanna-game">Саванна</NavDropdown.Item>
         </NavDropdown>
       </Nav>
     </Navbar.Collapse>

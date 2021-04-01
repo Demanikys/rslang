@@ -1,0 +1,71 @@
+.soundIcon {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  transition-duration: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid black;
+  margin: 50px auto;
+
+  &:hover{
+    background-color: black;
+  }
+}
+
+.chooseAnswer {
+  display: flex;
+  column-gap: 20px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+
+.rightAnswer{
+  background-color: green !important;
+}
+
+.wrongAnswer{
+  background-color: red !important;
+}
+
+.image {
+  width: 200px;
+  height: auto;
+}
+
+.wordSoundWrapper,
+.textSoundWrapper{
+  margin: 40px 0;
+  display: flex;
+  column-gap: 10px;
+  justify-content: center;
+  align-items: center;
+
+  p, h4{
+    margin: 0;
+  }
+
+  p{
+    font-size: 25px;
+  }
+
+  .soundIcon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    transition-duration: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid red;
+    margin: 0;
+
+    &:hover{
+      background-color: red;
+    }
+  }
+}
