@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import style from '../../AudioGame/actuallyAudioGame/audioGame.module.scss';
-import ActiveStageGallows from '../activeStage/ActiveStage';
+import ActiveStageGallows from '../activeStage/ActiveStageGallows';
 import ResultProgressBar from '../../../components/ResultPregressBar';
 import GameResultWindow from '../../../components/GameResultWindow';
 

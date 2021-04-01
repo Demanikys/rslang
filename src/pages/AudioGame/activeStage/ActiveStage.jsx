@@ -119,7 +119,7 @@ const ActiveStage = React.memo((props) => {
           <div>
             <img className={style.image} src={`https://newrslangapi.herokuapp.com/${word.image}`} alt="" />
             <div className={style.wordSoundWrapper}>
-              <div className={style.soundIcon}>
+              <div className={style.soundIconSmall}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="28"
@@ -146,7 +146,7 @@ const ActiveStage = React.memo((props) => {
               <p>{word.transcription}</p>
             </div>
             <div className={style.textSoundWrapper}>
-              <div className={style.soundIcon}>
+              <div className={style.soundIconSmall}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="28"
@@ -169,7 +169,7 @@ const ActiveStage = React.memo((props) => {
                   />
                 </svg>
               </div>
-              <h4 ref={textEx}>no</h4>
+              <p className={style.textExample} ref={textEx}>no</p>
             </div>
           </div>
         )

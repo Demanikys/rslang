@@ -18,22 +18,22 @@ const PresentComponent = (props) => {
       <p>{gameOpportunityOne}</p>
       <p>{gameOpportunityTwo}</p>
       {
-        (words.length
-          ? <Button onClick={() => setStartGame(true)} variant="primary">Начать игру</Button>
-          : (
-            <Button variant="primary" disabled>
-              <Spinner
-                as="span"
-                animation="border"
-                size="sm"
-                role="status"
-                aria-hidden="true"
-              />
-              <span className="sr-only">Loading...</span>
-            </Button>
+          (words.length
+            ? <Button onClick={() => setStartGame(true)} variant="primary">Начать игру</Button>
+            : (
+              <Button variant="primary" disabled>
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+                <span className="sr-only">Loading...</span>
+              </Button>
+            )
           )
-        )
-      }
+        }
     </div>
   );
 };

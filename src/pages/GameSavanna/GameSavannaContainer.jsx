@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import GameSavanna from './GameSavanna';
-import './GameSavannaContainer.scss';
+import GameSavanna from './actuallyGameSavanna/GameSavanna';
 import PresentComponent from '../../components/PresentComponent';
 
 const GameSavannaContainer = () => {
@@ -21,10 +20,8 @@ const GameSavannaContainer = () => {
           setStartGame={setIsGameStarted}
           words={words}
           gameName="Саванна"
-          gameDescription="Дописать описание игры"
-          gameRules="Во время игры вы увидите текущее отгадываемое слово
-              и несколько вариантов перевода для него. Вам необходимо выбрать правильный вариант перевода
-              до того как слово опустится в красную зону. Выбрать правильный ответ можно двумя способами:"
+          gameDescription="Мини-игра «Саванна» - это тренировка по переводу пассивного изученного словаря в активную стадию."
+          gameRules="После запуска игры вы увидите падающее слово на английском (или русском, если режим игры RU-> EN) и четыре варианта перевода. Выбрать правильный ответ можно двумя способами:"
           gameOpportunityOne="1. Кликните по нему мышью;"
           gameOpportunityTwo="2. Используйте клавиши 1, 2, 3, 4."
         />

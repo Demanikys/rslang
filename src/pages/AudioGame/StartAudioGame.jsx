@@ -11,7 +11,8 @@ const StartAudioGame = () => {
   useEffect(() => {
     fetch('https://newrslangapi.herokuapp.com/words')
       .then((response) => response.json())
-      .then((response) => setWords(response));
+      .then((response) => setWords(response))
+      .catch((error) => console.log(error));
 
     setFakeWords(getWords());
   }, []);
@@ -30,7 +31,10 @@ const StartAudioGame = () => {
         />
       )
       : (
-        <AudioGame words={words} fakeWords={fakeWords} />
+        <AudioGame
+          words={words}
+          fakeWords={fakeWords}
+        />
       )
   );
 };

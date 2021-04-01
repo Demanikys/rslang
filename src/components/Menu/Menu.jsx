@@ -1,9 +1,10 @@
 import React from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import style from './menu.module.scss';
 
 const Menu = () => (
-  <Navbar bg="light" expand="md">
+  <Navbar bg="light" expand="md" className={style.menu}>
     <Navbar.Brand>
       <Link to="/">Rslang</Link>
     </Navbar.Brand>

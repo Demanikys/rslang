@@ -9,6 +9,7 @@ import hangmanSix from '../../../assets/images/hangman/Hangman-5.png';
 import hangmanSeven from '../../../assets/images/hangman/Hangman-6.png';
 import Keyboard from '../Keyboard';
 import Answers from '../activeStageAnswers/Answers';
+import style from './activeStage.module.scss';
 
 const ActiveStageGallows = React.memo((props) => {
   const {
@@ -56,11 +57,13 @@ const ActiveStageGallows = React.memo((props) => {
   }, [mistakesCounter]);
 
   return (
-    <div>
+    <div className={style.wrapper}>
       <div>
-        <img src={images[mistakesCounter]} alt="hangman" />
-        <img width="100px" height="100px" src={`https://newrslangapi.herokuapp.com/${word.image}`} alt="" />
-        <div>
+        <div className={style.images}>
+          <img className={style.imageGuess} src={`https://newrslangapi.herokuapp.com/${word.image}`} alt="" />
+          <img className={style.gallows} src={images[mistakesCounter]} alt="hangman" />
+        </div>
+        <div className={style.mistakes}>
           <span>
             max mistakes:
             {maxMistakes - 1}
@@ -70,7 +73,12 @@ const ActiveStageGallows = React.memo((props) => {
             {mistakesCounter}
           </span>
         </div>
-        <Answers word={word.word} checkedLetters={checkedLetters} correct={correct} wrong={wrong} />
+        <Answers
+          word={word.word}
+          checkedLetters={checkedLetters}
+          correct={correct}
+          wrong={wrong}
+        />
         <Keyboard
           mistakesCounter={mistakesCounter}
           word={word.word}

@@ -43,11 +43,10 @@ const AudioGame = (props) => {
                   setNextBtnStatus(true);
                   setCorrectOrNot('wrong');
                   setWrongAnswers([...wrongAnswers, words[activeStage - 1]]);
-                  // dispatch(addWrongAnswer(words[activeStage - 1]));
                   playAnswerSound(false).play();
-                  console.log('after');
                 }}
                 variant="warning"
+                className={style.nextOrUnknown}
               >
                 Don&apos;t know
               </Button>
@@ -62,6 +61,7 @@ const AudioGame = (props) => {
                   setCorrectOrNot('default');
                 }}
                 variant="warning"
+                className={style.nextOrUnknown}
               >
                 Next
               </Button>

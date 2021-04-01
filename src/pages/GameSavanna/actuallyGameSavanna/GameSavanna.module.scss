@@ -1,0 +1,95 @@
+.game {
+  width: 100%;
+  height: 100vh;
+  background-image: url('../../../assets/backgrounds/bg-savanna-game.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  transition: background-position-y ease 1s;
+  overflow: hidden;
+  font-family: monospace;
+
+  .game_health_bar {
+    position: absolute;
+    right: 200px;
+    top: 10px;
+    display: flex;
+
+    .game_health {
+      img {
+        height: 25px;
+        width: auto;
+      }
+    }
+  }
+
+  .game_sound_switcher {
+    top: 10px;
+    left: 10px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .game_finish_line {
+    height: 2px;
+    width: 60vw;
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%);
+    box-shadow: rgba($color: #ff0000, $alpha: 0.5) 0 30px 20px 15px;
+  }
+
+  .buttonsWrapper {
+    position: relative;
+    top: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 20px;
+
+    @media (max-width: 400px) {
+      top: 42%;
+      row-gap: 10px;
+    }
+
+    .game_answers_block {
+      display: flex;
+      margin: 10px auto;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      button{
+        font-size: 26px !important;
+
+        @media (max-width: 400px) {
+          font-size: 18px !important;
+        }
+      }
+    }
+  }
+}
+
+.game_current_word {
+  width: max-content;
+  position: absolute;
+  color: #fff;
+  font-size: 35px;
+  font-weight: bold;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.game_current_word_active {
+  top: 45%;
+  transition: top linear 4s;
+}
+
+.game_current_word_fail {
+  top: -100%;
+  transition: top linear 0.5s;
+}
