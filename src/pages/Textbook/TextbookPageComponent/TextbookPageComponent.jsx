@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 // import { Route } from 'react-router'
 import './TextbookPageComponent.scss'
+import TextbookWordComponent from '../TextbookWordComponent'
 
 const TextbookPageComponent = (props) => {
     const dataProps = props
@@ -14,7 +15,7 @@ const TextbookPageComponent = (props) => {
         } catch (e) {
             console.log(e)
         }
-    }, [])
+    }, [dataProps.pageNumber])
 
     return (
         wordsData
@@ -22,9 +23,7 @@ const TextbookPageComponent = (props) => {
                 {
                     wordsData.map((item, index) => {
                         return (
-                            <div key={index}>
-                                {item.word}
-                            </div>
+                            <TextbookWordComponent word={item} key={index} />
                         )
                     })
                 }

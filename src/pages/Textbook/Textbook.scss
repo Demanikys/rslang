@@ -8,4 +8,11 @@
         flex-grow: 1;
         background: rgb(255, 230, 0);
     }
+    &_page_selectors{
+        display: flex;
+        justify-content: space-around;
+        .page_button:hover{
+            cursor: pointer;
+        }
+    }
 }
