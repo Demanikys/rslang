@@ -20,6 +20,7 @@ const App = () => (
         </Route>
         <Route path="/sprint">
           <Sprint />
+        </Route>
         <Route path="/gallows-game">
           <StartGallowsGame />
         </Route>
