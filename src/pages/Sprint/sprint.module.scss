@@ -1,0 +1,58 @@
+.wrapper {
+  text-align: center;
+  background-color: #fff6cc;
+  padding: 50px;
+
+  .pointsNumber {
+    font-size: 26px;
+    color: #16b416;
+  }
+
+  .gameWindow {
+    border-radius: 20px;
+    background-color: white;
+    width: 40%;
+    margin: 0 auto 50px;
+
+    .wordsWindow {
+      .enWord {
+        font-size: 22px;
+      }
+
+      .ruWord {
+        font-size: 16px;
+        color: grey;
+      }
+    }
+
+    .answer {
+      border-radius: 50%;
+      background-color: grey;
+      width: 60px;
+    }
+
+    .answerRight {
+      border-radius: 50%;
+      background-color: green;
+      width: 60px;
+    }
+
+    .points {
+      text-align: center;
+    }
+
+    .arrowButtons {
+      display: flex;
+      justify-content: space-between;
+      width: 100px;
+      margin: 0 auto;
+      padding: 25px 0;
+
+      .arrowKey {
+        width: 40px;
+        opacity: 0.5;
+        transition: all 0.15s;
+      }
+    }
+  }
+}
