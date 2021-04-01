@@ -23,7 +23,14 @@ const TextbookPageComponent = (props) => {
                 {
                     wordsData.map((item, index) => {
                         return (
-                            <TextbookWordComponent word={item} key={index} />
+                            <>
+                                <TextbookWordComponent word={item} key={index} />
+                                {
+                                    index !== wordsData.length - 1
+                                        ? <br />
+                                        : null
+                                }
+                            </>
                         )
                     })
                 }
