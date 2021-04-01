@@ -11,6 +11,8 @@ const Sprint = () => {
   const [level, setLevel] = useState([0, 0, 0]);
   const [word, setWord] = useState({});
   const [wrongCount, setWrongCount] = useState(0);
+  const [rightCount, setRightCount] = useState(0);
+  const [time, setTime] = useState(60);
   useEffect(() => {
     const arr = [];
     level.forEach((elem, index) => {
@@ -18,6 +20,17 @@ const Sprint = () => {
       setLevel(arr);
     });
   }, [points]);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (time === 0) {
+        clearInterval(id);
+        return;
+      }
+      setTime((time) => time - 1);
+    }, 1000);
+    return () => { clearInterval(id); };
+  }, );
 
   useEffect(() => {
     const randEnIndex = Math.floor(Math.random() * data.en.length);
@@ -39,6 +52,7 @@ const Sprint = () => {
   }
 
   function addLevel() {
+    setRightCount(rightCount + 1);
     if (points !== level.length) {
       setPoints(points + 1);
     } else {
@@ -70,37 +84,50 @@ const Sprint = () => {
 
   return (
     <div className={style.wrapper}>
+      <div className={style.timeWrapper}>
+        <div className={style.countdown}>
+          <div className={style.countdown__number}>{time}</div>
+          <svg className={style.countdown__svg}>
+            <circle className={style.countdown__circle} r="18" cx="20" cy="20" />
+          </svg>
+        </div>
+      </div>
       <div className={style.pointsNumber}>
         {score}
       </div>
-      <div className={style.gameWindow}>
-        {level.map((elem) => {
-          if (elem === 1) {
-            return <span className={style.answerRight}>&nbsp;&nbsp;&nbsp;&nbsp;</span>;
-          }
-          return <span className={style.answer}>&nbsp;&nbsp;&nbsp;&nbsp;</span>;
-        })}
-        <div className={style.wordsWindow}>
-          <div className={style.enWord}>
-            {data.en[word.en]}
-          </div>
-          <div className={style.ruWord}>
-            {data.ru[word.ru]}
-          </div>
-        </div>
-        <div className={style.points}>
-          <Buttons.WrongAnswerButton
-            action={leftButtonAction}
-          />
-          <Buttons.RightAnswerButton
-            action={rightButtonAction}
-          />
-        </div>
-        <div className={style.arrowButtons}>
-          <img src={leftArrowKey} alt="arrow key" className={style.arrowKey} aria-hidden="true" />
-          <img src={rightArrowKey} alt="arrow key" className={style.arrowKey} aria-hidden="true" />
-        </div>
-      </div>
+      {
+        time === 0 ? <div>That all folks!</div>
+          : (
+            <div className={style.gameWindow}>
+              {level.map((elem) => {
+                if (elem === 1) {
+                  return <span className={style.answerRight}>&nbsp;&nbsp;&nbsp;&nbsp;</span>;
+                }
+                return <span className={style.answer}>&nbsp;&nbsp;&nbsp;&nbsp;</span>;
+              })}
+              <div className={style.wordsWindow}>
+                <div className={style.enWord}>
+                  {data.en[word.en]}
+                </div>
+                <div className={style.ruWord}>
+                  {data.ru[word.ru]}
+                </div>
+              </div>
+              <div className={style.points}>
+                <Buttons.WrongAnswerButton
+                  action={leftButtonAction}
+                />
+                <Buttons.RightAnswerButton
+                  action={rightButtonAction}
+                />
+              </div>
+              <div className={style.arrowButtons}>
+                <img src={leftArrowKey} alt="arrow key" className={style.arrowKey} aria-hidden="true" />
+                <img src={rightArrowKey} alt="arrow key" className={style.arrowKey} aria-hidden="true" />
+              </div>
+            </div>
+          )
+      }
     </div>
   );
 };
