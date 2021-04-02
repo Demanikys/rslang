@@ -45,8 +45,7 @@ const Sprint = () => {
   }, [points, score]);
 
   function resetLevel() {
-    console.log({ word: data.en[word.en], wordTranslate:  data.ru[word.en], userAnswer: data.en[word.ru], userAnswerTranslate: data.ru[word.ru]})
-    setWrongWords(oldWords => [...oldWords, { word: data.en[word.en], wordTranslate:  data.ru[word.en]}]);
+    setWrongWords(oldWords => [...oldWords, { word: data.en[word.en], wordTranslate:  data.ru[word.en], userAnswer: data.en[word.ru], userAnswerTranslate: data.ru[word.ru]}]);
     setLevel(new Array(3).fill(0));
     setPoints(1);
     setPoints(0);
@@ -55,7 +54,7 @@ const Sprint = () => {
   }
 
   function addLevel() {
-    setRightWords(oldWords => [...oldWords, { word: data.en[word.en], wordTranslate:  data.ru[word.en]}]);
+    setRightWords(oldWords => [...oldWords, { word: data.en[word.en], wordTranslate:  data.ru[word.en], userAnswer: data.en[word.ru], userAnswerTranslate: data.ru[word.ru]}]);
     if (points !== level.length) {
       setPoints(points + 1);
     } else {
