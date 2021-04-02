@@ -4,14 +4,15 @@ import * as Buttons from './components/buttons';
 import data from './words.json';
 import leftArrowKey from './assets/left_arrow.jpg';
 import rightArrowKey from './assets/right_arrow.jpg';
+import GameResultWindow from "../../components/GameResultWindow";
 
 const Sprint = () => {
   const [score, setScore] = useState(0);
   const [points, setPoints] = useState(0);
   const [level, setLevel] = useState([0, 0, 0]);
   const [word, setWord] = useState({});
-  const [wrongCount, setWrongCount] = useState(0);
-  const [rightCount, setRightCount] = useState(0);
+  const [wrongWords, setWrongWords] = useState([]);
+  const [rightWords, setRightWords] = useState([]);
   const [time, setTime] = useState(60);
   useEffect(() => {
     const arr = [];
@@ -28,7 +29,7 @@ const Sprint = () => {
         return;
       }
       setTime((time) => time - 1);
-    }, 1000);
+    }, 100);
     return () => { clearInterval(id); };
   }, );
 
@@ -44,15 +45,16 @@ const Sprint = () => {
   }, [points, score]);
 
   function resetLevel() {
-    setWrongCount(wrongCount + 1);
+    setWrongWords(oldWords => [...oldWords, { word: data.en[word.en], wordTranslate:  data.ru[word.en]}]);
     setLevel(new Array(3).fill(0));
+    setPoints(1);
     setPoints(0);
-    if (score >= 3 * wrongCount) setScore(score - 3 * wrongCount);
+    if (score >= 3 * wrongWords.length) setScore(score - 3 * wrongWords.length);
     else setScore(0);
   }
 
   function addLevel() {
-    setRightCount(rightCount + 1);
+    setRightWords(oldWords => [...oldWords, { word: data.en[word.en], wordTranslate:  data.ru[word.en]}]);
     if (points !== level.length) {
       setPoints(points + 1);
     } else {
@@ -81,34 +83,16 @@ const Sprint = () => {
   }
 
   document.onkeydown = eventHandler;
-
-  function getVerdict() {
-    const coef = rightCount / wrongCount;
-    if (coef >= 5)
-      return 'Wow! This seems to easy for you';
-    else if (coef >= 1)
-      return 'You did great';
-    else
-      return 'Nice try! But there you made a lot of mistakes! Try again';
-  }
   
   return (
     <div className={style.wrapper}>
       {
         time === 0 ?
-          <div className={style.endGame}>
-            <div className={style.verdict}>
-              { getVerdict() }
-            </div>
-            <div className={style.statistics}>
-              <div className={style.rightStat}>
-                Right words: {rightCount}
-              </div>
-              <div className={style.wrongStat}>
-                Wrong words: {wrongCount}
-              </div>
-            </div>
-          </div>
+          <GameResultWindow
+            correctAnswers={rightWords}
+            wrongAnswers={wrongWords}
+            value={'test'}
+            />
           : (
             <div>
               <div className={style.timeWrapper}>

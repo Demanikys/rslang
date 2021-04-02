@@ -1,6 +1,7 @@
 .wrapper {
   text-align: center;
   background-color: #fff6cc;
+  min-height: 700px;
   padding: 50px;
   position: relative;
 
@@ -100,33 +101,6 @@
         width: 40px;
         opacity: 0.5;
         transition: all 0.15s;
-      }
-    }
-  }
-
-  .endGame {
-    background: white;
-    border-radius: 10px;
-    width: 40%;
-    margin: 0 auto;
-    padding: 20px;
-
-    .verdict {
-      display: block;
-      margin: 0 auto 20px auto;
-      width: 50%;
-    }
-
-    .statistics {
-      width: 70%;
-      margin: 0 auto;
-
-      .rightStat {
-        // TODO: insert some styles
-      }
-
-      .wrongStat {
-        // TODO: insert some styles
       }
     }
   }
