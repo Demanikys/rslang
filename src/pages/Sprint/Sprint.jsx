@@ -45,6 +45,7 @@ const Sprint = () => {
   }, [points, score]);
 
   function resetLevel() {
+    console.log({ word: data.en[word.en], wordTranslate:  data.ru[word.en], userAnswer: data.en[word.ru], userAnswerTranslate: data.ru[word.ru]})
     setWrongWords(oldWords => [...oldWords, { word: data.en[word.en], wordTranslate:  data.ru[word.en]}]);
     setLevel(new Array(3).fill(0));
     setPoints(1);
