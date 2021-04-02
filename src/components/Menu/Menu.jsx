@@ -12,18 +12,18 @@ const Menu = () => (
     <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="mr-auto">
         <NavDropdown id="collasible-nav-dropdown" title="Игры">
-          <NavDropdown.Item>
+          <div>
             <Link to="/sprint">Спринт</Link>
-          </NavDropdown.Item>
-          <NavDropdown.Item>
+          </div>
+          <div>
             <Link to="/audio-game">Аудиовызов</Link>
-          </NavDropdown.Item>
-          <NavDropdown.Item>
+          </div>
+          <div>
             <Link to="/gallows-game">Виселица</Link>
-          </NavDropdown.Item>
-          <NavDropdown.Item>
+          </div>
+          <div>
             <Link to="/savanna-game">Саванна</Link>
-          </NavDropdown.Item>
+          </div>
         </NavDropdown>
       </Nav>
     </Navbar.Collapse>
