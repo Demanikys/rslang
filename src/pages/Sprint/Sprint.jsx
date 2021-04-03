@@ -58,15 +58,20 @@ const Sprint = () => {
     else resetLevel();
   }
 
-  function eventHandler(e) {
-    if (e.code === 'ArrowLeft') {
-      leftButtonAction();
-    } else if (e.code === 'ArrowRight') {
-      rightButtonAction();
-    }
-  }
+  useEffect(() => {
+    const eventHandler = (event) => {
+      console.log('arrows');
+      if (event.code === 'ArrowLeft') {
+        leftButtonAction();
+      } else if (event.code === 'ArrowRight') {
+        rightButtonAction();
+      }
+    };
 
-  document.onkeydown = eventHandler;
+    document.addEventListener('keydown', eventHandler);
+
+    return () => document.removeEventListener('keydown', eventHandler);
+  });
 
   return (
     <div className={style.wrapper}>

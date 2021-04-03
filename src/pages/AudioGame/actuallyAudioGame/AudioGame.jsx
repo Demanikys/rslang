@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import ActiveStage from '../activeStage/ActiveStage';
@@ -6,6 +6,7 @@ import style from './audioGame.module.scss';
 import GameResultWindow from '../../../components/GameResultWindow';
 import playAnswerSound from '../../../utilities/audioPlayer';
 import ResultProgressBar from '../../../components/ResultPregressBar';
+import FullScreenButtons from '../../../components/FullScreenButton';
 
 const AudioGame = (props) => {
   const { words, fakeWords } = props;
@@ -15,11 +16,31 @@ const AudioGame = (props) => {
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const [wrongAnswers, setWrongAnswers] = useState([]);
   const [value] = useState(5);
+  const [fullScreenStatus, setFullScreenStatus] = useState(false);
+  const gameWindow = useRef();
+
+  useEffect(() => {
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement) {
+        setFullScreenStatus(false);
+      }
+    });
+  }, []);
+
+  const onFullscreenBtnClick = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+      setFullScreenStatus(false);
+    } else {
+      gameWindow.current.requestFullscreen().catch((e) => console.log(e));
+      setFullScreenStatus(true);
+    }
+  };
 
   return (
     activeStage !== 21
       ? (
-        <div className={style.wrapper}>
+        <div ref={gameWindow} className={style.wrapper}>
           <h2 className={style.header}>Audio game</h2>
           {
             words && fakeWords && (
@@ -73,6 +94,10 @@ const AudioGame = (props) => {
             correct={correctAnswers.length}
             wrong={wrongAnswers.length}
             value={value}
+          />
+          <FullScreenButtons
+            fullScreenStatus={fullScreenStatus}
+            onFullscreenBtnClick={onFullscreenBtnClick}
           />
         </div>
       )

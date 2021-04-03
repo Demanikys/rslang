@@ -44,7 +44,6 @@ const Keyboard = (props) => {
     let disableKey = false;
 
     const keyDownHandler = (event) => {
-      console.log(event);
       if (letters.some((el) => el === event.key)) {
         disableKey = !!disabledButtons.join('').toLowerCase().match(event.key);
 
