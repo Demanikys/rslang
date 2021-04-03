@@ -1,7 +1,56 @@
 .wrapper {
   text-align: center;
   background-color: #fff6cc;
+  min-height: 700px;
   padding: 50px;
+  position: relative;
+
+  .timeWrapper {
+    position: absolute;
+    left: 50px;
+    top: 50px;
+
+    .countdown {
+      position: relative;
+      height: 40px;
+      width: 40px;
+      text-align: center;
+    }
+
+    .countdown__number {
+      color: black;
+      display: inline-block;
+      line-height: 40px;
+    }
+
+    .countdown__svg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 40px;
+      height: 40px;
+      transform: rotateY(-180deg) rotateZ(-90deg);
+    }
+
+    .countdown__circle {
+      stroke-dasharray: 113px;
+      stroke-dashoffset: 0;
+      stroke-linecap: round;
+      stroke-width: 2px;
+      stroke: black;
+      fill: none;
+      animation: countdown 60s linear infinite forwards;
+    }
+
+    @keyframes countdown {
+      from {
+        stroke-dashoffset: 0;
+      }
+      to {
+        stroke-dashoffset: 113px;
+      }
+    }
+  }
 
   .pointsNumber {
     font-size: 26px;
