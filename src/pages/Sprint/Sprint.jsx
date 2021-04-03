@@ -21,19 +21,23 @@ const Sprint = () => {
       setLevel(arr);
     });
   }, [points]);
-
+  
   useEffect(() => {
-    const id = setInterval(() => {
-      if (time === 0) {
-        clearInterval(id);
-        return;
+    if (time === 0) {
+      return;
+    }
+    
+    const id = setTimeout(() => {
+      if (time <= 0) {
+        return clearTimeout(id);
+      } else {
+        setTime((time) => time - 1);
       }
-      setTime((time) => time - 1);
-    }, 100);
-    return () => { clearInterval(id); };
-  }, );
+    }, 1000);
+  }, [time]);
 
   useEffect(() => {
+    console.log('отрисовка');
     const randEnIndex = Math.floor(Math.random() * data.en.length);
     let randRuIndex;
     if (Math.random() > 0.5) {
@@ -49,8 +53,11 @@ const Sprint = () => {
     setLevel(new Array(3).fill(0));
     setPoints(1);
     setPoints(0);
-    if (score >= 3 * wrongWords.length) setScore(score - 3 * wrongWords.length);
-    else setScore(0);
+    console.log(score, 3 * wrongWords.length);
+    if (score > 3 * wrongWords.length) setScore(score - 3 * wrongWords.length);
+    else {
+      setScore(score - 1);
+    }
   }
 
   function addLevel() {
@@ -73,21 +80,26 @@ const Sprint = () => {
     if (word.en === word.ru) addLevel();
     else resetLevel();
   }
-
-  function eventHandler(e) {
-    if (e.code === 'ArrowLeft') {
-      leftButtonAction();
-    } else if (e.code === 'ArrowRight') {
-      rightButtonAction();
-    }
-  }
-
-  document.onkeydown = eventHandler;
+  
+  useEffect(() => {
+    const eventHandler = (event) => {
+      console.log('arrows');
+      if (event.code === 'ArrowLeft') {
+        leftButtonAction();
+      } else if (event.code === 'ArrowRight') {
+        rightButtonAction();
+      }
+    };
+    
+    document.addEventListener('keydown', eventHandler);
+    
+    return () => document.removeEventListener('keydown', eventHandler);
+  });
   
   return (
     <div className={style.wrapper}>
       {
-        time === 0 ?
+        time < 1 ?
           <GameResultWindow
             correctAnswers={rightWords}
             wrongAnswers={wrongWords}

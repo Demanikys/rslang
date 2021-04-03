@@ -17,7 +17,6 @@ function RightAnswerButton({ action }) {
     <button
       type="button"
       onClick={() => action()}
-      onKeyUp={(e) => { console.log(e.code); }}
     >
       right answer
     </button>
