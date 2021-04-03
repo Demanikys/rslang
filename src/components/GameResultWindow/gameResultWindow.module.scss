@@ -15,8 +15,18 @@
     overflow-y: auto;
 
     .contentResult {
-      h5{
-        font-weight: bold;
+      .answersHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+
+        h5{
+          font-weight: bold;
+        }
+
+        div {
+          width: 50px;
+        }
       }
 
       p{

@@ -84,7 +84,6 @@ const GallowsGame = (props) => {
           <GameResultWindow
             correctAnswers={correctAnswers}
             wrongAnswers={wrongAnswers}
-            value={value}
           />
         </div>
       )

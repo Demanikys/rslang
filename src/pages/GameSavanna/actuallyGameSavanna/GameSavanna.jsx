@@ -177,7 +177,6 @@ const GameSavanna = (props) => {
         <GameResultWindow
           correctAnswers={correctAnswers}
           wrongAnswers={wrongAnswers}
-          value={value}
         />
       )
       : (
