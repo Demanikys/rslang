@@ -37,7 +37,6 @@ const Sprint = () => {
   }, [time]);
 
   useEffect(() => {
-    console.log('отрисовка');
     const randEnIndex = Math.floor(Math.random() * data.en.length);
     let randRuIndex;
     if (Math.random() > 0.5) {
@@ -53,7 +52,6 @@ const Sprint = () => {
     setLevel(new Array(3).fill(0));
     setPoints(1);
     setPoints(0);
-    console.log(score, 3 * wrongWords.length);
     if (score > 3 * wrongWords.length) setScore(score - 3 * wrongWords.length);
     else {
       setScore(score - 1);
@@ -83,7 +81,6 @@ const Sprint = () => {
   
   useEffect(() => {
     const eventHandler = (event) => {
-      console.log('arrows');
       if (event.code === 'ArrowLeft') {
         leftButtonAction();
       } else if (event.code === 'ArrowRight') {
