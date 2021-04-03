@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import './GameSavanna.scss'
+import style from './GameSavanna.module.scss'
 import words from './words.json'
 import GameResultWindow from '../../components/GameResultWindow'
 
@@ -9,7 +9,7 @@ const GameSavanna = () => {
     const [backgroundPosition, setBackgroundPosition] = useState(100)
     const [currentWord, setCurrentWord] = useState(words[wordCounter])
     const [currentWordAnswers, setCurrentWordAnswers] = useState()
-    const [cls, setCls] = useState(['game_current_word'])
+    const [cls, setCls] = useState([style.game_current_word])
     const [health, setHealth] = useState([1, 2, 3, 4, 5])
     const [sound, setSound] = useState(true)
     const [answerBtnsState, setAnswerBtnsState] = useState(true)
@@ -22,6 +22,7 @@ const GameSavanna = () => {
         words.sort(() => Math.random() - .5)
         return () => {
             clearTimeout(failTimerRef.current)
+            document.onkeypress = null
         }
     }, [])
 
@@ -31,9 +32,9 @@ const GameSavanna = () => {
         }
         chooseWordsForAnswers(words)
         setTimeout(() => {
-            setCls(['game_current_word', 'game_current_word_active'])
+            setCls([style.game_current_word, style.game_current_word_active])
             setAnswerBtnsState(true)
-        }, 100)
+        }, 150)
     }, [currentWord])
 
     useEffect(() => {
@@ -50,13 +51,13 @@ const GameSavanna = () => {
             return
         }
         failTimerRef.current = setTimeout(() => {
-            setCls(['game_current_word', 'game_current_word_fail'])
+            setCls([style.game_current_word, style.game_current_word_fail])
             setHealth(health.slice(0, -1))
             soundEffectsOnAnswerClick(false)
             setAnswerBtnsState(false)
             setWrongAnswers([...wrongAnswers, currentWord])
             setTimeout(() => {
-                setCls(['game_current_word'])
+                setCls([style.game_current_word])
                 setWordCounter(wordCounter + 1)
             }, 500)
         }, 4200)
@@ -87,7 +88,7 @@ const GameSavanna = () => {
         if (document.fullscreenElement) {
             document.exitFullscreen()
         } else {
-            event.target.closest('.game').requestFullscreen().catch(e => console.log(e))
+            event.target.parentNode.parentNode.requestFullscreen().catch(e => console.log(e))
         }
     }
 
@@ -121,7 +122,7 @@ const GameSavanna = () => {
 
         if (word.wordTranslate === currentWord.wordTranslate) {
             if (wordCounter < words.length - 1) {
-                setCls(['game_current_word'])
+                setCls([style.game_current_word])
                 setWordCounter(wordCounter + 1)
                 onCorrectAnswerClick()
                 soundEffectsOnAnswerClick(true)
@@ -131,7 +132,7 @@ const GameSavanna = () => {
             }
         } else {
             setHealth(health.slice(0, -1))
-            setCls(['game_current_word'])
+            setCls(style.game_current_word)
             setWordCounter(wordCounter + 1)
             soundEffectsOnAnswerClick(false)
             setWrongAnswers([...wrongAnswers, currentWord])
@@ -160,8 +161,8 @@ const GameSavanna = () => {
     }
 
     return (
-        <div className='game game_savanna' style={{ backgroundPositionY: `${backgroundPosition}%` }}>
-            <div className="game_sound_switcher" onClick={() => setSound(!sound)}>
+        <div className={[style.game, style.game_savanna].join(' ')} style={{ backgroundPositionY: `${backgroundPosition}%` }}>
+            <div className={style.game_sound_switcher} onClick={() => setSound(!sound)}>
                 {
                     sound
                         ? (<img src='assets/icons/sound_on_icon.png' alt='sound_on' />)
@@ -171,11 +172,11 @@ const GameSavanna = () => {
             {
                 isGameFinished
                     ? <GameResultWindow correctAnswers={correctAnswers} wrongAnswers={wrongAnswers} />
-                    : (<div className='game_health_bar'>
+                    : (<div className={style.game_health_bar}>
                         {
                             health.map(item => {
                                 return (
-                                    <div key={item} className='game_health'><img src="assets/icons/pixel-heart.png" alt="heart" /></div>
+                                    <div key={item} className={style.game_health}><img src="assets/icons/pixel-heart.png" alt="heart" /></div>
                                 )
                             })
                         }
@@ -184,12 +185,12 @@ const GameSavanna = () => {
             }
 
 
-            <button className='game_fullscreen_btn game_btn' onClick={(event) => onFullscreenBtnClick(event)}><img src='assets/icons/full-screen.png' alt='fullscreen_icon' /></button>
+            <button className={[style.game_fullscreen_btn, style.game_btn].join(' ')} onClick={(event) => onFullscreenBtnClick(event)}><img src='assets/icons/full-screen.png' alt='fullscreen_icon' /></button>
 
             {
                 currentWord && !isGameFinished
                     ? (
-                        <div className={cls.join(' ')}>{currentWord.word}</div>
+                        <div className={[...cls].join(' ')}>{currentWord.word}</div>
                     )
                     : null
             }
@@ -199,12 +200,12 @@ const GameSavanna = () => {
                     ? null
                     : (
                         <>
-                            <div className='game_finish_line'></div>
-                            <div className='game_answers_block'>
+                            <div className={style.game_finish_line}></div>
+                            <div className={style.game_answers_block}>
                                 {currentWordAnswers
                                     ? (currentWordAnswers.map((item, index) => {
                                         return (
-                                            <button key={index} className='game_btn' onClick={() => onAnswerClickHandler(item)}>
+                                            <button key={index} className={style.game_btn} onClick={() => onAnswerClickHandler(item)}>
                                                 {item.wordTranslate}
                                             </button>
                                         )

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 // import { Route } from 'react-router'
-import './TextbookPageComponent.scss'
+import style from './TextbookPageComponent.module.scss'
 import TextbookWordComponent from '../TextbookWordComponent'
 
 const TextbookPageComponent = (props) => {
@@ -19,7 +19,7 @@ const TextbookPageComponent = (props) => {
 
     return (
         wordsData
-            ? (<div className='textbook_page_component'>
+            ? (<div className={style.textbook_page_component}>
                 {
                     wordsData.map((item, index) => {
                         return (

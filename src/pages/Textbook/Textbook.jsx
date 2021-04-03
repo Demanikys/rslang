@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import './Textbook.scss'
+import style from './Textbook.module.scss'
 import { Link, Switch, Route, BrowserRouter } from 'react-router-dom'
 import TextbookPageComponent from './TextbookPageComponent'
 
@@ -8,9 +8,9 @@ const Textbook = () => {
     const [pageNumber, setPageNumber] = useState(0)
 
     return (
-        <div className='textbook'>
+        <div className={style.textbook}>
             <BrowserRouter>
-                <ul className='textbook_nav'>
+                <ul className={style.textbook_nav}>
                     {
                         pagesArray.map((item, index) => {
                             return (
@@ -21,11 +21,11 @@ const Textbook = () => {
                         })
                     }
                 </ul>
-                <div className='textbook_content'>
-                    <div className='textbook_page_selectors'>
-                        <div className='page_button' onClick={() => setPageNumber(pageNumber - 1)}>previous</div>
+                <div className={style.textbook_content}>
+                    <div className={style.textbook_page_selectors}>
+                        <button className={style.page_button} onClick={() => setPageNumber(pageNumber - 1)}>previous</button>
                         <div>{pageNumber + 1}</div>
-                        <div className='page_button' onClick={() => setPageNumber(pageNumber + 1)}>next</div>
+                        <button className={style.page_button} onClick={() => setPageNumber(pageNumber + 1)}>next</button>
                     </div>
                     <Switch>
                         {

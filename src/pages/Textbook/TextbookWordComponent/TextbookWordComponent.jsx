@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import './TextbookWordComponent.scss'
+import style from './TextbookWordComponent.module.scss'
 
 const TextbookWordComponent = (props) => {
     const dataProps = props
@@ -26,9 +26,9 @@ const TextbookWordComponent = (props) => {
     }, [])
 
     return (
-        <div className='textbook_word'>
-            <div className='picture'><img src={`https://newrslangapi.herokuapp.com/${item.image}`} alt="word_image" /></div>
-            <div className='info'>
+        <div className={style.textbook_word}>
+            <div className={style.picture}><img src={`https://newrslangapi.herokuapp.com/${item.image}`} alt="word_image" /></div>
+            <div className={style.info}>
                 <ul>
                     <li><span>{item.word}</span><span>{item.transcription}</span><span>{item.wordTranslate}</span></li>
                     <li ref={textMeaning} />
