@@ -31,6 +31,8 @@ const GallowsGame = (props) => {
                 wrongAnswers={wrongAnswers}
                 newGame={newGame}
                 setNewGame={setNewGame}
+                setActiveStage={setActiveStage}
+                activeStage={activeStage}
               />
             )
           }

@@ -33,6 +33,8 @@ const AudioGame = (props) => {
                 setNextBtnStatus={setNextBtnStatus}
                 correctAnswers={correctAnswers}
                 wrongAnswers={wrongAnswers}
+                activeStage={activeStage}
+                setActiveStage={setActiveStage}
               />
             )
           }

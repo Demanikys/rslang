@@ -24,7 +24,8 @@ const ActiveStage = React.memo((props) => {
   const {
     word, fakeWords, correct, setCorrectOrNot,
     setNextBtnStatus, setCorrectAnswers, setWrongAnswers,
-    wrongAnswers, correctAnswers,
+    wrongAnswers, correctAnswers, setActiveStage,
+    activeStage,
   } = props;
   const [randomNumber, setRandomNumber] = useState(Math.floor(Math.random() * 5));
   const [randomFakeNumbers, setRandomFakeNumbers] = useState(createNewArray());
@@ -49,6 +50,35 @@ const ActiveStage = React.memo((props) => {
     }
   }, [correct]);
 
+  useEffect(() => {
+    document.onkeypress = (event) => {
+      if (correct === 'right' || correct === 'wrong') {
+        if (event.key === 'Enter') {
+          setActiveStage(activeStage + 1);
+          setNextBtnStatus(false);
+          setCorrectOrNot('default');
+        }
+      } else if (event.key === '1' || event.key === '2' || event.key === '3' || event.key === '4' || event.key === '5') {
+        if ((event.key - 1) === randomNumber) {
+          setCorrectOrNot('right');
+          setNextBtnStatus(true);
+          setCorrectAnswers([...correctAnswers, word]);
+          playAnswerSound(true).play();
+        } else {
+          setCorrectOrNot('wrong');
+          setNextBtnStatus(true);
+          setWrongAnswers([...wrongAnswers, word]);
+          playAnswerSound(false).play();
+        }
+      } else if (event.key === 'Enter') {
+        setCorrectOrNot('wrong');
+        setNextBtnStatus(true);
+        setWrongAnswers([...wrongAnswers, word]);
+        playAnswerSound(false).play();
+      }
+    };
+  });
+
   const renderButtons = [1, 2, 3, 4, 5].map((el, i) => {
     if (i === randomNumber) {
       return (
@@ -65,6 +95,8 @@ const ActiveStage = React.memo((props) => {
           disabled={(correct !== 'default')}
           className={(correct !== 'default' ? style.rightAnswer : null)}
         >
+          {i + 1}
+          .
           {word.wordTranslate}
         </Button>
       );
@@ -82,6 +114,8 @@ const ActiveStage = React.memo((props) => {
         disabled={(correct !== 'default')}
         className={(correct !== 'default' ? style.wrongAnswer : null)}
       >
+        {i + 1}
+        .
         {fakeWords[randomFakeNumbers[i]].wordTranslate}
       </Button>
     );
@@ -191,6 +225,8 @@ ActiveStage.propTypes = {
   setWrongAnswers: PropTypes.func.isRequired,
   wrongAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
   correctAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setActiveStage: PropTypes.func.isRequired,
+  activeStage: PropTypes.number.isRequired,
 };
 
 export default ActiveStage;
