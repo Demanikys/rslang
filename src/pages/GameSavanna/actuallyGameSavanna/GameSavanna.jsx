@@ -122,34 +122,36 @@ const GameSavanna = (props) => {
     return () => clearTimeout(failTimerRef.current);
   }, [currentWord]);
 
-  const onKeyPressEventHandler = (event) => {
-    switch (event.code) {
-      case 'Digit1':
-        onAnswerClickHandler(currentWordAnswers[0]);
-        break;
-      case 'Digit2':
-        onAnswerClickHandler(currentWordAnswers[1]);
-        break;
-      case 'Digit3':
-        onAnswerClickHandler(currentWordAnswers[2]);
-        break;
-      case 'Digit4':
-        onAnswerClickHandler(currentWordAnswers[3]);
-        break;
-      default:
-        return;
-    }
-    clearTimeout(failTimerRef.current);
-  };
+  useEffect(() => {
+    const keyDownHandler = (event) => {
+      switch (event.key) {
+        case '1':
+          onAnswerClickHandler(currentWordAnswers[0]);
+          break;
+        case '2':
+          onAnswerClickHandler(currentWordAnswers[1]);
+          break;
+        case '3':
+          onAnswerClickHandler(currentWordAnswers[2]);
+          break;
+        case '4':
+          onAnswerClickHandler(currentWordAnswers[3]);
+          break;
+        default:
+          return;
+      }
+      clearTimeout(failTimerRef.current);
+    };
 
-  document.onkeypress = onKeyPressEventHandler;
+    document.addEventListener('keydown', keyDownHandler);
+
+    return () => document.removeEventListener('keydown', keyDownHandler);
+  });
 
   const onFullscreenBtnClick = (event) => {
     if (document.fullscreenElement) {
       document.exitFullscreen();
     } else {
-      console.log(event.target);
-      console.log(event.target.closest(style.game));
       event.target.closest('.game').requestFullscreen().catch((e) => console.log(e));
     }
   };
@@ -202,13 +204,15 @@ const GameSavanna = (props) => {
               <div className={style.buttonsWrapper}>
                 <div className={style.game_answers_block}>
                   {currentWordAnswers
-                    ? (currentWordAnswers.map((item) => (
+                    ? (currentWordAnswers.map((item, i) => (
                       <Button
                         key={item.wordTranslate}
                         className={style
                           .game_btn}
                         onClick={() => onAnswerClickHandler(item)}
                       >
+                        {i + 1}
+                        .
                         {item.wordTranslate}
                       </Button>
                     )))

@@ -43,7 +43,8 @@ const Keyboard = (props) => {
   useEffect(() => {
     let disableKey = false;
 
-    document.onkeydown = (event) => {
+    const keyDownHandler = (event) => {
+      console.log(event);
       if (letters.some((el) => el === event.key)) {
         disableKey = !!disabledButtons.join('').toLowerCase().match(event.key);
 
@@ -78,6 +79,10 @@ const Keyboard = (props) => {
         }
       }
     };
+
+    document.addEventListener('keydown', keyDownHandler);
+
+    return () => document.removeEventListener('keydown', keyDownHandler);
   });
 
   useEffect(() => {

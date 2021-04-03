@@ -51,7 +51,7 @@ const ActiveStage = React.memo((props) => {
   }, [correct]);
 
   useEffect(() => {
-    document.onkeypress = (event) => {
+    const keyDownHandler = (event) => {
       if (correct === 'right' || correct === 'wrong') {
         if (event.key === 'Enter') {
           setActiveStage(activeStage + 1);
@@ -77,6 +77,10 @@ const ActiveStage = React.memo((props) => {
         playAnswerSound(false).play();
       }
     };
+
+    document.addEventListener('keydown', keyDownHandler);
+
+    return () => document.removeEventListener('keydown', keyDownHandler);
   });
 
   const renderButtons = [1, 2, 3, 4, 5].map((el, i) => {
