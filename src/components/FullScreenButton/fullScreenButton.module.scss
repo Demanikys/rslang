@@ -1,0 +1,9 @@
+.game_fullscreen_btn{
+  position: absolute;
+  top: 80px;
+  right: 20px;
+
+  @media (max-width: 620px) {
+    visibility: hidden;
+  }
+}

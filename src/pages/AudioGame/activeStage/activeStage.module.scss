@@ -8,7 +8,7 @@
   justify-content: center;
   cursor: pointer;
   border: 1px solid black;
-  margin: 50px auto;
+  margin: 20px auto;
 
   &:hover{
     background-color: black;
@@ -21,7 +21,7 @@
   row-gap: 20px;
   justify-content: center;
   align-items: center;
-  margin: 50px 0;
+  margin: 15px 0;
   padding: 0 20px;
   flex-wrap: wrap;
 
@@ -30,7 +30,9 @@
   }
 
   button {
-    font-size: 26px;
+    font-size: 21px;
+    width: 230px;
+    padding: 7px 0;
   }
 }
 
@@ -50,7 +52,7 @@
 
 .wordSoundWrapper,
 .textSoundWrapper{
-  margin: 40px 0;
+  margin: 20px 0;
   display: flex;
   column-gap: 10px;
   justify-content: center;

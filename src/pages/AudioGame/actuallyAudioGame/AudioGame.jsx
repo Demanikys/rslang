@@ -7,6 +7,7 @@ import GameResultWindow from '../../../components/GameResultWindow';
 import playAnswerSound from '../../../utilities/audioPlayer';
 import ResultProgressBar from '../../../components/ResultPregressBar';
 import FullScreenButtons from '../../../components/FullScreenButton';
+import backImage from '../../../assets/backgrounds/bg-audiocall-game.svg';
 
 const AudioGame = (props) => {
   const { words, fakeWords } = props;
@@ -25,6 +26,9 @@ const AudioGame = (props) => {
         setFullScreenStatus(false);
       }
     });
+    gameWindow.current.style.background = `url(${backImage})`;
+    gameWindow.current.style.backgroundSize = 'cover';
+    gameWindow.current.style.backgroundPosition = 'bottom';
   }, []);
 
   const onFullscreenBtnClick = () => {
@@ -41,7 +45,7 @@ const AudioGame = (props) => {
     activeStage !== 21
       ? (
         <div ref={gameWindow} className={style.wrapper}>
-          <h2 className={style.header}>Audio game</h2>
+          <h2 className={style.header}>Аудиовызов</h2>
           {
             words && fakeWords && (
               <ActiveStage
@@ -71,7 +75,7 @@ const AudioGame = (props) => {
                 variant="warning"
                 className={style.nextOrUnknown}
               >
-                Don&apos;t know
+                Не знаю
               </Button>
             )
           }
@@ -86,7 +90,7 @@ const AudioGame = (props) => {
                 variant="warning"
                 className={style.nextOrUnknown}
               >
-                Next
+                Дальше
               </Button>
             )
           }

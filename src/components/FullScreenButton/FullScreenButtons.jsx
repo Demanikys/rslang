@@ -1,13 +1,13 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import style from '../../pages/AudioGame/actuallyAudioGame/audioGame.module.scss';
+import style from './fullScreenButton.module.scss';
 
 const FullScreenButton = (props) => {
   const { fullScreenStatus, onFullscreenBtnClick } = props;
 
   return (
-    <Button className={`${style.game_fullscreen_btn} ${style.game_btn}`} onClick={(event) => onFullscreenBtnClick(event)}>
+    <Button className={style.game_fullscreen_btn} onClick={(event) => onFullscreenBtnClick(event)}>
       {
         fullScreenStatus
         && (

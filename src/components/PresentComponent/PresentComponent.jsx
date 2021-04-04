@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import style from './presentComponent.module.scss';
@@ -7,11 +7,18 @@ const PresentComponent = (props) => {
   const {
     words, setStartGame, gameName,
     gameDescription, gameRules, gameOpportunityOne,
-    gameOpportunityTwo,
+    gameOpportunityTwo, back,
   } = props;
+  const gameBack = useRef();
+
+  useEffect(() => {
+    gameBack.current.style.background = `url('${back}')`;
+    gameBack.current.style.backgroundSize = 'cover';
+    gameBack.current.style.backgroundPosition = 'bottom';
+  }, []);
 
   return (
-    <div className={style.wrapper}>
+    <div ref={gameBack} className={style.wrapper}>
       <h2 className={style.header}>{gameName}</h2>
       <h4>{gameDescription}</h4>
       <p>{gameRules}</p>
@@ -46,6 +53,7 @@ PresentComponent.propTypes = {
   gameRules: PropTypes.string.isRequired,
   gameOpportunityOne: PropTypes.string.isRequired,
   gameOpportunityTwo: PropTypes.string.isRequired,
+  back: PropTypes.string.isRequired,
 };
 
 export default PresentComponent;

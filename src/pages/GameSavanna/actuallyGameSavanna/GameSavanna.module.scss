@@ -1,18 +1,21 @@
 .game {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background-image: url('../../../assets/backgrounds/bg-savanna-game.svg');
+  background-position: bottom;
   background-repeat: no-repeat;
   background-size: cover;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   transition: background-position-y ease 1s;
   overflow: hidden;
   font-family: monospace;
 
   .game_health_bar {
     position: absolute;
-    right: 200px;
-    top: 10px;
+    right: 150px;
+    top: 80px;
     display: flex;
 
     .game_health {
@@ -32,41 +35,63 @@
     }
   }
 
-  .game_finish_line {
-    height: 2px;
-    width: 60vw;
-    position: absolute;
-    left: 50%;
-    top: 45%;
-    transform: translate(-50%);
-    box-shadow: rgba($color: #ff0000, $alpha: 0.5) 0 30px 20px 15px;
+  .header {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 40px;
+    color: white;
+    padding: 70px 0 0 0;
+    text-align: center;
   }
 
-  .buttonsWrapper {
-    position: relative;
-    top: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    row-gap: 20px;
+  .contentBody{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
 
-    @media (max-width: 400px) {
-      top: 42%;
-      row-gap: 10px;
+    .game_finish_line {
+      height: 2px;
+      width: 60vw;
+      position: absolute;
+      left: 50%;
+      top: 35%;
+      transform: translate(-50%, -35%);
+      margin-bottom: 100px;
+      box-shadow: rgba($color: #ff0000, $alpha: 0.5) 0 30px 20px 15px;
     }
 
-    .game_answers_block {
+    .buttonsWrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%);
       display: flex;
-      margin: 10px auto;
-      gap: 20px;
-      flex-wrap: wrap;
+      flex-direction: column;
       justify-content: center;
+      row-gap: 20px;
+      width: 100%;
 
-      button{
-        font-size: 26px !important;
+      @media (max-width: 400px) {
+        top: 45%;
+        row-gap: 10px;
+      }
 
-        @media (max-width: 400px) {
-          font-size: 18px !important;
+      .game_answers_block {
+        display: flex;
+        margin: 10px auto;
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        button{
+          font-size: 22px !important;
+          width: 220px;
+
+          @media (max-width: 400px) {
+            font-size: 18px !important;
+          }
         }
       }
     }
@@ -85,7 +110,7 @@
 }
 
 .game_current_word_active {
-  top: 45%;
+  top: 35%;
   transition: top linear 4s;
 }
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AudioGame from './actuallyAudioGame/AudioGame';
 import getWords from '../../utilities/getData';
 import PresentComponent from '../../components/PresentComponent';
+import backImage from '../../assets/backgrounds/bg-audiocall-game.svg';
 
 const StartAudioGame = () => {
   const [words, setWords] = useState([]);
@@ -28,6 +29,7 @@ const StartAudioGame = () => {
           gameRules="Вы слышите слово и видите 5 вариантов перевода. Выбрать правильный ответ можно двумя способами:"
           gameOpportunityOne="1. Кликните по нему мышью;"
           gameOpportunityTwo="2. Используйте клавиши 1, 2, 3, 4, 5."
+          back={backImage}
         />
       )
       : (

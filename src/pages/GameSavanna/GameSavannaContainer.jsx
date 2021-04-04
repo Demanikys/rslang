@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import GameSavanna from './actuallyGameSavanna/GameSavanna';
 import PresentComponent from '../../components/PresentComponent';
+import backImage from '../../assets/backgrounds/bg-savanna-game.svg';
 
 const GameSavannaContainer = () => {
   const [words, setWords] = useState([]);
@@ -24,6 +25,7 @@ const GameSavannaContainer = () => {
           gameRules="После запуска игры вы увидите падающее слово на английском (или русском, если режим игры RU-> EN) и четыре варианта перевода. Выбрать правильный ответ можно двумя способами:"
           gameOpportunityOne="1. Кликните по нему мышью;"
           gameOpportunityTwo="2. Используйте клавиши 1, 2, 3, 4."
+          back={backImage}
         />
       )
 

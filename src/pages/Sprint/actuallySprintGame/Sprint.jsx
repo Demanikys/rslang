@@ -4,6 +4,9 @@ import * as Buttons from '../components/buttons';
 import data from './words.json';
 import GameResultWindow from '../../../components/GameResultWindow';
 import FullScreenButtons from '../../../components/FullScreenButton/FullScreenButtons';
+import Timers from '../../../components/Timer';
+import playAnswerSound from '../../../utilities/audioPlayer';
+import backImage from '../../../assets/backgrounds/bg-sprint-game.svg';
 
 const Sprint = () => {
   const [score, setScore] = useState(0);
@@ -22,6 +25,9 @@ const Sprint = () => {
         setFullScreenStatus(false);
       }
     });
+    gameWindow.current.style.background = `url(${backImage})`;
+    gameWindow.current.style.backgroundSize = 'cover';
+    gameWindow.current.style.backgroundPosition = 'bottom';
   }, []);
 
   const onFullscreenBtnClick = () => {
@@ -76,6 +82,7 @@ const Sprint = () => {
     setLevel(new Array(3).fill(0));
     setPoints(1);
     setPoints(0);
+    playAnswerSound(false).play();
     if (score > 3 * wrongWords.length) setScore(score - 3 * wrongWords.length);
     else {
       setScore(score - 1);
@@ -95,6 +102,7 @@ const Sprint = () => {
       setLevel(new Array(level.length + 1).fill(0));
       setPoints(0);
     }
+    playAnswerSound(true).play();
     setScore(score + 10 + points * 5 + level.length);
   }
 
@@ -109,102 +117,91 @@ const Sprint = () => {
   }
 
   useEffect(() => {
-    const eventHandler = (event) => {
-      if (event.code === 'ArrowLeft') {
-        leftButtonAction();
-      } else if (event.code === 'ArrowRight') {
-        rightButtonAction();
-      }
-    };
+    if (time !== 0) {
+      const eventHandler = (event) => {
+        if (event.code === 'ArrowLeft') {
+          leftButtonAction();
+        } else if (event.code === 'ArrowRight') {
+          rightButtonAction();
+        }
+      };
 
-    document.addEventListener('keydown', eventHandler);
+      document.addEventListener('keydown', eventHandler);
 
-    return () => document.removeEventListener('keydown', eventHandler);
+      return () => document.removeEventListener('keydown', eventHandler);
+    }
   });
 
   return (
-    <div className={style.wrapper}>
-      {
-        time < 1
-          ? (
-            <GameResultWindow
-              correctAnswers={rightWords}
-              wrongAnswers={wrongWords}
-            />
-          )
-          : (
-            <div ref={gameWindow}>
-              <div className={style.timeWrapper}>
-                <div className={style.countdown}>
-                  <div className={style.countdown__number}>{time}</div>
-                  <svg className={style.countdown__svg}>
-                    <circle className={style.countdown__circle} r="18" cx="20" cy="20" />
-                  </svg>
-                </div>
-              </div>
-              <div className={style.pointsNumber}>
-                {score}
-              </div>
-              <div className={style.gameWindow}>
+    time < 1
+      ? (
+        <GameResultWindow
+          correctAnswers={rightWords}
+          wrongAnswers={wrongWords}
+        />
+      )
+      : (
+        <div className={style.wrapper} ref={gameWindow}>
+          <h2 className={style.header}>Спринт</h2>
+          <div className={style.gameWindow}>
+            <Timers value={time} />
+            <h3 className={style.pointsNumber}>
+              Очки:
+              {' '}
+              {score}
+            </h3>
+            <div>
+              <div className={style.answerWrapper}>
                 {level.map((elem) => {
                   if (elem === 1) {
-                    return <span className={style.answerRight}>&nbsp;&nbsp;&nbsp;&nbsp;</span>;
+                    return (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="26"
+                        height="26"
+                        fill="currentColor"
+                        className={`bi bi-circle ${style.answerRight}`}
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                      </svg>
+                    );
                   }
-                  return <span className={style.answer}>&nbsp;&nbsp;&nbsp;&nbsp;</span>;
+                  return (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="26"
+                      height="26"
+                      fill="currentColor"
+                      className={`bi bi-circle ${style.answer}`}
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                    </svg>
+                  );
                 })}
-                <div className={style.wordsWindow}>
-                  <div className={style.enWord}>
-                    {data.en[word.en]}
-                  </div>
-                  <div className={style.ruWord}>
-                    {data.ru[word.ru]}
-                  </div>
-                </div>
-                <div className={style.points}>
-                  <Buttons.WrongAnswerButton
-                    action={leftButtonAction}
-                  />
-                  <Buttons.RightAnswerButton
-                    action={rightButtonAction}
-                  />
-                </div>
-                <div className={style.arrowButtons}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="28"
-                    height="28"
-                    fill="currentColor"
-                    viewBox="0 0 16 16"
-                    className={`${style.arrowKey} bi bi-arrow-left`}
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
-                    />
-                  </svg>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="28"
-                    height="28"
-                    fill="currentColor"
-                    className={`${style.arrowKey} bi bi-arrow-right`}
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
-                    />
-                  </svg>
-                </div>
               </div>
-              <FullScreenButtons
-                fullScreenStatus={fullScreenStatus}
-                onFullscreenBtnClick={onFullscreenBtnClick}
-              />
+              <div className={style.wordsWindow}>
+                {data.en[word.en]}
+                -
+                {data.ru[word.ru]}
+              </div>
+              <div className={style.points}>
+                <Buttons.WrongAnswerButton
+                  action={leftButtonAction}
+                />
+                <Buttons.RightAnswerButton
+                  action={rightButtonAction}
+                />
+              </div>
             </div>
-          )
-      }
-    </div>
+            <FullScreenButtons
+              fullScreenStatus={fullScreenStatus}
+              onFullscreenBtnClick={onFullscreenBtnClick}
+            />
+          </div>
+        </div>
+      )
   );
 };
 

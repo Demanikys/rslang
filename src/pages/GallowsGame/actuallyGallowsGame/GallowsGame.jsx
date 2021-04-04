@@ -6,6 +6,7 @@ import ActiveStageGallows from '../activeStage/ActiveStageGallows';
 import ResultProgressBar from '../../../components/ResultPregressBar';
 import GameResultWindow from '../../../components/GameResultWindow';
 import FullScreenButtons from '../../../components/FullScreenButton/FullScreenButtons';
+import backImage from '../../../assets/backgrounds/bg-gallows-game.svg';
 
 const GallowsGame = (props) => {
   const { words } = props;
@@ -24,6 +25,9 @@ const GallowsGame = (props) => {
         setFullScreenStatus(false);
       }
     });
+    gameWindow.current.style.background = `url(${backImage})`;
+    gameWindow.current.style.backgroundSize = 'cover';
+    gameWindow.current.style.backgroundPosition = 'bottom';
   }, []);
 
   const onFullscreenBtnClick = () => {
@@ -40,7 +44,7 @@ const GallowsGame = (props) => {
     activeStage !== 6
       ? (
         <div ref={gameWindow} className={style.wrapper}>
-          <h2 className={style.header}>Audio game</h2>
+          <h2 className={style.header}>Виселица</h2>
           {
             words && (
               <ActiveStageGallows
@@ -66,7 +70,7 @@ const GallowsGame = (props) => {
             variant="warning"
             disabled={nextBtnStatus}
           >
-            Next
+            Дальше
           </Button>
           <ResultProgressBar
             correct={correctAnswers.length}

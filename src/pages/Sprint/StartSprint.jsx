@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PresentComponent from '../../components/PresentComponent';
 import Sprint from './actuallySprintGame';
+import backImage from '../../assets/backgrounds/bg-sprint-game.svg';
 
 const StartSprintGame = () => {
   const [words, setWords] = useState([]);
@@ -23,6 +24,7 @@ const StartSprintGame = () => {
           gameRules="После запуска игры вы увидите слово и перевод. Вам нужно выбрать, правильно это или неправильно."
           gameOpportunityOne="1. Используйте мышь, чтобы выбрать."
           gameOpportunityTwo="2. Используйте клавиши влево и вправо."
+          back={backImage}
         />
       )
       : (

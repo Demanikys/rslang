@@ -209,7 +209,8 @@ const GameSavanna = (props) => {
             {currentWord.word}
           </div>
 
-          <div>
+          <div className={style.contentBody}>
+            <h2 className={style.header}>Саванна</h2>
             <div className={style.game_finish_line} />
             <div className={style.buttonsWrapper}>
               <div className={style.game_answers_block}>
@@ -220,6 +221,7 @@ const GameSavanna = (props) => {
                       className={style
                         .game_btn}
                       onClick={() => onAnswerClickHandler(item)}
+                      variant="outline-light"
                     >
                       {i + 1}
                       .

@@ -60,7 +60,12 @@ const ActiveStageGallows = React.memo((props) => {
     <div className={style.wrapper}>
       <div>
         <div className={style.images}>
-          <img className={style.imageGuess} src={`https://newrslangapi.herokuapp.com/${word.image}`} alt="" />
+          <div className={style.guess}>
+            <img className={style.imageGuess} src={`https://newrslangapi.herokuapp.com/${word.image}`} alt="" />
+            <div className={style.wordToGuess}>
+              <p>{word.wordTranslate}</p>
+            </div>
+          </div>
           <img className={style.gallows} src={images[mistakesCounter]} alt="hangman" />
         </div>
         <div className={style.mistakes}>

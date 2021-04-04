@@ -36,7 +36,12 @@ const Keyboard = (props) => {
       setCheckedLetters([...checkedLetters, ...addToCheck]);
     } else {
       playAnswerSound(false).play();
-      setMistakesCounter(mistakesCounter + 1);
+      console.log(mistakesCounter);
+      if (mistakesCounter === 6) {
+        setMistakesCounter(mistakesCounter);
+      } else {
+        setMistakesCounter(mistakesCounter + 1);
+      }
     }
   };
 
@@ -66,7 +71,11 @@ const Keyboard = (props) => {
             setCheckedLetters([...checkedLetters, ...addToCheck]);
           } else {
             playAnswerSound(false).play();
-            setMistakesCounter(mistakesCounter + 1);
+            if (mistakesCounter === 6) {
+              setMistakesCounter(mistakesCounter);
+            } else {
+              setMistakesCounter(mistakesCounter + 1);
+            }
           }
           setDisabledButtons([...disabledButtons, event.key]);
         }
@@ -102,6 +111,7 @@ const Keyboard = (props) => {
             className={style.keyboard_button}
             onClick={checkLetter}
             disabled={!newGame}
+            variant="info"
           >
             {letter}
           </Button>
