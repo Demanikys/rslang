@@ -1,1 +1,1 @@
-export { default } from './GameSavannaContainer.jsx'
+export { default } from './GameSavannaContainer';

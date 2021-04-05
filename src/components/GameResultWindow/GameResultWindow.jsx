@@ -7,8 +7,8 @@ import ResultProgressBar from '../ResultPregressBar';
 
 const GameResultWindow = (props) => {
   const { correctAnswers, wrongAnswers } = props;
-  console.log(correctAnswers)
-  console.log(wrongAnswers)
+  console.log(correctAnswers);
+  console.log(wrongAnswers);
 
   const createAnswersMarkDown = (array) => array.map((answer, index) => (
     <p key={answer.word}>

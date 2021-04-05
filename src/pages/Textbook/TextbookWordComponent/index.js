@@ -1,1 +1,1 @@
-export { default } from './TextbookWordComponent'
+export { default } from './TextbookWordComponent';

@@ -6,8 +6,8 @@ import MainPage from './pages/MainPage';
 import Menu from './components/Menu';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import GameSavanna from './pages/GameSavanna'
-import Textbook from './pages/Textbook'
+import GameSavanna from './pages/GameSavanna';
+import Textbook from './pages/Textbook';
 
 const App = () => (
   <BrowserRouter>
@@ -23,7 +23,7 @@ const App = () => (
         <Route exact path="/">
           <MainPage />
         </Route>
-        <Route path='/textbook'>
+        <Route path="/textbook">
           <Textbook />
         </Route>
       </Switch>

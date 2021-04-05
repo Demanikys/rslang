@@ -1,1 +1,1 @@
-export { default } from './TextbookPageComponent'
+export { default } from './TextbookPageComponent';
