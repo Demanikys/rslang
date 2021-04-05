@@ -7,6 +7,7 @@ import FullScreenButtons from '../../../components/FullScreenButton/FullScreenBu
 import Timers from '../../../components/Timer';
 import playAnswerSound from '../../../utilities/audioPlayer';
 import backImage from '../../../assets/backgrounds/bg-sprint-game.svg';
+import ControlAnswerVolumeButton from '../../../components/ControlAnswerVolumeButton';
 
 const Sprint = () => {
   const [score, setScore] = useState(0);
@@ -17,6 +18,7 @@ const Sprint = () => {
   const [rightWords, setRightWords] = useState([]);
   const [time, setTime] = useState(60);
   const [fullScreenStatus, setFullScreenStatus] = useState(false);
+  const [soundStatus, setSoundStatus] = useState(true);
   const gameWindow = useRef();
 
   useEffect(() => {
@@ -82,7 +84,7 @@ const Sprint = () => {
     setLevel(new Array(3).fill(0));
     setPoints(1);
     setPoints(0);
-    playAnswerSound(false).play();
+    if (soundStatus) playAnswerSound(false).play();
     if (score > 3 * wrongWords.length) setScore(score - 3 * wrongWords.length);
     else {
       setScore(score - 1);
@@ -102,7 +104,7 @@ const Sprint = () => {
       setLevel(new Array(level.length + 1).fill(0));
       setPoints(0);
     }
-    playAnswerSound(true).play();
+    if (soundStatus) playAnswerSound(true).play();
     setScore(score + 10 + points * 5 + level.length);
   }
 
@@ -195,6 +197,7 @@ const Sprint = () => {
                 />
               </div>
             </div>
+            <ControlAnswerVolumeButton soundStatus={soundStatus} setSoundStatus={setSoundStatus} />
             <FullScreenButtons
               fullScreenStatus={fullScreenStatus}
               onFullscreenBtnClick={onFullscreenBtnClick}

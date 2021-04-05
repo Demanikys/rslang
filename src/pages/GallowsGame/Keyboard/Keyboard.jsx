@@ -9,7 +9,7 @@ const Keyboard = (props) => {
     mistakesCounter, word, setMistakesCounter,
     setCheckedLetters, checkedLetters, newGame,
     setNewGame, setNextBtnStatus, setActiveStage,
-    activeStage,
+    activeStage, soundStatus,
   } = props;
   const [disabledButtons, setDisabledButtons] = useState([]);
   const buttonsRefs = useRef([]);
@@ -32,11 +32,10 @@ const Keyboard = (props) => {
           addToCheck.push(i);
         }
       }
-      playAnswerSound(true).play();
+      if (soundStatus) playAnswerSound(true).play();
       setCheckedLetters([...checkedLetters, ...addToCheck]);
     } else {
-      playAnswerSound(false).play();
-      console.log(mistakesCounter);
+      if (soundStatus) playAnswerSound(false).play();
       if (mistakesCounter === 6) {
         setMistakesCounter(mistakesCounter);
       } else {
@@ -67,10 +66,10 @@ const Keyboard = (props) => {
                 addToCheck.push(i);
               }
             }
-            playAnswerSound(true).play();
+            if (soundStatus) playAnswerSound(true).play();
             setCheckedLetters([...checkedLetters, ...addToCheck]);
           } else {
-            playAnswerSound(false).play();
+            if (soundStatus) playAnswerSound(false).play();
             if (mistakesCounter === 6) {
               setMistakesCounter(mistakesCounter);
             } else {
@@ -132,6 +131,7 @@ Keyboard.propTypes = {
   setNextBtnStatus: PropTypes.func.isRequired,
   setActiveStage: PropTypes.func.isRequired,
   activeStage: PropTypes.number.isRequired,
+  soundStatus: PropTypes.bool.isRequired,
 };
 
 export default Keyboard;

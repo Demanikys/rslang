@@ -7,6 +7,7 @@ import ResultProgressBar from '../../../components/ResultPregressBar';
 import GameResultWindow from '../../../components/GameResultWindow';
 import FullScreenButtons from '../../../components/FullScreenButton/FullScreenButtons';
 import backImage from '../../../assets/backgrounds/bg-gallows-game.svg';
+import ControlAnswerVolumeButton from '../../../components/ControlAnswerVolumeButton';
 
 const GallowsGame = (props) => {
   const { words } = props;
@@ -17,6 +18,7 @@ const GallowsGame = (props) => {
   const [newGame, setNewGame] = useState(true);
   const [value] = useState(20);
   const [fullScreenStatus, setFullScreenStatus] = useState(false);
+  const [soundStatus, setSoundStatus] = useState(true);
   const gameWindow = useRef();
 
   useEffect(() => {
@@ -58,6 +60,7 @@ const GallowsGame = (props) => {
                 setNewGame={setNewGame}
                 setActiveStage={setActiveStage}
                 activeStage={activeStage}
+                soundStatus={soundStatus}
               />
             )
           }
@@ -77,6 +80,7 @@ const GallowsGame = (props) => {
             wrong={wrongAnswers.length}
             value={value}
           />
+          <ControlAnswerVolumeButton soundStatus={soundStatus} setSoundStatus={setSoundStatus} />
           <FullScreenButtons
             fullScreenStatus={fullScreenStatus}
             onFullscreenBtnClick={onFullscreenBtnClick}

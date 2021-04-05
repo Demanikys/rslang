@@ -16,6 +16,7 @@ const ActiveStageGallows = React.memo((props) => {
     word, setNextBtnStatus, newGame,
     setNewGame, setCorrectAnswers, setWrongAnswers,
     correctAnswers, wrongAnswers, setActiveStage, activeStage,
+    soundStatus,
   } = props;
   const [maxMistakes] = useState(7);
   const [mistakesCounter, setMistakesCounter] = useState(0);
@@ -95,6 +96,7 @@ const ActiveStageGallows = React.memo((props) => {
           setNewGame={setNewGame}
           setActiveStage={setActiveStage}
           activeStage={activeStage}
+          soundStatus={soundStatus}
         />
       </div>
     </div>
@@ -112,6 +114,7 @@ ActiveStageGallows.propTypes = {
   wrongAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
   activeStage: PropTypes.number.isRequired,
   setActiveStage: PropTypes.func.isRequired,
+  soundStatus: PropTypes.bool.isRequired,
 };
 
 export default ActiveStageGallows;

@@ -8,6 +8,7 @@ import playAnswerSound from '../../../utilities/audioPlayer';
 import ResultProgressBar from '../../../components/ResultPregressBar';
 import FullScreenButtons from '../../../components/FullScreenButton';
 import backImage from '../../../assets/backgrounds/bg-audiocall-game.svg';
+import ControlAnswerVolumeButton from '../../../components/ControlAnswerVolumeButton';
 
 const AudioGame = (props) => {
   const { words, fakeWords } = props;
@@ -18,6 +19,7 @@ const AudioGame = (props) => {
   const [wrongAnswers, setWrongAnswers] = useState([]);
   const [value] = useState(5);
   const [fullScreenStatus, setFullScreenStatus] = useState(false);
+  const [soundStatus, setSoundStatus] = useState(true);
   const gameWindow = useRef();
 
   useEffect(() => {
@@ -60,6 +62,7 @@ const AudioGame = (props) => {
                 wrongAnswers={wrongAnswers}
                 activeStage={activeStage}
                 setActiveStage={setActiveStage}
+                soundStatus={soundStatus}
               />
             )
           }
@@ -99,6 +102,7 @@ const AudioGame = (props) => {
             wrong={wrongAnswers.length}
             value={value}
           />
+          <ControlAnswerVolumeButton soundStatus={soundStatus} setSoundStatus={setSoundStatus} />
           <FullScreenButtons
             fullScreenStatus={fullScreenStatus}
             onFullscreenBtnClick={onFullscreenBtnClick}

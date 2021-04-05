@@ -25,7 +25,7 @@ const ActiveStage = React.memo((props) => {
     word, fakeWords, correct, setCorrectOrNot,
     setNextBtnStatus, setCorrectAnswers, setWrongAnswers,
     wrongAnswers, correctAnswers, setActiveStage,
-    activeStage,
+    activeStage, soundStatus,
   } = props;
   const [randomNumber, setRandomNumber] = useState(Math.floor(Math.random() * 5));
   const [randomFakeNumbers, setRandomFakeNumbers] = useState(createNewArray());
@@ -63,18 +63,18 @@ const ActiveStage = React.memo((props) => {
           setCorrectOrNot('right');
           setNextBtnStatus(true);
           setCorrectAnswers([...correctAnswers, word]);
-          playAnswerSound(true).play();
+          if (soundStatus) playAnswerSound(true).play();
         } else {
           setCorrectOrNot('wrong');
           setNextBtnStatus(true);
           setWrongAnswers([...wrongAnswers, word]);
-          playAnswerSound(false).play();
+          if (soundStatus) playAnswerSound(false).play();
         }
       } else if (event.key === 'Enter') {
         setCorrectOrNot('wrong');
         setNextBtnStatus(true);
         setWrongAnswers([...wrongAnswers, word]);
-        playAnswerSound(false).play();
+        if (soundStatus) playAnswerSound(false).play();
       }
     };
 
@@ -93,7 +93,7 @@ const ActiveStage = React.memo((props) => {
             setCorrectOrNot('right');
             setNextBtnStatus(true);
             setCorrectAnswers([...correctAnswers, word]);
-            playAnswerSound(true).play();
+            if (soundStatus) playAnswerSound(true).play();
           }}
           variant="outline-light"
           disabled={(correct !== 'default')}
@@ -112,7 +112,7 @@ const ActiveStage = React.memo((props) => {
           setCorrectOrNot('wrong');
           setNextBtnStatus(true);
           setWrongAnswers([...wrongAnswers, word]);
-          playAnswerSound(false).play();
+          if (soundStatus) playAnswerSound(false).play();
         }}
         variant="outline-light"
         disabled={(correct !== 'default')}
@@ -231,6 +231,7 @@ ActiveStage.propTypes = {
   correctAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
   setActiveStage: PropTypes.func.isRequired,
   activeStage: PropTypes.number.isRequired,
+  soundStatus: PropTypes.bool.isRequired,
 };
 
 export default ActiveStage;

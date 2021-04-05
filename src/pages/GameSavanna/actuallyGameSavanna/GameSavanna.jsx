@@ -6,6 +6,8 @@ import GameResultWindow from '../../../components/GameResultWindow';
 import playAnswerSound from '../../../utilities/audioPlayer';
 import ResultProgressBar from '../../../components/ResultPregressBar';
 import FullScreenButtons from '../../../components/FullScreenButton/FullScreenButtons';
+import ControlAnswerVolumeButton from '../../../components/ControlAnswerVolumeButton';
+import HealthBar from '../../../components/HealthBar';
 
 const GameSavanna = (props) => {
   const { words } = props;
@@ -14,12 +16,12 @@ const GameSavanna = (props) => {
   const [currentWord, setCurrentWord] = useState(words[wordCounter]);
   const [currentWordAnswers, setCurrentWordAnswers] = useState();
   const [health, setHealth] = useState([1, 2, 3, 4, 5]);
-  const [sound, setSound] = useState(true);
   const [answerBtnsState, setAnswerBtnsState] = useState(true);
   const [isGameFinished, setIsGameFinished] = useState(false);
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const [wrongAnswers, setWrongAnswers] = useState([]);
   const [fullScreenStatus, setFullScreenStatus] = useState(false);
+  const [soundStatus, setSoundStatus] = useState(true);
   const [value] = useState(5);
   const failTimerRef = useRef();
   const currentWordRef = useRef();
@@ -83,7 +85,7 @@ const GameSavanna = (props) => {
         currentWordRef.current.className = `${style.game_current_word}`;
         setWordCounter(wordCounter + 1);
         onCorrectAnswerClick();
-        playAnswerSound(true).play();
+        if (soundStatus) playAnswerSound(true).play();
       } else {
         setIsGameFinished(true);
         clearTimeout(failTimerRef.current);
@@ -92,7 +94,7 @@ const GameSavanna = (props) => {
       setHealth(health.slice(0, -1));
       currentWordRef.current.className = `${style.game_current_word}`;
       setWordCounter(wordCounter + 1);
-      playAnswerSound(false).play();
+      if (soundStatus) playAnswerSound(false).play();
       setWrongAnswers([...wrongAnswers, currentWord]);
     }
     clearTimeout(failTimerRef.current);
@@ -113,7 +115,7 @@ const GameSavanna = (props) => {
     failTimerRef.current = setTimeout(() => {
       currentWordRef.current.className = `${style.game_current_word} ${style.game_current_word_fail}`;
       setHealth(health.slice(0, -1));
-      playAnswerSound(false).play();
+      if (soundStatus) playAnswerSound(false).play();
       setAnswerBtnsState(false);
       setWrongAnswers([...wrongAnswers, currentWord]);
       setTimeout(() => {
@@ -181,21 +183,9 @@ const GameSavanna = (props) => {
       )
       : (
         <div ref={gameWindow} className={`${style.game} ${style.game_savanna} game`} style={{ backgroundPositionY: `${backgroundPosition}%` }}>
-          <Button className={style.game_sound_switcher} onClick={() => setSound(!sound)}>
-            {
-              sound
-                ? (<img src="assets/icons/sound_on_icon.png" alt="sound_on" />)
-                : (<img src="assets/icons/sound_off_icon.png" alt="sound_off" />)
-            }
-          </Button>
+          <ControlAnswerVolumeButton soundStatus={soundStatus} setSoundStatus={setSoundStatus} />
 
-          <div className={style.game_health_bar}>
-            {
-              health.map((item) => (
-                <div key={item} className={style.game_health}><img src="assets/icons/pixel-heart.png" alt="heart" /></div>
-              ))
-            }
-          </div>
+          <HealthBar lives={health.length} />
 
           <FullScreenButtons
             fullScreenStatus={fullScreenStatus}
