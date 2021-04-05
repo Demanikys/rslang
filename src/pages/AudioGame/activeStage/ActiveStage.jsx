@@ -24,7 +24,8 @@ const ActiveStage = React.memo((props) => {
   const {
     word, fakeWords, correct, setCorrectOrNot,
     setNextBtnStatus, setCorrectAnswers, setWrongAnswers,
-    wrongAnswers, correctAnswers,
+    wrongAnswers, correctAnswers, setActiveStage,
+    activeStage, soundStatus,
   } = props;
   const [randomNumber, setRandomNumber] = useState(Math.floor(Math.random() * 5));
   const [randomFakeNumbers, setRandomFakeNumbers] = useState(createNewArray());
@@ -49,6 +50,39 @@ const ActiveStage = React.memo((props) => {
     }
   }, [correct]);
 
+  useEffect(() => {
+    const keyDownHandler = (event) => {
+      if (correct === 'right' || correct === 'wrong') {
+        if (event.key === 'Enter') {
+          setActiveStage(activeStage + 1);
+          setNextBtnStatus(false);
+          setCorrectOrNot('default');
+        }
+      } else if (event.key === '1' || event.key === '2' || event.key === '3' || event.key === '4' || event.key === '5') {
+        if ((event.key - 1) === randomNumber) {
+          setCorrectOrNot('right');
+          setNextBtnStatus(true);
+          setCorrectAnswers([...correctAnswers, word]);
+          if (soundStatus) playAnswerSound(true).play();
+        } else {
+          setCorrectOrNot('wrong');
+          setNextBtnStatus(true);
+          setWrongAnswers([...wrongAnswers, word]);
+          if (soundStatus) playAnswerSound(false).play();
+        }
+      } else if (event.key === 'Enter') {
+        setCorrectOrNot('wrong');
+        setNextBtnStatus(true);
+        setWrongAnswers([...wrongAnswers, word]);
+        if (soundStatus) playAnswerSound(false).play();
+      }
+    };
+
+    document.addEventListener('keydown', keyDownHandler);
+
+    return () => document.removeEventListener('keydown', keyDownHandler);
+  });
+
   const renderButtons = [1, 2, 3, 4, 5].map((el, i) => {
     if (i === randomNumber) {
       return (
@@ -59,12 +93,14 @@ const ActiveStage = React.memo((props) => {
             setCorrectOrNot('right');
             setNextBtnStatus(true);
             setCorrectAnswers([...correctAnswers, word]);
-            playAnswerSound(true).play();
+            if (soundStatus) playAnswerSound(true).play();
           }}
           variant="outline-light"
           disabled={(correct !== 'default')}
           className={(correct !== 'default' ? style.rightAnswer : null)}
         >
+          {i + 1}
+          .
           {word.wordTranslate}
         </Button>
       );
@@ -76,12 +112,14 @@ const ActiveStage = React.memo((props) => {
           setCorrectOrNot('wrong');
           setNextBtnStatus(true);
           setWrongAnswers([...wrongAnswers, word]);
-          playAnswerSound(false).play();
+          if (soundStatus) playAnswerSound(false).play();
         }}
         variant="outline-light"
         disabled={(correct !== 'default')}
         className={(correct !== 'default' ? style.wrongAnswer : null)}
       >
+        {i + 1}
+        .
         {fakeWords[randomFakeNumbers[i]].wordTranslate}
       </Button>
     );
@@ -119,7 +157,7 @@ const ActiveStage = React.memo((props) => {
           <div>
             <img className={style.image} src={`https://newrslangapi.herokuapp.com/${word.image}`} alt="" />
             <div className={style.wordSoundWrapper}>
-              <div className={style.soundIcon}>
+              <div className={style.soundIconSmall}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="28"
@@ -146,7 +184,7 @@ const ActiveStage = React.memo((props) => {
               <p>{word.transcription}</p>
             </div>
             <div className={style.textSoundWrapper}>
-              <div className={style.soundIcon}>
+              <div className={style.soundIconSmall}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="28"
@@ -169,7 +207,7 @@ const ActiveStage = React.memo((props) => {
                   />
                 </svg>
               </div>
-              <h4 ref={textEx}>no</h4>
+              <p className={style.textExample} ref={textEx}>no</p>
             </div>
           </div>
         )
@@ -191,6 +229,9 @@ ActiveStage.propTypes = {
   setWrongAnswers: PropTypes.func.isRequired,
   wrongAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
   correctAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setActiveStage: PropTypes.func.isRequired,
+  activeStage: PropTypes.number.isRequired,
+  soundStatus: PropTypes.bool.isRequired,
 };
 
 export default ActiveStage;

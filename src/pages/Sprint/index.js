@@ -1,1 +1,1 @@
-export { default } from './Sprint';
+export { default } from './StartSprint';

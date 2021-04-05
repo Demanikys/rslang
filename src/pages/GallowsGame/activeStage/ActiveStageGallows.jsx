@@ -9,12 +9,14 @@ import hangmanSix from '../../../assets/images/hangman/Hangman-5.png';
 import hangmanSeven from '../../../assets/images/hangman/Hangman-6.png';
 import Keyboard from '../Keyboard';
 import Answers from '../activeStageAnswers/Answers';
+import style from './activeStage.module.scss';
 
 const ActiveStageGallows = React.memo((props) => {
   const {
     word, setNextBtnStatus, newGame,
     setNewGame, setCorrectAnswers, setWrongAnswers,
-    correctAnswers, wrongAnswers,
+    correctAnswers, wrongAnswers, setActiveStage, activeStage,
+    soundStatus,
   } = props;
   const [maxMistakes] = useState(7);
   const [mistakesCounter, setMistakesCounter] = useState(0);
@@ -56,11 +58,18 @@ const ActiveStageGallows = React.memo((props) => {
   }, [mistakesCounter]);
 
   return (
-    <div>
+    <div className={style.wrapper}>
       <div>
-        <img src={images[mistakesCounter]} alt="hangman" />
-        <img width="100px" height="100px" src={`https://newrslangapi.herokuapp.com/${word.image}`} alt="" />
-        <div>
+        <div className={style.images}>
+          <div className={style.guess}>
+            <img className={style.imageGuess} src={`https://newrslangapi.herokuapp.com/${word.image}`} alt="" />
+            <div className={style.wordToGuess}>
+              <p>{word.wordTranslate}</p>
+            </div>
+          </div>
+          <img className={style.gallows} src={images[mistakesCounter]} alt="hangman" />
+        </div>
+        <div className={style.mistakes}>
           <span>
             max mistakes:
             {maxMistakes - 1}
@@ -70,7 +79,12 @@ const ActiveStageGallows = React.memo((props) => {
             {mistakesCounter}
           </span>
         </div>
-        <Answers word={word.word} checkedLetters={checkedLetters} correct={correct} wrong={wrong} />
+        <Answers
+          word={word.word}
+          checkedLetters={checkedLetters}
+          correct={correct}
+          wrong={wrong}
+        />
         <Keyboard
           mistakesCounter={mistakesCounter}
           word={word.word}
@@ -78,6 +92,11 @@ const ActiveStageGallows = React.memo((props) => {
           setCheckedLetters={setCheckedLetters}
           checkedLetters={checkedLetters}
           newGame={newGame}
+          setNextBtnStatus={setNextBtnStatus}
+          setNewGame={setNewGame}
+          setActiveStage={setActiveStage}
+          activeStage={activeStage}
+          soundStatus={soundStatus}
         />
       </div>
     </div>
@@ -93,6 +112,9 @@ ActiveStageGallows.propTypes = {
   setWrongAnswers: PropTypes.func.isRequired,
   correctAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
   wrongAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  activeStage: PropTypes.number.isRequired,
+  setActiveStage: PropTypes.func.isRequired,
+  soundStatus: PropTypes.bool.isRequired,
 };
 
 export default ActiveStageGallows;

@@ -1,0 +1,35 @@
+.menu{
+  z-index: 100;
+  font-family: monospace;
+
+  .rslang{
+    a{
+      text-decoration: none;
+      background: -webkit-linear-gradient(43deg, #6075d9 0%, #C850C0 46%, #FFCC70 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  .dropDown{
+    font-size: 17px;
+
+    div {
+      background-color: #343a40;
+    }
+
+    .dropDownItem{
+      text-align: center;
+
+      a{
+        text-decoration: none;
+        color: white;
+        text-transform: uppercase;
+
+        &:hover{
+          color: gray;
+        }
+      }
+    }
+  }
+}

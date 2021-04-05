@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import { Button, ProgressBar } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import style from './gameResultWindow.module.scss';
-import ResultProgressBar from '../ResultPregressBar';
+import backImage from '../../assets/backgrounds/bg-result.svg';
 
 const GameResultWindow = React.memo((props) => {
-  const { correctAnswers, wrongAnswers, value } = props;
+  const { correctAnswers, wrongAnswers } = props;
+  const gameWindow = useRef();
+
+  useEffect(() => {
+    gameWindow.current.style.background = `url('${backImage}')`;
+  }, []);
 
   const createAnswersMarkDown = (array) => array.map((answer, index) => (
     <p key={answer.word}>
@@ -15,25 +20,34 @@ const GameResultWindow = React.memo((props) => {
   ));
 
   return (
-    <div className={style.resultWindow}>
-      <ResultProgressBar
-        correct={correctAnswers.length}
-        wrong={wrongAnswers.length || 0}
-        value={value}
-      />
-      <div className={style.content}>
-        <div className={style.contentResult}>
-          <h5>Правльные ответы</h5>
-          {correctAnswers.length ? createAnswersMarkDown(correctAnswers) : 'nothing'}
+    <div ref={gameWindow} className={style.gameWindowWrapper}>
+      <div className={style.resultWindow}>
+        <h4>Результаты</h4>
+        <div className={style.content}>
+          <div className={style.contentResult}>
+            <div className={style.answersHeader}>
+              <h5 className={style.blockHeader}>Правильные ответы</h5>
+              <ProgressBar className={style.progressResult} variant="success" now={100} label={correctAnswers.length} />
+            </div>
+            <p>
+              {correctAnswers.length ? createAnswersMarkDown(correctAnswers) : 'все неправильно!'}
+            </p>
+          </div>
+          <hr />
+          <div className={style.contentResult}>
+            <div className={style.answersHeader}>
+              <h5 className={style.blockHeader}>Неправильные ответы</h5>
+              <ProgressBar className={style.progressResult} variant="danger" now={100} label={wrongAnswers.length} />
+            </div>
+            <p>
+              {wrongAnswers.length ? createAnswersMarkDown(wrongAnswers) : 'все правильно!'}
+            </p>
+          </div>
         </div>
-        <div className={style.contentResult}>
-          <h5>Неправильные ответы</h5>
-          {wrongAnswers.length ? createAnswersMarkDown(wrongAnswers) : 'nothing'}
-        </div>
+        <Button className={style.menu}>
+          <Link to="/">Меню</Link>
+        </Button>
       </div>
-      <Button className={style.menu}>
-        <Link to="/">Меню</Link>
-      </Button>
     </div>
   );
 });
@@ -41,7 +55,6 @@ const GameResultWindow = React.memo((props) => {
 GameResultWindow.propTypes = {
   correctAnswers: PropTypes.objectOf(PropTypes.object).isRequired,
   wrongAnswers: PropTypes.objectOf(PropTypes.object).isRequired,
-  value: PropTypes.number.isRequired,
 };
 
 export default GameResultWindow;

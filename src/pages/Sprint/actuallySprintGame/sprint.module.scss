@@ -1,0 +1,75 @@
+.wrapper {
+  background-color: #613492;
+  text-align: center;
+  padding: 50px 30px 0 30px;
+  color: white !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
+  font-family: monospace;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  @media (max-width: 400px) {
+    padding: 50px 10px 0 10px;
+  }
+
+  .header {
+    font-weight: bold;
+    padding: 20px 0 10px 0;
+    text-transform: uppercase;
+    font-size: 40px;
+    margin: 0 !important;
+  }
+
+  .gameWindow {
+    background-color: white;
+    border-radius: 40px;
+    padding: 30px 100px;
+    margin: 150px 0 50px 0;
+
+    @media (max-width: 600px) {
+      padding: 20px 50px;
+      margin: 100px 0 50px 0;
+    }
+
+    @media (max-width: 370px) {
+      padding: 20px 30px;
+      margin: 50px 0 0 0;
+    }
+
+    .wordsWindow {
+      color: black;
+      font-size: 23px;
+      margin: 20px 0;
+    }
+
+    .pointsNumber {
+      color: black;
+      margin: 20px 0;
+    }
+
+    .answerWrapper {
+      display: flex;
+      justify-content: space-around;
+
+      .answer {
+        fill: #000000;
+      }
+
+      .answerRight {
+        fill: #000000;
+        background-color: #00ff00;
+        border-radius: 50%;
+      }
+    }
+
+    .points {
+      text-align: center;
+    }
+  }
+}
