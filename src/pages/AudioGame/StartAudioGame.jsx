@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import AudioGame from './actuallyAudioGame/AudioGame';
 import getWords from '../../utilities/getData';
 import PresentComponent from '../../components/PresentComponent';
 import backImage from '../../assets/backgrounds/bg-audiocall-game.svg';
+import toggleShowStatus from '../../actions/footerAction';
 
 const StartAudioGame = () => {
   const [words, setWords] = useState([]);
   const [fakeWords, setFakeWords] = useState(null);
   const [startGame, setStartGame] = useState(false);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(toggleShowStatus(false));
+  }, []);
 
   useEffect(() => {
     fetch('https://newrslangapi.herokuapp.com/words')

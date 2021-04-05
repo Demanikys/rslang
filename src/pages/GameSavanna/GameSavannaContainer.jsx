@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import GameSavanna from './actuallyGameSavanna/GameSavanna';
 import PresentComponent from '../../components/PresentComponent';
 import backImage from '../../assets/backgrounds/bg-savanna-game.svg';
+import toggleShowStatus from '../../actions/footerAction';
 
 const GameSavannaContainer = () => {
   const [words, setWords] = useState([]);
   const [isGameStarted, setIsGameStarted] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetch('https://newrslangapi.herokuapp.com/words')
       .then((response) => response.json())
       .then((response) => setWords(response));
+    dispatch(toggleShowStatus(false));
   }, []);
 
   return (
