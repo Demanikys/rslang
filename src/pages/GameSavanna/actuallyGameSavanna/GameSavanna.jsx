@@ -27,6 +27,7 @@ const GameSavanna = (props) => {
   const currentWordRef = useRef();
   const gameWindow = useRef();
   const header = useRef();
+  const headerOpacityTimerRef = useRef();
 
   const chooseWordsForAnswers = (localWords) => {
     const answers = [currentWord];
@@ -118,7 +119,7 @@ const GameSavanna = (props) => {
     }
 
     header.current.style.opacity = '0.2';
-    setTimeout(() => {
+    headerOpacityTimerRef.current = setTimeout(() => {
       header.current.style.opacity = '1';
     }, 1700);
 
@@ -134,7 +135,10 @@ const GameSavanna = (props) => {
       }, 500);
     }, 4200);
 
-    return () => clearTimeout(failTimerRef.current);
+    return () => {
+      clearTimeout(failTimerRef.current);
+      clearTimeout(headerOpacityTimerRef.current);
+    };
   }, [currentWord]);
 
   useEffect(() => {
