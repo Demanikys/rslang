@@ -26,6 +26,7 @@ const GameSavanna = (props) => {
   const failTimerRef = useRef();
   const currentWordRef = useRef();
   const gameWindow = useRef();
+  const header = useRef();
 
   const chooseWordsForAnswers = (localWords) => {
     const answers = [currentWord];
@@ -97,6 +98,7 @@ const GameSavanna = (props) => {
       if (soundStatus) playAnswerSound(false).play();
       setWrongAnswers([...wrongAnswers, currentWord]);
     }
+
     clearTimeout(failTimerRef.current);
   };
 
@@ -108,10 +110,18 @@ const GameSavanna = (props) => {
     setCurrentWord(words[wordCounter]);
   }, [wordCounter, isGameFinished]);
 
+  console.log(failTimerRef);
+
   useEffect(() => {
     if (isGameFinished) {
       return;
     }
+
+    header.current.style.opacity = '0.2';
+    setTimeout(() => {
+      header.current.style.opacity = '1';
+    }, 1700);
+
     failTimerRef.current = setTimeout(() => {
       currentWordRef.current.className = `${style.game_current_word} ${style.game_current_word_fail}`;
       setHealth(health.slice(0, -1));
@@ -122,7 +132,7 @@ const GameSavanna = (props) => {
         currentWordRef.current.className = `${style.game_current_word}`;
         setWordCounter(wordCounter + 1);
       }, 500);
-    }, 10000000);
+    }, 4200);
 
     return () => clearTimeout(failTimerRef.current);
   }, [currentWord]);
@@ -200,7 +210,7 @@ const GameSavanna = (props) => {
           </div>
 
           <div className={style.contentBody}>
-            <h2 className={style.header}>Саванна</h2>
+            <h2 ref={header} className={style.header}>Саванна</h2>
             <div className={style.game_finish_line} />
             <div className={style.buttonsWrapper}>
               <div className={style.game_answers_block}>
