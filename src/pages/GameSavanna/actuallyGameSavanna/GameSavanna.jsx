@@ -99,8 +99,6 @@ const GameSavanna = (props) => {
       if (soundStatus) playAnswerSound(false).play();
       setWrongAnswers([...wrongAnswers, currentWord]);
     }
-
-    clearTimeout(failTimerRef.current);
   };
 
   useEffect(() => {
@@ -124,6 +122,7 @@ const GameSavanna = (props) => {
     }, 1700);
 
     failTimerRef.current = setTimeout(() => {
+      console.log('working');
       currentWordRef.current.className = `${style.game_current_word} ${style.game_current_word_fail}`;
       setHealth(health.slice(0, -1));
       if (soundStatus) playAnswerSound(false).play();
@@ -158,9 +157,8 @@ const GameSavanna = (props) => {
             onAnswerClickHandler(currentWordAnswers[3]);
             break;
           default:
-            return;
         }
-        clearTimeout(failTimerRef.current);
+        // clearTimeout(failTimerRef.current);
       };
 
       document.addEventListener('keydown', keyDownHandler);
