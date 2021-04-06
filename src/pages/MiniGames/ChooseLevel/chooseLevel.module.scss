@@ -61,5 +61,21 @@
         font-size: 24px;
       }
     }
+
+    @media (max-width: 550px) {
+      width: 310px;
+      height: 400px;
+
+      h3{
+        font-size: 20px;
+        margin-bottom: 0;
+        margin-top: 10px;
+      }
+
+      .closePopup{
+        top: 20px;
+        right: 20px;
+      }
+    }
   }
 }

@@ -98,7 +98,6 @@ const GameSavanna = (props) => {
       if (soundStatus) playAnswerSound(false).play();
       setWrongAnswers([...wrongAnswers, currentWord]);
     }
-
     clearTimeout(failTimerRef.current);
   };
 
@@ -109,8 +108,6 @@ const GameSavanna = (props) => {
     }
     setCurrentWord(words[wordCounter]);
   }, [wordCounter, isGameFinished]);
-
-  console.log(failTimerRef);
 
   useEffect(() => {
     if (isGameFinished) {
@@ -134,7 +131,9 @@ const GameSavanna = (props) => {
       }, 500);
     }, 4200);
 
-    return () => clearTimeout(failTimerRef.current);
+    return () => {
+      clearTimeout(failTimerRef.current);
+    };
   }, [currentWord]);
 
   useEffect(() => {
