@@ -109,8 +109,6 @@ const GameSavanna = (props) => {
     setCurrentWord(words[wordCounter]);
   }, [wordCounter, isGameFinished]);
 
-  console.log(failTimerRef);
-
   useEffect(() => {
     if (isGameFinished) {
       return;

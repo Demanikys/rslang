@@ -19,7 +19,9 @@ const Footer = () => {
   return (
     <footer ref={footer} className={style.footer}>
       <div className={style.footerContent}>
-        <img width="100px" height="70px" src={src} alt="rsSchool" />
+        <a rel="noreferrer" href="https://rs.school/react/" target="_blank">
+          <img width="100px" height="70px" src={src} alt="rsSchool" />
+        </a>
         <div className={style.githubs}>
           <a rel="noreferrer" target="_blank" href="https://github.com/Demanikys">
             <figure>

@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import GallowsGame from './actuallyGallowsGame/GallowsGame';
 import PresentComponent from '../../components/PresentComponent';
 import backImage from '../../assets/backgrounds/bg-gallows-game.svg';
 import toggleShowStatus from '../../actions/footerAction';
+import { getMiniGameLevel } from '../../selectors/selectors';
+import { getWords } from '../../utilities/getData';
 
 const StartGallowsGame = () => {
   const [words, setWords] = useState([]);
   const [startGame, setStartGame] = useState(false);
+  const level = useSelector(getMiniGameLevel);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    fetch('https://newrslangapi.herokuapp.com/words/?group=2&page=10')
-      .then((response) => response.json())
-      .then((response) => setWords(response));
+  useEffect(async () => {
+    const data = await getWords(level);
+    setWords(data);
     dispatch(toggleShowStatus(false));
   }, []);
 

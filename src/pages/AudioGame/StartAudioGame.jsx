@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AudioGame from './actuallyAudioGame/AudioGame';
-import getWords from '../../utilities/getData';
+import getFakeWords, { getWords } from '../../utilities/getData';
 import PresentComponent from '../../components/PresentComponent';
 import backImage from '../../assets/backgrounds/bg-audiocall-game.svg';
 import toggleShowStatus from '../../actions/footerAction';
+import { getMiniGameLevel } from '../../selectors/selectors';
 
 const StartAudioGame = () => {
   const [words, setWords] = useState([]);
   const [fakeWords, setFakeWords] = useState(null);
   const [startGame, setStartGame] = useState(false);
+  const level = useSelector(getMiniGameLevel);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(toggleShowStatus(false));
   }, []);
 
-  useEffect(() => {
-    fetch('https://newrslangapi.herokuapp.com/words')
-      .then((response) => response.json())
-      .then((response) => setWords(response))
-      .catch((error) => console.log(error));
+  useEffect(async () => {
+    const data = await getWords(level);
+    setWords(data);
 
-    setFakeWords(getWords());
+    setFakeWords(getFakeWords());
   }, []);
 
   return (

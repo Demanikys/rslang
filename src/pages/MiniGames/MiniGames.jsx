@@ -25,12 +25,16 @@ const MiniGames = () => {
 
     const keyDownEvent = (event) => {
       if (event.key === 'Escape') {
+        document.body.style.overflow = 'auto';
         setShowPopup(false);
       }
     };
     dispatch(toggleShowStatus(true));
     document.addEventListener('keydown', keyDownEvent);
-    return () => document.removeEventListener('keydown', keyDownEvent);
+    return () => {
+      document.removeEventListener('keydown', keyDownEvent);
+      document.body.style.overflow = 'auto';
+    };
   }, []);
 
   return (

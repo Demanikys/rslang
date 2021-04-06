@@ -1,8 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
 import style from './chooseLevel.module.scss';
+import setGameLevel from '../../../actions/mniGameAction';
 
 const ChooseLevel = (props) => {
   const { setShowPopup, link } = props;
@@ -10,12 +12,11 @@ const ChooseLevel = (props) => {
   const [disable, setDisable] = useState(true);
   const popup = useRef();
   const cards = useRef([]);
+  const dispatch = useDispatch();
 
   cards.current = levels.map(() => React.createRef());
 
   const setActiveLevel = (level) => {
-    console.log(cards.current);
-    console.log(cards.current.length);
     for (let i = 0; i < cards.current.length; i += 1) {
       if (level === Number(cards.current[i].current.innerText)) {
         cards.current[i].current.style.background = 'green';
@@ -26,13 +27,20 @@ const ChooseLevel = (props) => {
     }
   };
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+  });
+
   return (
     <div ref={popup} className={style.popupWrapper}>
       <div className={style.popup}>
         <Button
           variant="light"
           className={style.closePopup}
-          onClick={() => setShowPopup(false)}
+          onClick={() => {
+            setShowPopup(false);
+            document.body.style.overflow = 'auto';
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -50,20 +58,26 @@ const ChooseLevel = (props) => {
             />
           </svg>
         </Button>
-        <h3>Выбирите уровень</h3>
+        <h3>Выберите уровень</h3>
         <div className={style.levels}>
           {levels.map((level, i) => (
             <div
               ref={cards.current[i]}
               key={level}
               className={style.level}
-              onClick={() => setActiveLevel(level)}
+              onClick={() => {
+                setActiveLevel(level);
+                dispatch(setGameLevel(level));
+              }}
             >
               {level}
             </div>
           ))}
         </div>
-        <Button disabled={disable} className={style.link}>
+        <Button
+          disabled={disable}
+          className={style.link}
+        >
           {disable && 'Продолжить'}
           {!disable && <Link to={`/${link}`}>Продолжить</Link>}
         </Button>
