@@ -19,7 +19,7 @@ const ChooseLevel = (props) => {
   const setActiveLevel = (level) => {
     for (let i = 0; i < cards.current.length; i += 1) {
       if (level === Number(cards.current[i].current.innerText)) {
-        cards.current[i].current.style.background = 'green';
+        cards.current[i].current.style.background = '#a0ee1d';
         if (disable) setDisable(false);
       } else {
         cards.current[i].current.style.background = '#5e5eef';
