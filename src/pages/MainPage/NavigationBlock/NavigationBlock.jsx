@@ -1,5 +1,6 @@
 import React from 'react';
 import style from './NavigationBlock.module.scss';
+import YoutubeVideo from '../../../components/YoutubeVideo/YoutubeVideo';
 
 const NavigationBlock = () => (
   <div className={style.page}>
@@ -19,6 +20,14 @@ const NavigationBlock = () => (
           All in all - you are most welcomed!
         </p>
         <span className={style.description__word}>Learn</span>
+      </div>
+    </div>
+    <div className={style.video}>
+      <div className="App">
+        <h3>Take a look at example, how you can use RS Lang!</h3>
+        <div className={style.video__block}>
+          <YoutubeVideo embedId="rokGy0huYEA" />
+        </div>
       </div>
     </div>
   </div>

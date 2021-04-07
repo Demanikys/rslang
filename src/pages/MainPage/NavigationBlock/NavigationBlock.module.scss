@@ -1,11 +1,11 @@
 .page {
-  height: 600px;
-  background: #f3e8e8;
 
   .description {
     position: relative;
     height: 600px;
     padding: 50px 0;
+    border-bottom: 1px solid grey;
+    background: #f3e8e8;
 
     .description__block {
       width: 90%;
@@ -32,6 +32,16 @@
         -webkit-text-fill-color: transparent;
         opacity: 0.5;
       }
+    }
+  }
+
+  .video {
+    height: 600px;
+
+    .video__block {
+      position: relative;
+      width: 60%;
+      margin: 50px auto 0;
     }
   }
 }
