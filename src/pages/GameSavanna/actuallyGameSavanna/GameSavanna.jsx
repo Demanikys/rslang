@@ -10,7 +10,7 @@ import ControlAnswerVolumeButton from '../../../components/ControlAnswerVolumeBu
 import HealthBar from '../../../components/HealthBar';
 
 const GameSavanna = (props) => {
-  const { words } = props;
+  const { words, fakeWords } = props;
   const [wordCounter, setWordCounter] = useState(0);
   const [backgroundPosition, setBackgroundPosition] = useState(100);
   const [currentWord, setCurrentWord] = useState(words[wordCounter]);
@@ -29,15 +29,11 @@ const GameSavanna = (props) => {
   const header = useRef();
   const headerOpacityTimerRef = useRef();
 
-  const chooseWordsForAnswers = (localWords) => {
+  const chooseWordsForAnswers = () => {
     const answers = [currentWord];
-    for (let i = 0; i < 3;) {
-      const word = localWords[Math.floor(Math.random() * localWords.length)];
-      if (!answers.includes(word)) {
-        answers.push(word);
-        i += 1;
-      }
-    }
+    answers.push(fakeWords[wordCounter * 3]);
+    answers.push(fakeWords[wordCounter * 3 + 1]);
+    answers.push(fakeWords[wordCounter * 3 + 2]);
     setCurrentWordAnswers(answers.sort(() => Math.random() - 0.5));
   };
 
@@ -120,7 +116,6 @@ const GameSavanna = (props) => {
     }, 1700);
 
     failTimerRef.current = setTimeout(() => {
-      console.log('working');
       currentWordRef.current.className = `${style.game_current_word} ${style.game_current_word_fail}`;
       setHealth(health.slice(0, -1));
       if (soundStatus) playAnswerSound(false).play();
@@ -244,6 +239,7 @@ const GameSavanna = (props) => {
 
 GameSavanna.propTypes = {
   words: PropTypes.arrayOf(PropTypes.object).isRequired,
+  fakeWords: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default GameSavanna;

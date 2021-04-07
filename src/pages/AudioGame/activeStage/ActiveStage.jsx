@@ -5,21 +5,6 @@ import PropTypes from 'prop-types';
 import style from './activeStage.module.scss';
 import playAnswerSound from '../../../utilities/audioPlayer';
 
-const createNewArray = () => {
-  const arr = [];
-
-  for (let i = 0; i < 5; i += 1) {
-    const number = Math.floor(Math.random() * 20);
-    if (!arr.includes(number)) {
-      arr.push(number);
-    } else {
-      i -= 1;
-    }
-  }
-
-  return arr;
-};
-
 const ActiveStage = React.memo((props) => {
   const {
     word, fakeWords, correct, setCorrectOrNot,
@@ -27,8 +12,7 @@ const ActiveStage = React.memo((props) => {
     wrongAnswers, correctAnswers, setActiveStage,
     activeStage, soundStatus,
   } = props;
-  const [randomNumber, setRandomNumber] = useState(Math.floor(Math.random() * 5));
-  const [randomFakeNumbers, setRandomFakeNumbers] = useState(createNewArray());
+  const [randomNumber, setRandomNumber] = useState();
   const textEx = useRef();
   const correctAnswerRef = useRef();
   const wordSound = new Howl({
@@ -39,8 +23,9 @@ const ActiveStage = React.memo((props) => {
   });
 
   useEffect(() => {
-    setRandomNumber(Math.floor(Math.random() * 5));
-    setRandomFakeNumbers(createNewArray());
+    const random = Math.floor(Math.random() * 5);
+    setRandomNumber(random);
+    fakeWords.splice(random, 0, word);
     wordSound.play();
   }, [word]);
 
@@ -83,8 +68,8 @@ const ActiveStage = React.memo((props) => {
     return () => document.removeEventListener('keydown', keyDownHandler);
   });
 
-  const renderButtons = [1, 2, 3, 4, 5].map((el, i) => {
-    if (i === randomNumber) {
+  const renderButtons = fakeWords.map((el, i) => {
+    if (el.word === word.word) {
       return (
         <Button
           key={word.word}
@@ -107,7 +92,7 @@ const ActiveStage = React.memo((props) => {
     }
     return (
       <Button
-        key={fakeWords[randomFakeNumbers[i]].word}
+        key={fakeWords[i].word}
         onClick={() => {
           setCorrectOrNot('wrong');
           setNextBtnStatus(true);
@@ -120,7 +105,7 @@ const ActiveStage = React.memo((props) => {
       >
         {i + 1}
         .
-        {fakeWords[randomFakeNumbers[i]].wordTranslate}
+        {fakeWords[i].wordTranslate}
       </Button>
     );
   });

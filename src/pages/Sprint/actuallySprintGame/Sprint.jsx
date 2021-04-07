@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import style from './sprint.module.scss';
 import * as Buttons from '../components/buttons';
-import data from './words.json';
 import GameResultWindow from '../../../components/GameResultWindow';
 import FullScreenButtons from '../../../components/FullScreenButton/FullScreenButtons';
 import Timers from '../../../components/Timer';
@@ -9,16 +9,24 @@ import playAnswerSound from '../../../utilities/audioPlayer';
 import backImage from '../../../assets/backgrounds/bg-sprint-game.svg';
 import ControlAnswerVolumeButton from '../../../components/ControlAnswerVolumeButton';
 
-const Sprint = () => {
+const Sprint = (props) => {
+  const { words } = props;
   const [score, setScore] = useState(0);
   const [points, setPoints] = useState(0);
   const [level, setLevel] = useState([0, 0, 0]);
-  const [word, setWord] = useState({});
   const [wrongWords, setWrongWords] = useState([]);
   const [rightWords, setRightWords] = useState([]);
   const [time, setTime] = useState(60);
   const [fullScreenStatus, setFullScreenStatus] = useState(false);
   const [soundStatus, setSoundStatus] = useState(true);
+  const [item, setItem] = useState(0);
+  const [translate] = useState(words.map((el) => {
+    const variant = Math.floor(Math.random() * 2);
+    if (variant === 0) {
+      return el.wordTranslate;
+    }
+    return words[Math.floor(Math.random() * words.length)].wordTranslate;
+  }));
   const gameWindow = useRef();
 
   useEffect(() => {
@@ -51,36 +59,20 @@ const Sprint = () => {
   }, [points]);
 
   useEffect(() => {
-    if (time === 0) {
+    if (time === 0 || !words[item]) {
       return;
     }
 
     const id = setTimeout(() => {
-      if (time <= 0) {
+      if (time <= 0 || !words[item]) {
         return clearTimeout(id);
       }
       setTime(time - 1);
     }, 1000);
   }, [time]);
 
-  useEffect(() => {
-    const randEnIndex = Math.floor(Math.random() * data.en.length);
-    let randRuIndex;
-    if (Math.random() > 0.5) {
-      randRuIndex = Math.floor(Math.random() * data.ru.length);
-    } else {
-      randRuIndex = randEnIndex;
-    }
-    setWord({ en: randEnIndex, ru: randRuIndex });
-  }, [points, score]);
-
   function resetLevel() {
-    setWrongWords((oldWords) => [...oldWords, {
-      word: data.en[word.en],
-      wordTranslate: data.ru[word.en],
-      userAnswer: data.en[word.ru],
-      userAnswerTranslate: data.ru[word.ru],
-    }]);
+    setWrongWords((oldWords) => [...oldWords, words[item]]);
     setLevel(new Array(3).fill(0));
     setPoints(1);
     setPoints(0);
@@ -92,12 +84,7 @@ const Sprint = () => {
   }
 
   function addLevel() {
-    setRightWords((oldWords) => [...oldWords, {
-      word: data.en[word.en],
-      wordTranslate: data.ru[word.en],
-      userAnswer: data.en[word.ru],
-      userAnswerTranslate: data.ru[word.ru],
-    }]);
+    setRightWords((oldWords) => [...oldWords, words[item]]);
     if (points !== level.length) {
       setPoints(points + 1);
     } else {
@@ -109,12 +96,12 @@ const Sprint = () => {
   }
 
   function leftButtonAction() {
-    if (word.en !== word.ru) addLevel();
+    if (words[item].wordTranslate !== translate[item]) addLevel();
     else resetLevel();
   }
 
   function rightButtonAction() {
-    if (word.en === word.ru) addLevel();
+    if (words[item].wordTranslate === translate[item]) addLevel();
     else resetLevel();
   }
 
@@ -123,8 +110,10 @@ const Sprint = () => {
       const eventHandler = (event) => {
         if (event.code === 'ArrowLeft') {
           leftButtonAction();
+          setItem(item + 1);
         } else if (event.code === 'ArrowRight') {
           rightButtonAction();
+          setItem(item + 1);
         }
       };
 
@@ -135,7 +124,7 @@ const Sprint = () => {
   });
 
   return (
-    time < 1
+    time < 1 || !words[item]
       ? (
         <GameResultWindow
           correctAnswers={rightWords}
@@ -184,16 +173,20 @@ const Sprint = () => {
                 })}
               </div>
               <div className={style.wordsWindow}>
-                {data.en[word.en]}
+                {words[item].word}
                 -
-                {data.ru[word.ru]}
+                {translate[item]}
               </div>
               <div className={style.points}>
                 <Buttons.WrongAnswerButton
                   action={leftButtonAction}
+                  setItem={setItem}
+                  item={item}
                 />
                 <Buttons.RightAnswerButton
                   action={rightButtonAction}
+                  setItem={setItem}
+                  item={item}
                 />
               </div>
             </div>
@@ -206,6 +199,10 @@ const Sprint = () => {
         </div>
       )
   );
+};
+
+Sprint.propTypes = {
+  words: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default Sprint;

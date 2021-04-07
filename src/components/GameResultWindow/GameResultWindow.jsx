@@ -45,7 +45,7 @@ const GameResultWindow = React.memo((props) => {
           </div>
         </div>
         <Button className={style.menu}>
-          <Link to="/">Меню</Link>
+          <Link to="/mini-games">Мини игры</Link>
         </Button>
       </div>
     </div>

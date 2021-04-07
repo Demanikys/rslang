@@ -6,11 +6,14 @@ function ThrowError() {
   console.error('Pass right function!');
 }
 
-function RightAnswerButton({ action }) {
+function RightAnswerButton({ action, setItem, item }) {
   return (
     <Button
       variant="success"
-      onClick={() => action()}
+      onClick={() => {
+        action();
+        setItem(item + 1);
+      }}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -43,17 +46,22 @@ function RightAnswerButton({ action }) {
 
 RightAnswerButton.propTypes = {
   action: PropTypes.func,
+  setItem: PropTypes.func.isRequired,
+  item: PropTypes.number.isRequired,
 };
 
 RightAnswerButton.defaultProps = {
   action: ThrowError,
 };
 
-function WrongAnswerButton({ action }) {
+function WrongAnswerButton({ action, setItem, item }) {
   return (
     <Button
       variant="danger"
-      onClick={() => action()}
+      onClick={() => {
+        action();
+        setItem(item + 1);
+      }}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -86,6 +94,8 @@ function WrongAnswerButton({ action }) {
 
 WrongAnswerButton.propTypes = {
   action: PropTypes.func,
+  setItem: PropTypes.func.isRequired,
+  item: PropTypes.number.isRequired,
 };
 
 WrongAnswerButton.defaultProps = {

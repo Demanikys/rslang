@@ -20,6 +20,16 @@ const AudioGame = (props) => {
   const [value] = useState(5);
   const [fullScreenStatus, setFullScreenStatus] = useState(false);
   const [soundStatus, setSoundStatus] = useState(true);
+  const [currentFakeWords] = useState(() => {
+    const result = [];
+    for (let i = 0; i < 20; i += 1) {
+      result.push(
+        [fakeWords[i * 4], fakeWords[i * 4 + 1],
+          fakeWords[i * 4 + 2], fakeWords[i * 4 + 3]],
+      );
+    }
+    return result;
+  });
   const gameWindow = useRef();
 
   useEffect(() => {
@@ -52,7 +62,7 @@ const AudioGame = (props) => {
             words && fakeWords && (
               <ActiveStage
                 word={words[activeStage - 1]}
-                fakeWords={fakeWords}
+                fakeWords={currentFakeWords[activeStage - 1]}
                 correct={correct}
                 setCorrectOrNot={setCorrectOrNot}
                 setCorrectAnswers={setCorrectAnswers}

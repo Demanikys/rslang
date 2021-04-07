@@ -14,8 +14,19 @@ const StartGallowsGame = () => {
   const dispatch = useDispatch();
 
   useEffect(async () => {
-    const data = await getWords(level);
-    setWords(data);
+    const page = Math.floor(Math.random() * 30);
+    const data = await getWords(level, page, 1);
+    const localData = data.flat();
+    const sliceData = [];
+    for (let i = 0; i < 5; i += 1) {
+      const word = localData[Math.floor(Math.random() * 20)];
+      if (!sliceData.includes(word)) {
+        sliceData.push(word);
+      } else {
+        i -= 1;
+      }
+    }
+    setWords(sliceData.sort(() => Math.random() - 0.5));
     dispatch(toggleShowStatus(false));
   }, []);
 
