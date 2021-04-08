@@ -10,7 +10,7 @@ import ControlAnswerVolumeButton from '../../../components/ControlAnswerVolumeBu
 import HealthBar from '../../../components/HealthBar';
 
 const GameSavanna = (props) => {
-  const { words } = props;
+  const { words, fakeWords } = props;
   const [wordCounter, setWordCounter] = useState(0);
   const [backgroundPosition, setBackgroundPosition] = useState(100);
   const [currentWord, setCurrentWord] = useState(words[wordCounter]);
@@ -26,16 +26,14 @@ const GameSavanna = (props) => {
   const failTimerRef = useRef();
   const currentWordRef = useRef();
   const gameWindow = useRef();
+  const header = useRef();
+  const headerOpacityTimerRef = useRef();
 
-  const chooseWordsForAnswers = (localWords) => {
+  const chooseWordsForAnswers = () => {
     const answers = [currentWord];
-    for (let i = 0; i < 3;) {
-      const word = localWords[Math.floor(Math.random() * localWords.length)];
-      if (!answers.includes(word)) {
-        answers.push(word);
-        i += 1;
-      }
-    }
+    answers.push(fakeWords[wordCounter * 3]);
+    answers.push(fakeWords[wordCounter * 3 + 1]);
+    answers.push(fakeWords[wordCounter * 3 + 2]);
     setCurrentWordAnswers(answers.sort(() => Math.random() - 0.5));
   };
 
@@ -97,7 +95,6 @@ const GameSavanna = (props) => {
       if (soundStatus) playAnswerSound(false).play();
       setWrongAnswers([...wrongAnswers, currentWord]);
     }
-    clearTimeout(failTimerRef.current);
   };
 
   useEffect(() => {
@@ -112,6 +109,12 @@ const GameSavanna = (props) => {
     if (isGameFinished) {
       return;
     }
+
+    header.current.style.opacity = '0.2';
+    headerOpacityTimerRef.current = setTimeout(() => {
+      header.current.style.opacity = '1';
+    }, 1700);
+
     failTimerRef.current = setTimeout(() => {
       currentWordRef.current.className = `${style.game_current_word} ${style.game_current_word_fail}`;
       setHealth(health.slice(0, -1));
@@ -122,9 +125,12 @@ const GameSavanna = (props) => {
         currentWordRef.current.className = `${style.game_current_word}`;
         setWordCounter(wordCounter + 1);
       }, 500);
-    }, 10000000);
+    }, 4200);
 
-    return () => clearTimeout(failTimerRef.current);
+    return () => {
+      clearTimeout(failTimerRef.current);
+      clearTimeout(headerOpacityTimerRef.current);
+    };
   }, [currentWord]);
 
   useEffect(() => {
@@ -144,9 +150,8 @@ const GameSavanna = (props) => {
             onAnswerClickHandler(currentWordAnswers[3]);
             break;
           default:
-            return;
         }
-        clearTimeout(failTimerRef.current);
+        // clearTimeout(failTimerRef.current);
       };
 
       document.addEventListener('keydown', keyDownHandler);
@@ -200,7 +205,7 @@ const GameSavanna = (props) => {
           </div>
 
           <div className={style.contentBody}>
-            <h2 className={style.header}>Саванна</h2>
+            <h2 ref={header} className={style.header}>Саванна</h2>
             <div className={style.game_finish_line} />
             <div className={style.buttonsWrapper}>
               <div className={style.game_answers_block}>
@@ -234,6 +239,7 @@ const GameSavanna = (props) => {
 
 GameSavanna.propTypes = {
   words: PropTypes.arrayOf(PropTypes.object).isRequired,
+  fakeWords: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default GameSavanna;

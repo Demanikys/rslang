@@ -1,25 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import GameSavanna from './actuallyGameSavanna/GameSavanna';
 import PresentComponent from '../../components/PresentComponent';
 import backImage from '../../assets/backgrounds/bg-savanna-game.svg';
 import toggleShowStatus from '../../actions/footerAction';
+import { getFakeWords, getWords } from '../../utilities/getData';
+import { getMiniGameLevel } from '../../selectors/selectors';
 
 const GameSavannaContainer = () => {
   const [words, setWords] = useState([]);
+  const [fakeWords, setFakeWords] = useState([]);
   const [isGameStarted, setIsGameStarted] = useState(false);
+  const level = useSelector(getMiniGameLevel);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    fetch('https://newrslangapi.herokuapp.com/words')
-      .then((response) => response.json())
-      .then((response) => setWords(response));
+  useEffect(async () => {
+    const page = Math.floor(Math.random() * 30);
+    const data = await getWords(level, page, 1);
+    setWords(data.flat().sort(() => Math.random() - 0.5));
+    const fake = await getFakeWords(level, page, 3);
+    setFakeWords(fake.flat().sort(() => Math.random() - 0.5));
     dispatch(toggleShowStatus(false));
   }, []);
 
   return (
     isGameStarted
-      ? <GameSavanna words={words} />
+      ? <GameSavanna words={words} fakeWords={fakeWords} />
       : (
         <PresentComponent
           setStartGame={setIsGameStarted}

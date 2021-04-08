@@ -1,28 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AudioGame from './actuallyAudioGame/AudioGame';
-import getWords from '../../utilities/getData';
+import { getFakeWords, getWords } from '../../utilities/getData';
 import PresentComponent from '../../components/PresentComponent';
 import backImage from '../../assets/backgrounds/bg-audiocall-game.svg';
 import toggleShowStatus from '../../actions/footerAction';
+import { getMiniGameLevel } from '../../selectors/selectors';
 
 const StartAudioGame = () => {
   const [words, setWords] = useState([]);
-  const [fakeWords, setFakeWords] = useState(null);
+  const [fakeWords, setFakeWords] = useState([]);
   const [startGame, setStartGame] = useState(false);
+  const level = useSelector(getMiniGameLevel);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(toggleShowStatus(false));
   }, []);
 
-  useEffect(() => {
-    fetch('https://newrslangapi.herokuapp.com/words')
-      .then((response) => response.json())
-      .then((response) => setWords(response))
-      .catch((error) => console.log(error));
-
-    setFakeWords(getWords());
+  useEffect(async () => {
+    const page = Math.floor(Math.random() * 30);
+    const data = await getWords(level, page, 1);
+    setWords(data.flat().sort(() => Math.random() - 0.5));
+    const fake = await getFakeWords(level, page, 4);
+    setFakeWords(fake.flat().sort(() => Math.random() - 0.5));
   }, []);
 
   return (

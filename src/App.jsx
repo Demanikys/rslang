@@ -9,6 +9,7 @@ import './App.css';
 import StartGallowsGame from './pages/GallowsGame';
 import GameSavanna from './pages/GameSavanna';
 import StartSprintGame from './pages/Sprint';
+import MiniGames from './pages/MiniGames';
 
 const App = () => (
   <BrowserRouter>
@@ -18,7 +19,7 @@ const App = () => (
         <Route path="/audio-game">
           <AudioGame />
         </Route>
-        <Route path="/sprint">
+        <Route path="/sprint-game">
           <StartSprintGame />
         </Route>
         <Route path="/gallows-game">
@@ -26,6 +27,9 @@ const App = () => (
         </Route>
         <Route path="/savanna-game">
           <GameSavanna />
+        </Route>
+        <Route path="/mini-games">
+          <MiniGames />
         </Route>
         <Route path="/">
           <MainPage />

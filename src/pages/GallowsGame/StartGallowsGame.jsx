@@ -1,19 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import GallowsGame from './actuallyGallowsGame/GallowsGame';
 import PresentComponent from '../../components/PresentComponent';
 import backImage from '../../assets/backgrounds/bg-gallows-game.svg';
 import toggleShowStatus from '../../actions/footerAction';
+import { getMiniGameLevel } from '../../selectors/selectors';
+import { getWords } from '../../utilities/getData';
 
 const StartGallowsGame = () => {
   const [words, setWords] = useState([]);
   const [startGame, setStartGame] = useState(false);
+  const level = useSelector(getMiniGameLevel);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    fetch('https://newrslangapi.herokuapp.com/words/?group=2&page=10')
-      .then((response) => response.json())
-      .then((response) => setWords(response));
+  useEffect(async () => {
+    const page = Math.floor(Math.random() * 30);
+    const data = await getWords(level, page, 1);
+    const localData = data.flat();
+    const sliceData = [];
+    for (let i = 0; i < 5; i += 1) {
+      const word = localData[Math.floor(Math.random() * 20)];
+      if (!sliceData.includes(word)) {
+        sliceData.push(word);
+      } else {
+        i -= 1;
+      }
+    }
+    setWords(sliceData.sort(() => Math.random() - 0.5));
     dispatch(toggleShowStatus(false));
   }, []);
 

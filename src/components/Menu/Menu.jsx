@@ -1,5 +1,5 @@
 import React from 'react';
-import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Nav, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import style from './menu.module.scss';
 
@@ -11,20 +11,9 @@ const Menu = () => (
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
     <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="mr-auto">
-        <NavDropdown className={style.dropDown} id="collasible-nav-dropdown" title="Игры">
-          <div className={style.dropDownItem}>
-            <Link to="/sprint">Спринт</Link>
-          </div>
-          <div className={style.dropDownItem}>
-            <Link to="/audio-game">Аудиовызов</Link>
-          </div>
-          <div className={style.dropDownItem}>
-            <Link to="/gallows-game">Виселица</Link>
-          </div>
-          <div className={style.dropDownItem}>
-            <Link to="/savanna-game">Саванна</Link>
-          </div>
-        </NavDropdown>
+        <Navbar.Text>
+          <Link to="/mini-games">Мини-игры</Link>
+        </Navbar.Text>
       </Nav>
     </Navbar.Collapse>
   </Navbar>
