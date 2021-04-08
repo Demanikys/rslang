@@ -1,0 +1,67 @@
+.wrapper{
+  width: 100%;
+
+  .images{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 700px;
+    margin: 0 auto 20px auto;
+
+    .guess {
+      position: relative;
+
+      .imageGuess{
+        width: 200px;
+        height: auto;
+      }
+
+      .wordToGuess{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-family: monospace;
+
+        p{
+          transform: rotate(30deg);
+          margin: 0;
+        }
+      }
+    }
+
+    .gallows{
+      width: 250px;
+      height: auto;
+    }
+
+    @media (max-width: 716px) {
+      justify-content: center;
+      row-gap: 20px;
+    }
+
+    @media (max-width: 716px) {
+      .gallows{
+        width: 250px;
+        height: auto;
+      }
+    }
+  }
+
+  .mistakes{
+    font-size: 26px;
+    //display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 20px;
+    margin: 20px auto;
+    display: none;
+  }
+}

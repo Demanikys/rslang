@@ -6,8 +6,11 @@ import MainPage from './pages/MainPage';
 import Menu from './components/Menu';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import GameSavanna from './pages/GameSavanna';
 import Textbook from './pages/Textbook';
+import StartGallowsGame from './pages/GallowsGame';
+import GameSavanna from './pages/GameSavanna';
+import StartSprintGame from './pages/Sprint';
+import MiniGames from './pages/MiniGames';
 
 const App = () => (
   <BrowserRouter>
@@ -17,14 +20,23 @@ const App = () => (
         <Route path="/audio-game">
           <AudioGame />
         </Route>
+        <Route path="/sprint-game">
+          <StartSprintGame />
+        </Route>
+        <Route path="/gallows-game">
+          <StartGallowsGame />
+        </Route>
         <Route path="/savanna-game">
           <GameSavanna />
         </Route>
-        <Route exact path="/">
-          <MainPage />
+        <Route path="/mini-games">
+          <MiniGames />
         </Route>
         <Route path="/textbook">
           <Textbook />
+        </Route>
+        <Route path="/">
+          <MainPage />
         </Route>
       </Switch>
       <Footer />

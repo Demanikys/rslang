@@ -1,18 +1,20 @@
 import React from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import style from './menu.module.scss';
 
 const Menu = () => (
-  <Navbar bg="light" expand="md">
-    <Navbar.Brand>
+  <Navbar bg="dark" variant="dark" expand="md" className={style.menu}>
+    <Navbar.Brand className={style.rslang}>
       <Link to="/">Rslang</Link>
     </Navbar.Brand>
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
     <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="mr-auto">
-        <Link to="/textbook/1">Учебник</Link>
-        <Link to="/audio-game">Аудиовызов</Link>
-        <Link to="/savanna-game">Саванна</Link>
+        <Navbar.Text>
+          <Link to="/textbook/1">Учебник</Link>
+          <Link to="/mini-games">Мини-игры</Link>
+        </Navbar.Text>
       </Nav>
     </Navbar.Collapse>
   </Navbar>

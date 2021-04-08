@@ -26,9 +26,9 @@ const DictionaryPageComponent = (props) => {
       }
     });
 
-    return (
-      () => console.log('removed')
-    );
+    // return (
+    //   () => console.log('removed')
+    // );
   }, []);
 
   return (

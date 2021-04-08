@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
-import audioGameReducer from './audioGameReducer';
+import footerReducer from './footerReducer';
+import miniGameReducer from './miniGamesReducer';
 
 export default combineReducers({
-  audio: audioGameReducer,
+  footer: footerReducer,
+  miniGame: miniGameReducer,
 });

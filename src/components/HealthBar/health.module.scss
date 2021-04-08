@@ -1,0 +1,22 @@
+.game_hearts_bar{
+  position: absolute;
+  top: 80px;
+  right: 140px;
+  z-index: 100;
+  padding: 0;
+  text-align: center;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  font-size: 25px;
+  column-gap: 5px;
+  color: white;
+
+  @media (max-width: 620px) {
+    right: 90px;
+  }
+
+  @media (max-width: 440px) {
+    left: 20px;
+  }
+}
