@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from 'react';
+import firebase from 'firebase/app';
+import 'firebase/database';
 import style from './TextbookWordComponent.module.scss';
 
 const TextbookWordComponent = (props) => {
@@ -8,6 +10,12 @@ const TextbookWordComponent = (props) => {
   const textEx = useRef();
   const textMeaning = useRef();
   // console.log(item);
+
+  function writeUserData(userId, wordId, typeOfCollection) {
+    firebase.database().ref(`users/${userId}/${typeOfCollection}`).set(
+      [wordId],
+    );
+  }
 
   const onPlayBtnClick = () => {
     const a = new Audio();
@@ -29,6 +37,7 @@ const TextbookWordComponent = (props) => {
     } else {
       localStorage.setItem('userDeletedWords', JSON.stringify([item.id]));
     }
+    writeUserData('testUser', item.id, 'deleted');
     console.log(typeof (JSON.parse(localStorage.getItem('userDeletedWords'))));
   };
 
@@ -40,6 +49,7 @@ const TextbookWordComponent = (props) => {
     } else {
       localStorage.setItem('userHardWords', JSON.stringify([item.id]));
     }
+    writeUserData('testUser', item.id, 'hard');
   };
 
   const onRestoreBtnClick = () => {
