@@ -1,0 +1,29 @@
+.textbook{
+    display: flex;
+    min-height: 100vh;
+    &_nav{
+        flex-basis: 150px;
+        background: rgb(149, 238, 6);
+        margin-bottom: 0;
+        flex-grow: 0;
+        flex-shrink: 0;
+        padding: 10px;
+    }
+    &_content{
+        flex-grow: 1;
+        background: rgb(255, 230, 0);
+        padding-bottom: 20px;
+    }
+    &_page_selectors{
+        display: flex;
+        justify-content: space-around;
+        .page_button:hover{
+            cursor: pointer;
+        }
+        margin-bottom: 20px;
+        padding: 5px;
+    }
+    .page_button{
+        padding: 5px;
+    }
+}

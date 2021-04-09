@@ -6,6 +6,7 @@ import MainPage from './pages/MainPage';
 import Menu from './components/Menu';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import Textbook from './pages/Textbook';
 import StartGallowsGame from './pages/GallowsGame';
 import GameSavanna from './pages/GameSavanna';
 import StartSprintGame from './pages/Sprint';
@@ -30,6 +31,9 @@ const App = () => (
         </Route>
         <Route path="/mini-games">
           <MiniGames />
+        </Route>
+        <Route path="/textbook">
+          <Textbook />
         </Route>
         <Route path="/">
           <MainPage />

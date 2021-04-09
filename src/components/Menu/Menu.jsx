@@ -12,6 +12,7 @@ const Menu = () => (
     <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="mr-auto">
         <Navbar.Text>
+          <Link to="/textbook/1">Учебник</Link>
           <Link to="/mini-games">Мини-игры</Link>
         </Navbar.Text>
       </Nav>
