@@ -1,11 +1,18 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import style from './DictionaryPageComponent.module.scss';
 import TextbookWordComponent from '../../TextbookWordComponent';
 
 const DictionaryPageComponent = (props) => {
   const data = props;
-  const idArr = data.words.slice(0);
+  const idArr = useSelector((state) => {
+    if (data.type === 'hardWord') {
+      return state.user.hardWords;
+    } if (data.type === 'deletedWord') {
+      return state.user.deletedWords;
+    }
+  });
   const [wordsArr, setWordsArr] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
 
@@ -18,13 +25,15 @@ const DictionaryPageComponent = (props) => {
       setWordsArr(resultArr);
     };
 
-    idArr.forEach(async (item, index) => {
-      await fetchData(item);
-      if (index === idArr.length - 1) {
-        setIsFetching(false);
-        setWordsArr(resultArr);
-      }
-    });
+    if (idArr) {
+      idArr.forEach(async (item, index) => {
+        await fetchData(item);
+        if (index === idArr.length - 1) {
+          setIsFetching(false);
+          setWordsArr(resultArr);
+        }
+      });
+    }
 
     // return (
     //   () => console.log('removed')
@@ -37,8 +46,7 @@ const DictionaryPageComponent = (props) => {
         ? (wordsArr.map((item) => (
           <TextbookWordComponent word={item} type={data.type} key={Math.random()} />
         )))
-        : null}
-
+        : ('Слова не найдены')}
     </div>
   );
 };

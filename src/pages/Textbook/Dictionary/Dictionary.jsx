@@ -1,8 +1,10 @@
 import React from 'react';
 import Switch from 'react-bootstrap/esm/Switch';
 import { BrowserRouter, Link, Route } from 'react-router-dom';
+
 import style from './Dictionary.module.scss';
 import DictionaryPageComponent from './DictionaryPageComponent';
+import 'firebase/database';
 
 const Dictionary = () => (
   <div>
@@ -16,18 +18,10 @@ const Dictionary = () => (
         <Switch>
           <Route path="/textbook/dictionary/learning" />
           <Route path="/textbook/dictionary/hard">
-            {
-              localStorage.getItem('userHardWords') && (JSON.parse(localStorage.getItem('userHardWords')).lenght !== 0)
-                ? <DictionaryPageComponent words={JSON.parse(localStorage.getItem('userHardWords'))} type="hardWord" />
-                : null
-            }
+            <DictionaryPageComponent type="hardWord" />
           </Route>
           <Route path="/textbook/dictionary/deleted">
-            {
-              localStorage.getItem('userDeletedWords') && (JSON.parse(localStorage.getItem('userDeletedWords')).lenght !== 0)
-                ? <DictionaryPageComponent words={JSON.parse(localStorage.getItem('userDeletedWords'))} type="deletedWord" />
-                : null
-            }
+            <DictionaryPageComponent type="deletedWord" />
           </Route>
         </Switch>
       </div>

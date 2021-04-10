@@ -1,14 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Link, Switch, Route, BrowserRouter,
 } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import firebase from 'firebase/app';
 import style from './Textbook.module.scss';
 import TextbookPageComponent from './TextbookPageComponent';
 import Dictionary from './Dictionary';
+import { setWordsCollection } from '../../reducers/userReducer';
 
 const Textbook = () => {
   const pagesArray = [1, 2, 3, 4, 5, 6];
   const [pageNumber, setPageNumber] = useState(0);
+
+  const userId = useSelector((state) => state.user.currentUser.userId);
+  const dispatch = useDispatch();
+
+  useEffect(async () => {
+    const userDeletedList = await firebase.database().ref(`/users/${userId}/deleted`).once('value')
+      .then((snapshot) => snapshot.val());
+    const userHardList = await firebase.database().ref(`/users/${userId}/hard`).once('value')
+      .then((snapshot) => snapshot.val());
+
+    dispatch(setWordsCollection(userDeletedList, userHardList));
+  }, []);
 
   const onPreviousBtnClick = () => {
     if (pageNumber > 0) {

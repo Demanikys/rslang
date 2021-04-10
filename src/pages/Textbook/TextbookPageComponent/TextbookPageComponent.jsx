@@ -24,7 +24,7 @@ const TextbookPageComponent = (props) => {
           {
                     wordsData.map((item, index) => (
                       <>
-                        <TextbookWordComponent word={item} type="normal" key={Math.random()} />
+                        <TextbookWordComponent word={item} type="normal" />
                         {
                                     index !== wordsData.length - 1
                                       ? <br />

@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
+// eslint-disable-next-line import/no-cycle
 import App from './App';
 import rootReducer from './reducers/rootReducer';
 import './index.css';

@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import firebase from 'firebase/app';
 import 'firebase/database';
+import { useSelector } from 'react-redux';
 import style from './TextbookWordComponent.module.scss';
+// import store from '../../../index';
+import { userWordsDataSet, userWordsDataRemove } from '../../../actions/userActions';
 
 const TextbookWordComponent = (props) => {
   const dataProps = props;
@@ -9,13 +11,10 @@ const TextbookWordComponent = (props) => {
   const item = dataProps.word;
   const textEx = useRef();
   const textMeaning = useRef();
-  // console.log(item);
-
-  function writeUserData(userId, wordId, typeOfCollection) {
-    firebase.database().ref(`users/${userId}/${typeOfCollection}`).set(
-      [wordId],
-    );
-  }
+  const currentUserId = useSelector((state) => state.user.currentUser.userId);
+  const deletedWordsList = useSelector((state) => state.user.deletedWords);
+  const hardWordsList = useSelector((state) => state.user.hardWords);
+  const isAuth = useSelector((state) => state.user.isAuth);
 
   const onPlayBtnClick = () => {
     const a = new Audio();
@@ -30,80 +29,64 @@ const TextbookWordComponent = (props) => {
   };
 
   const onDeleteBtnClick = () => {
-    if (localStorage.getItem('userDeletedWords')) {
-      const deletedWordsArray = JSON.parse(localStorage.getItem('userDeletedWords'));
-      deletedWordsArray.push(item.id);
-      localStorage.setItem('userDeletedWords', JSON.stringify(deletedWordsArray));
-    } else {
-      localStorage.setItem('userDeletedWords', JSON.stringify([item.id]));
-    }
-    writeUserData('testUser', item.id, 'deleted');
-    console.log(typeof (JSON.parse(localStorage.getItem('userDeletedWords'))));
+    userWordsDataSet(currentUserId, item.id, 'deleted');
   };
 
   const onHardBtnClick = () => {
-    if (localStorage.getItem('userHardWords')) {
-      const deletedWordsArray = JSON.parse(localStorage.getItem('userHardWords'));
-      deletedWordsArray.push(item.id);
-      localStorage.setItem('userHardWords', JSON.stringify(deletedWordsArray));
-    } else {
-      localStorage.setItem('userHardWords', JSON.stringify([item.id]));
-    }
-    writeUserData('testUser', item.id, 'hard');
+    userWordsDataSet(currentUserId, item.id, 'hard');
   };
 
   const onRestoreBtnClick = () => {
-    const deletedWords = JSON.parse(localStorage.getItem('userDeletedWords'));
-    deletedWords.forEach((key, index) => {
-      if (key === item.id) {
-        deletedWords.splice(index, 1);
-      }
-    });
-    localStorage.setItem('userDeletedWords', JSON.stringify(deletedWords));
+    userWordsDataRemove(currentUserId, item.id, 'deleted');
   };
 
   const onRemoveBtnClick = () => {
-    const hardWords = JSON.parse(localStorage.getItem('userHardWords'));
-    hardWords.forEach((key, index) => {
-      if (key === item.id) {
-        hardWords.splice(index, 1);
-      }
-    });
-    localStorage.setItem('userHardWords', JSON.stringify(hardWords));
+    userWordsDataRemove(currentUserId, item.id, 'hard');
   };
 
   useEffect(() => {
-    textEx.current.innerHTML = item.textExample;
-    textMeaning.current.innerHTML = item.textMeaning;
+    if (deletedWordsList && deletedWordsList.length > 0 && !deletedWordsList.includes(item.id)) {
+      textEx.current.innerHTML = item.textExample;
+      textMeaning.current.innerHTML = item.textMeaning;
+    }
   }, []);
 
   return (
-    <div className={style.textbook_word}>
-      <div className={style.picture}><img src={`https://newrslangapi.herokuapp.com/${item.image}`} alt="word_image" /></div>
-      <div className={style.info}>
-        <ul>
-          <li>
-            <span>{item.word}</span>
-            <span>{item.transcription}</span>
-            <span>{item.wordTranslate}</span>
-          </li>
-          <li ref={textMeaning} />
-          <li>{item.textMeaningTranslate}</li>
-          <li ref={textEx} />
-          <li>{item.textExampleTranslate}</li>
-          <li>
-            <button type="button" onClick={onPlayBtnClick}>Play</button>
-            {
+
+    deletedWordsList && deletedWordsList.length > 0 && deletedWordsList.includes(item.id) && type === 'normal' && isAuth
+      ? null
+      : (
+        <div className={style.textbook_word}>
+          <div className={style.picture}><img src={`https://newrslangapi.herokuapp.com/${item.image}`} alt="word_image" /></div>
+          <div className={style.info}>
+            <ul>
+              <li>
+                <span>{item.word}</span>
+                <span>{item.transcription}</span>
+                <span>{item.wordTranslate}</span>
+              </li>
+              <li ref={textMeaning} />
+              <li>{item.textMeaningTranslate}</li>
+              <li ref={textEx} />
+              <li>{item.textExampleTranslate}</li>
+              {
+                deletedWordsList && deletedWordsList.length > 0 && type === 'normal' && hardWordsList.includes(item.id) && isAuth
+                  ? (<li>VERY HARD WORD</li>)
+                  : null
+              }
+              <li>
+                <button type="button" onClick={onPlayBtnClick}>Play</button>
+                {
                   type === 'deletedWord'
                     ? <button type="button" onClick={onRestoreBtnClick}>Restore</button>
                     : null
               }
-            {
+                {
                   type === 'hardWord'
                     ? <button type="button" onClick={onRemoveBtnClick}>Restore</button>
                     : null
               }
-            {
+                {
                   type === 'normal'
                     ? (
                       <>
@@ -113,10 +96,12 @@ const TextbookWordComponent = (props) => {
                     )
                     : null
               }
-          </li>
-        </ul>
-      </div>
-    </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      )
+
   );
 };
 
