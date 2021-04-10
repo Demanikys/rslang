@@ -38,6 +38,7 @@ const StartAudioGame = () => {
           gameOpportunityOne="1. Кликните по нему мышью;"
           gameOpportunityTwo="2. Используйте клавиши 1, 2, 3, 4, 5."
           back={backImage}
+          fakeWords={fakeWords}
         />
       )
       : (

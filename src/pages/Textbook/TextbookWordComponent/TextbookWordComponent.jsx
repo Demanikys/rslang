@@ -1,51 +1,48 @@
 import React, { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Howl } from 'howler';
+import PropTypes from 'prop-types';
 import style from './TextbookWordComponent.module.scss';
+import { addNewHardWord, addNewRemovedWord } from '../../../actions/dictionaryAction';
+import checkDeletedAndDifficultWords from '../../../utilities/checkDeletedAndDifficultWords';
+import { getDeletedWords, getDifficultWords } from '../../../selectors/selectors';
 
 const TextbookWordComponent = (props) => {
-  const dataProps = props;
-  const { type } = dataProps;
-  const item = dataProps.word;
+  const { type, word, difficult } = props;
   const textEx = useRef();
   const textMeaning = useRef();
-  // console.log(item);
+  const deletedWords = useSelector(getDeletedWords);
+  const difficultWords = useSelector(getDifficultWords);
+  const dispatch = useDispatch();
 
-  const onPlayBtnClick = () => {
-    const a = new Audio();
-    const b = new Audio();
-    const c = new Audio();
-    a.src = `https://newrslangapi.herokuapp.com/${item.audio}`;
-    b.src = `https://newrslangapi.herokuapp.com/${item.audioMeaning}`;
-    c.src = `https://newrslangapi.herokuapp.com/${item.audioExample}`;
-    a.play();
-    a.addEventListener('ended', () => b.play());
-    b.addEventListener('ended', () => c.play());
-  };
+  const wordSound = new Howl({
+    src: `https://newrslangapi.herokuapp.com/${word.audio}`,
+  });
+
+  const wordExampleSound = new Howl({
+    src: `https://newrslangapi.herokuapp.com/${word.audioExample}`,
+  });
+
+  const wordMeaningSound = new Howl({
+    src: `https://newrslangapi.herokuapp.com/${word.audioMeaning}`,
+  });
 
   const onDeleteBtnClick = () => {
-    if (localStorage.getItem('userDeletedWords')) {
-      const deletedWordsArray = JSON.parse(localStorage.getItem('userDeletedWords'));
-      deletedWordsArray.push(item.id);
-      localStorage.setItem('userDeletedWords', JSON.stringify(deletedWordsArray));
-    } else {
-      localStorage.setItem('userDeletedWords', JSON.stringify([item.id]));
+    if (checkDeletedAndDifficultWords(deletedWords, word)) {
+      dispatch(addNewRemovedWord(word));
     }
-    console.log(typeof (JSON.parse(localStorage.getItem('userDeletedWords'))));
   };
 
   const onHardBtnClick = () => {
-    if (localStorage.getItem('userHardWords')) {
-      const deletedWordsArray = JSON.parse(localStorage.getItem('userHardWords'));
-      deletedWordsArray.push(item.id);
-      localStorage.setItem('userHardWords', JSON.stringify(deletedWordsArray));
-    } else {
-      localStorage.setItem('userHardWords', JSON.stringify([item.id]));
+    if (checkDeletedAndDifficultWords(difficultWords, word)) {
+      dispatch(addNewHardWord(word));
     }
   };
 
   const onRestoreBtnClick = () => {
-    const deletedWords = JSON.parse(localStorage.getItem('userDeletedWords'));
+    // const deletedWords = JSON.parse(localStorage.getItem('userDeletedWords'));
     deletedWords.forEach((key, index) => {
-      if (key === item.id) {
+      if (key === word.id) {
         deletedWords.splice(index, 1);
       }
     });
@@ -55,7 +52,7 @@ const TextbookWordComponent = (props) => {
   const onRemoveBtnClick = () => {
     const hardWords = JSON.parse(localStorage.getItem('userHardWords'));
     hardWords.forEach((key, index) => {
-      if (key === item.id) {
+      if (key === word.id) {
         hardWords.splice(index, 1);
       }
     });
@@ -63,51 +60,137 @@ const TextbookWordComponent = (props) => {
   };
 
   useEffect(() => {
-    textEx.current.innerHTML = item.textExample;
-    textMeaning.current.innerHTML = item.textMeaning;
+    textEx.current.innerHTML = word.textExample;
+    textMeaning.current.innerHTML = word.textMeaning;
   }, []);
 
   return (
     <div className={style.textbook_word}>
-      <div className={style.picture}><img src={`https://newrslangapi.herokuapp.com/${item.image}`} alt="word_image" /></div>
+      <div className={style.picture}><img src={`https://newrslangapi.herokuapp.com/${word.image}`} alt="word_image" /></div>
       <div className={style.info}>
-        <ul>
-          <li>
-            <span>{item.word}</span>
-            <span>{item.transcription}</span>
-            <span>{item.wordTranslate}</span>
-          </li>
-          <li ref={textMeaning} />
-          <li>{item.textMeaningTranslate}</li>
-          <li ref={textEx} />
-          <li>{item.textExampleTranslate}</li>
-          <li>
-            <button type="button" onClick={onPlayBtnClick}>Play</button>
-            {
-                  type === 'deletedWord'
-                    ? <button type="button" onClick={onRestoreBtnClick}>Restore</button>
-                    : null
+        <section>
+          <article>
+            <div className={style.header}>
+              <h4>{word.word}</h4>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="28"
+                height="28"
+                fill="white"
+                className="bi bi-volume-up-fill"
+                viewBox="0 0 16 16"
+                onClick={() => {
+                  wordSound.play();
+                }}
+              >
+                <path
+                  d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707z"
+                />
+                <path
+                  d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.483 5.483 0 0 1 11.025 8a5.483 5.483 0 0 1-1.61 3.89l.706.706z"
+                />
+                <path
+                  d="M8.707 11.182A4.486 4.486 0 0 0 10.025 8a4.486 4.486 0 0 0-1.318-3.182L8 5.525A3.489 3.489 0 0 1 9.025 8 3.49 3.49 0 0 1 8 10.475l.707.707zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06z"
+                />
+              </svg>
+            </div>
+            <div className={style.transcript}>
+              <p>{word.transcription}</p>
+              <p>{word.wordTranslate}</p>
+            </div>
+            <div>
+              <div className={style.sentenceAndAudio}>
+                <p ref={textMeaning} />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="28"
+                  height="28"
+                  fill="white"
+                  className="bi bi-volume-up-fill"
+                  viewBox="0 0 16 16"
+                  onClick={() => {
+                    wordMeaningSound.play();
+                  }}
+                >
+                  <path
+                    d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707z"
+                  />
+                  <path
+                    d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.483 5.483 0 0 1 11.025 8a5.483 5.483 0 0 1-1.61 3.89l.706.706z"
+                  />
+                  <path
+                    d="M8.707 11.182A4.486 4.486 0 0 0 10.025 8a4.486 4.486 0 0 0-1.318-3.182L8 5.525A3.489 3.489 0 0 1 9.025 8 3.49 3.49 0 0 1 8 10.475l.707.707zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06z"
+                  />
+                </svg>
+              </div>
+              <div className={style.sentenceAndAudio}>
+                <p>{word.textMeaningTranslate}</p>
+              </div>
+              <div className={style.sentenceAndAudio}>
+                <p ref={textEx} />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="28"
+                  height="28"
+                  fill="white"
+                  className="bi bi-volume-up-fill"
+                  viewBox="0 0 16 16"
+                  onClick={() => {
+                    wordExampleSound.play();
+                  }}
+                >
+                  <path
+                    d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707z"
+                  />
+                  <path
+                    d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.483 5.483 0 0 1 11.025 8a5.483 5.483 0 0 1-1.61 3.89l.706.706z"
+                  />
+                  <path
+                    d="M8.707 11.182A4.486 4.486 0 0 0 10.025 8a4.486 4.486 0 0 0-1.318-3.182L8 5.525A3.489 3.489 0 0 1 9.025 8 3.49 3.49 0 0 1 8 10.475l.707.707zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06z"
+                  />
+                </svg>
+              </div>
+              <div className={style.sentenceAndAudio}>
+                <p>{word.textExampleTranslate}</p>
+              </div>
+              {
+                !difficult
+                  && <i>Сложное слово!</i>
               }
-            {
-                  type === 'hardWord'
-                    ? <button type="button" onClick={onRemoveBtnClick}>Restore</button>
-                    : null
+            </div>
+            <div>
+              {
+                type === 'deletedWord'
+                  ? <button type="button" onClick={onRestoreBtnClick}>Restore</button>
+                  : null
               }
-            {
-                  type === 'normal'
-                    ? (
-                      <>
-                        <button type="button" onClick={onDeleteBtnClick}>Delete</button>
-                        <button type="button" onClick={onHardBtnClick}>Add to hard</button>
-                      </>
-                    )
-                    : null
+              {
+                type === 'hardWord'
+                  ? <button type="button" onClick={onRemoveBtnClick}>Restore</button>
+                  : null
               }
-          </li>
-        </ul>
+              {
+                type === 'normal'
+                  ? (
+                    <>
+                      <button type="button" onClick={onDeleteBtnClick}>Delete</button>
+                      <button type="button" onClick={onHardBtnClick}>Add to hard</button>
+                    </>
+                  )
+                  : null
+              }
+            </div>
+          </article>
+        </section>
       </div>
     </div>
   );
+};
+
+TextbookWordComponent.propTypes = {
+  type: PropTypes.string.isRequired,
+  word: PropTypes.objectOf(PropTypes.object).isRequired,
+  difficult: PropTypes.bool.isRequired,
 };
 
 export default TextbookWordComponent;

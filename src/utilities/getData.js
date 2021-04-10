@@ -1,7 +1,3 @@
-// export const getWords = (level, page) => fetch(`https://newrslangapi.herokuapp.com/words/?group=${level - 1}&page=${page}`)
-//   .then((response) => response.json())
-//   .catch((error) => console.log(error));
-
 export const getFakeWords = (level, page, count) => {
   const numbers = [];
   for (let i = 0; i < count; i += 1) {

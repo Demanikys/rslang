@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
-// import { Route } from 'react-router'
+import { useSelector } from 'react-redux';
 import style from './TextbookPageComponent.module.scss';
 import TextbookWordComponent from '../TextbookWordComponent';
+import checkDeletedAndDifficultWords from '../../../utilities/checkDeletedAndDifficultWords';
+import { getDeletedWords, getDifficultWords } from '../../../selectors/selectors';
 
 const TextbookPageComponent = (props) => {
   const dataProps = props;
   const [wordsData, setWordData] = useState();
+  const deletedWords = useSelector(getDeletedWords);
+  const difficultWords = useSelector(getDifficultWords);
 
   useEffect(() => {
     try {
@@ -22,17 +26,27 @@ const TextbookPageComponent = (props) => {
       ? (
         <div className={style.textbook_page_component}>
           {
-                    wordsData.map((item, index) => (
-                      <>
-                        <TextbookWordComponent word={item} type="normal" key={Math.random()} />
-                        {
-                                    index !== wordsData.length - 1
-                                      ? <br />
-                                      : null
-                                }
-                      </>
-                    ))
-                }
+            wordsData.map((item, index) => {
+              if (checkDeletedAndDifficultWords(deletedWords, item)) {
+                return (
+                  <>
+                    <TextbookWordComponent
+                      word={item}
+                      type="normal"
+                      key={item.word}
+                      difficult={checkDeletedAndDifficultWords(difficultWords, item)}
+                    />
+                    {
+                    index !== wordsData.length - 1
+                      ? <br />
+                      : null
+                    }
+                  </>
+                );
+              }
+              return <div style={{ display: 'none' }} />;
+            })
+          }
         </div>
       )
       : ('...загрузка...')

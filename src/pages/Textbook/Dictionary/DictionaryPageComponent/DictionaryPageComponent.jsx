@@ -13,8 +13,8 @@ const DictionaryPageComponent = (props) => {
     const resultArr = [];
 
     const fetchData = async (url) => {
-      const responce = await axios.get(`https://newrslangapi.herokuapp.com/words/${url}`);
-      resultArr.push(responce.data);
+      const response = await axios.get(`https://newrslangapi.herokuapp.com/words/${url}`);
+      resultArr.push(response.data);
       setWordsArr(resultArr);
     };
 
@@ -33,9 +33,9 @@ const DictionaryPageComponent = (props) => {
 
   return (
     <div className={style.page_component}>
-      { !isFetching && (wordsArr.lenght === idArr.lenght)
+      { !isFetching && (wordsArr.length === idArr.length)
         ? (wordsArr.map((item) => (
-          <TextbookWordComponent word={item} type={data.type} key={Math.random()} />
+          <TextbookWordComponent word={item} type={data.type} key={item.id} />
         )))
         : null}
 

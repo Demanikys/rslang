@@ -42,6 +42,7 @@ const StartGallowsGame = () => {
           gameOpportunityOne="1. Кликайте по буквам;"
           gameOpportunityTwo="2. Используйте буквы на клавиатуре."
           back={backImage}
+          fakeWords={[{ fake: true }]}
         />
       )
       : (

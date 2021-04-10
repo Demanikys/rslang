@@ -14,7 +14,7 @@ const GameSavanna = (props) => {
   const [wordCounter, setWordCounter] = useState(0);
   const [backgroundPosition, setBackgroundPosition] = useState(100);
   const [currentWord, setCurrentWord] = useState(words[wordCounter]);
-  const [currentWordAnswers, setCurrentWordAnswers] = useState();
+  const [currentWordAnswers, setCurrentWordAnswers] = useState([]);
   const [health, setHealth] = useState([1, 2, 3, 4, 5]);
   const [answerBtnsState, setAnswerBtnsState] = useState(true);
   const [isGameFinished, setIsGameFinished] = useState(false);
@@ -209,7 +209,7 @@ const GameSavanna = (props) => {
             <div className={style.game_finish_line} />
             <div className={style.buttonsWrapper}>
               <div className={style.game_answers_block}>
-                {currentWordAnswers
+                {currentWordAnswers.length > 0
                   ? (currentWordAnswers.map((item, i) => (
                     <Button
                       key={item.wordTranslate}

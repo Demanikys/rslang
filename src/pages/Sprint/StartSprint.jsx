@@ -32,6 +32,7 @@ const StartSprintGame = () => {
           gameOpportunityOne="1. Используйте мышь, чтобы выбрать."
           gameOpportunityTwo="2. Используйте клавиши влево и вправо."
           back={backImage}
+          fakeWords={[{ fake: true }]}
         />
       )
       : (
