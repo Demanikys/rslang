@@ -1,7 +1,8 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { registration } from '../../actions/userActions';
 import './Registration.scss';
-import { useHistory } from 'react-router-dom';
 
 const Registration = () => {
   const [name, setName] = useState('');
@@ -10,39 +11,40 @@ const Registration = () => {
   const history = useHistory();
 
   return (
-    <div className='Registration'>
+    <div className="Registration">
       <form>
-        <div className='input-field'>
+        <div className="input-field">
           <input
-            placeholder='Your name (necessarily)'
-            type='text'
+            placeholder="Your name (necessarily)"
+            type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-          <label htmlFor='email'></label>
+          <label htmlFor="email" />
         </div>
 
-        <div className='input-field'>
+        <div className="input-field">
           <input
-            placeholder='Email (necessarily)'
-            type='email'
+            placeholder="Email (necessarily)"
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <label htmlFor='email'></label>
+          <label htmlFor="email" />
         </div>
 
-        <div className='input-field'>
+        <div className="input-field">
           <input
-            placeholder='Password (necessarily)'
-            type='password'
+            label="password"
+            placeholder="Password (necessarily)"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <label htmlFor='email'></label>
+          <label htmlFor="email" />
         </div>
 
         <button
+          type="button"
           onClick={(e) => {
             if (name.length) {
               e.preventDefault();

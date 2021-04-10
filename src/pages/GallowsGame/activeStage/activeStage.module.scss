@@ -1,66 +1,67 @@
-.soundIcon {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  transition-duration: 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border: 1px solid black;
-  margin: 50px auto;
+.wrapper{
+  width: 100%;
 
-  &:hover{
-    background-color: black;
-  }
-}
-
-.chooseAnswer {
-  display: flex;
-  column-gap: 20px;
-  justify-content: center;
-  margin: 20px 0;
-}
-
-
-.rightAnswer{
-  background-color: green !important;
-}
-
-.wrongAnswer{
-  background-color: red !important;
-}
-
-.wordSoundWrapper,
-.textSoundWrapper{
-  margin: 40px 0;
-  display: flex;
-  column-gap: 10px;
-  justify-content: center;
-  align-items: center;
-
-  p, h4{
-    margin: 0;
-  }
-
-  p{
-    font-size: 25px;
-  }
-
-  .soundIcon {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    transition-duration: 0.3s;
+  .images{
     display: flex;
     align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border: 1px solid red;
-    margin: 0;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 700px;
+    margin: 0 auto 20px auto;
 
-    &:hover{
-      background-color: red;
+    .guess {
+      position: relative;
+
+      .imageGuess{
+        width: 200px;
+        height: auto;
+      }
+
+      .wordToGuess{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-family: monospace;
+
+        p{
+          transform: rotate(30deg);
+          margin: 0;
+        }
+      }
     }
+
+    .gallows{
+      width: 250px;
+      height: auto;
+    }
+
+    @media (max-width: 716px) {
+      justify-content: center;
+      row-gap: 20px;
+    }
+
+    @media (max-width: 716px) {
+      .gallows{
+        width: 250px;
+        height: auto;
+      }
+    }
+  }
+
+  .mistakes{
+    font-size: 26px;
+    //display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 20px;
+    margin: 20px auto;
+    display: none;
   }
 }

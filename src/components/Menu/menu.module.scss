@@ -1,0 +1,25 @@
+.menu{
+  z-index: 110;
+  font-family: monospace;
+
+  a{
+    font-size: 18px;
+    text-decoration: none;
+  }
+
+  a:hover{
+    text-decoration: underline;
+  }
+
+  .rslang{
+    margin-right: 50px;
+
+    a{
+      text-decoration: none;
+      background: -webkit-linear-gradient(43deg, #6075d9 0%, #C850C0 46%, #FFCC70 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 20px;
+    }
+  }
+}

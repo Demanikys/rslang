@@ -8,7 +8,7 @@
   justify-content: center;
   cursor: pointer;
   border: 1px solid black;
-  margin: 50px auto;
+  margin: 20px auto;
 
   &:hover{
     background-color: black;
@@ -17,9 +17,23 @@
 
 .chooseAnswer {
   display: flex;
-  column-gap: 20px;
+  column-gap: 40px;
+  row-gap: 20px;
   justify-content: center;
-  margin: 20px 0;
+  align-items: center;
+  margin: 15px 0;
+  padding: 0 20px;
+  flex-wrap: wrap;
+
+  @media (max-width: 450px) {
+    flex-direction: column;
+  }
+
+  button {
+    font-size: 21px;
+    width: 230px;
+    padding: 7px 0;
+  }
 }
 
 
@@ -38,7 +52,7 @@
 
 .wordSoundWrapper,
 .textSoundWrapper{
-  margin: 40px 0;
+  margin: 20px 0;
   display: flex;
   column-gap: 10px;
   justify-content: center;
@@ -52,20 +66,27 @@
     font-size: 25px;
   }
 
-  .soundIcon {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    transition-duration: 0.3s;
+  .soundIconSmall {
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    border: 1px solid red;
     margin: 0;
+    border: none;
 
-    &:hover{
-      background-color: red;
+    svg{
+      transition-duration: 0.3s;
+      &:hover{
+        fill: #969696;
+      }
+    }
+  }
+
+  .textExample{
+    font-size: 22px;
+
+    @media (max-width: 500px) {
+      font-size: 17px;
     }
   }
 }
