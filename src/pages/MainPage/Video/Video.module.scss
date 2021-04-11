@@ -1,0 +1,25 @@
+.video {
+  position: relative;
+  height: 600px;
+  padding: 35px;
+
+  .video__block {
+    position: relative;
+    width: 60%;
+    max-width: 800px;
+    margin: 50px auto 0;
+  }
+
+  .video__word {
+    position: absolute;
+    top: 0;
+    right: 50px;
+    font-size: 108px;
+    background: linear-gradient(45deg, #46CF42 33%, #0D61BC 66%, #8AA9D6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0.5;
+    -webkit-transform: rotate(90deg);
+    height: 512px;
+  }
+}
