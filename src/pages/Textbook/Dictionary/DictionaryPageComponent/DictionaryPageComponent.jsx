@@ -1,46 +1,39 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+// import axios from 'axios';
+import React from 'react';
+import PropTypes from 'prop-types';
 import style from './DictionaryPageComponent.module.scss';
 import TextbookWordComponent from '../../TextbookWordComponent';
+import checkDeletedAndDifficultWords from '../../../../utilities/checkDeletedAndDifficultWords';
 
 const DictionaryPageComponent = (props) => {
-  const data = props;
-  const idArr = data.words.slice(0);
-  const [wordsArr, setWordsArr] = useState([]);
-  const [isFetching, setIsFetching] = useState(true);
-
-  useEffect(() => {
-    const resultArr = [];
-
-    const fetchData = async (url) => {
-      const response = await axios.get(`https://newrslangapi.herokuapp.com/words/${url}`);
-      resultArr.push(response.data);
-      setWordsArr(resultArr);
-    };
-
-    idArr.forEach(async (item, index) => {
-      await fetchData(item);
-      if (index === idArr.length - 1) {
-        setIsFetching(false);
-        setWordsArr(resultArr);
-      }
-    });
-
-    // return (
-    //   () => console.log('removed')
-    // );
-  }, []);
+  const { type, words, difficultWords } = props;
 
   return (
     <div className={style.page_component}>
-      { !isFetching && (wordsArr.length === idArr.length)
-        ? (wordsArr.map((item) => (
-          <TextbookWordComponent word={item} type={data.type} key={item.id} />
-        )))
-        : null}
-
+      {
+        words.map((word) => (
+          <TextbookWordComponent
+            word={word}
+            type={type}
+            key={word.id}
+            difficult={checkDeletedAndDifficultWords(difficultWords, word)}
+          />
+        ))
+      }
     </div>
   );
 };
 
+DictionaryPageComponent.propTypes = {
+  type: PropTypes.string.isRequired,
+  words: PropTypes.arrayOf(PropTypes.object).isRequired,
+  difficultWords: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
+
 export default DictionaryPageComponent;
+
+// { !isFetching && (wordsArr.length === idArr.length)
+//   ? (wordsArr.map((item) => (
+//     <TextbookWordComponent word={item} type={type} key={item.id} />
+//   )))
+//   : null}

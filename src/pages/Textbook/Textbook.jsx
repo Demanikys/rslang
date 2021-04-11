@@ -24,9 +24,9 @@ const Textbook = () => {
               </li>
             ))
           }
-          {/* <li> */}
-          {/*  <Link to="/textbook/dictionary/learning">Dictionary</Link> */}
-          {/* </li> */}
+          <li>
+            <Link to="/textbook/dictionary/learning">Dictionary</Link>
+          </li>
         </ul>
         <div className={style.textbook_content}>
           <Pagination setPageNumber={setPageNumber} />
