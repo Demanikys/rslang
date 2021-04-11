@@ -23,7 +23,7 @@ const Textbook = () => {
       .then((snapshot) => snapshot.val());
 
     dispatch(setWordsCollection(userDeletedList, userHardList));
-  }, []);
+  });
 
   const onPreviousBtnClick = () => {
     if (pageNumber > 0) {

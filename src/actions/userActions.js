@@ -1,7 +1,6 @@
 import axios from 'axios';
 import firebase from 'firebase/app';
 import 'firebase/database';
-// import { useDispatch } from 'react-redux';
 // eslint-disable-next-line import/no-cycle
 // import store from '../index';
 import { setUser /* , setWordsCollection */ } from '../reducers/userReducer';
@@ -54,15 +53,6 @@ export const userWordsDataSet = async (userId, wordId, typeOfCollection) => {
       [wordId],
     );
   }
-  // if (typeOfCollection === 'deleted') {
-  //   const hard = await firebase.database().ref(`/users/${userId}/hard`).once('value')
-  //     .then((snapshot) => snapshot.val());
-  //   useDispatch(setWordsCollection([...userList, wordId], hard));
-  // } else if (typeOfCollection === 'hard') {
-  //   const deleted = await firebase.database().ref(`/users/${userId}/deleted`).once('value')
-  //     .then((snapshot) => snapshot.val());
-  //   useDispatch(setWordsCollection(deleted, [...userList, wordId]));
-  // }
 };
 
 export const userWordsDataRemove = async (userId, wordId, typeOfCollection) => {
@@ -78,14 +68,4 @@ export const userWordsDataRemove = async (userId, wordId, typeOfCollection) => {
   firebase.database().ref(`users/${userId}/${typeOfCollection}`).set(
     [...userList],
   );
-
-  // if (typeOfCollection === 'deleted') {
-  //   const hard = await firebase.database().ref(`/users/${userId}/hard`).once('value')
-  //     .then((snapshot) => snapshot.val());
-  //   useDispatch(setWordsCollection([...userList], hard));
-  // } else if (typeOfCollection === 'hard') {
-  //   const deleted = await firebase.database().ref(`/users/${userId}/deleted`).once('value')
-  //     .then((snapshot) => snapshot.val());
-  //   useDispatch(setWordsCollection(deleted, [...userList]));
-  // }
 };

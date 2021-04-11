@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-// import { Route } from 'react-router'
+import { useSelector } from 'react-redux';
 import style from './TextbookPageComponent.module.scss';
 import TextbookWordComponent from '../TextbookWordComponent';
 
@@ -15,21 +15,18 @@ const TextbookPageComponent = (props) => {
     } catch (e) {
       console.log(e);
     }
-  }, [dataProps.pageNumber]);
+  }, [dataProps.pageNumber,
+    useSelector((state) => state.user.deletedWords),
+    useSelector((state) => state.user.hardWords)]);
 
   return (
     wordsData
       ? (
         <div className={style.textbook_page_component}>
           {
-                    wordsData.map((item, index) => (
+                    wordsData.map((item) => (
                       <>
                         <TextbookWordComponent word={item} type="normal" />
-                        {
-                                    index !== wordsData.length - 1
-                                      ? <br />
-                                      : null
-                                }
                       </>
                     ))
                 }

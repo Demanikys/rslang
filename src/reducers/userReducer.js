@@ -1,10 +1,14 @@
 const SET_USER = 'SET_USER';
 const LOGOUT = 'LOGOUT';
 const SET_WORDS_COLLECTION = 'SET_WORDS_COLLECTION';
+const SET_DELETED_COLLECTION = 'SET_DELETED_COLLECTION';
+const SET_HARD_COLLECTION = 'SET_HARD_COLLECTION';
 
 const initialState = {
   currentUser: {},
   isAuth: false,
+  deletedWords: [],
+  hardWords: [],
 };
 
 const usersReducer = (state = initialState, action) => {
@@ -28,6 +32,16 @@ const usersReducer = (state = initialState, action) => {
         deletedWords: action.payload.deleted,
         hardWords: action.payload.hard,
       };
+    case SET_DELETED_COLLECTION:
+      return {
+        ...state,
+        deletedWords: action.payload.deleted,
+      };
+    case SET_HARD_COLLECTION:
+      return {
+        ...state,
+        hardWords: action.payload.hard,
+      };
     default:
       return state;
   }
@@ -44,6 +58,20 @@ export const setWordsCollection = (deleted, hard) => ({
   type: SET_WORDS_COLLECTION,
   payload: {
     deleted,
+    hard,
+  },
+});
+
+export const setDeletedCollection = (deleted) => ({
+  type: SET_DELETED_COLLECTION,
+  payload: {
+    deleted,
+  },
+});
+
+export const setHardCollection = (hard) => ({
+  type: SET_HARD_COLLECTION,
+  payload: {
     hard,
   },
 });
