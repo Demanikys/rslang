@@ -1,0 +1,38 @@
+.card {
+  width: 80%;
+  border: 1px solid black;
+  border-radius: 20px;
+  margin: 0 auto 20px;
+  padding: 15px;
+
+  .card__blockReverse {
+    flex-direction: row-reverse;
+  }
+
+  .card__block {
+    display: flex;
+    justify-content: space-between;
+
+    .card__photo {
+      width: 30%;
+
+      .card__author {
+        width: 100%;
+      }
+    }
+
+    .card__info {
+      flex-grow: 1;
+      flex-basis: min-content;
+
+      .card__authorInfo {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .card__desc {
+        line-height: 1.7em;
+      }
+    }
+  }
+}
