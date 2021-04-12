@@ -6,6 +6,8 @@ import TextbookWordComponent from '../../TextbookWordComponent';
 
 const DictionaryPageComponent = (props) => {
   const data = props;
+  const [wordsArr, setWordsArr] = useState([]);
+  const [isFetching, setIsFetching] = useState(true);
   const idArr = useSelector((state) => {
     if (data.type === 'hardWord') {
       return state.user.hardWords;
@@ -13,8 +15,6 @@ const DictionaryPageComponent = (props) => {
       return state.user.deletedWords;
     }
   });
-  const [wordsArr, setWordsArr] = useState([]);
-  const [isFetching, setIsFetching] = useState(true);
 
   useEffect(() => {
     const resultArr = [];
@@ -27,20 +27,27 @@ const DictionaryPageComponent = (props) => {
 
     if (idArr) {
       idArr.forEach(async (item, index) => {
-        await fetchData(item);
-        if (index === idArr.length - 1) {
-          setIsFetching(false);
-          setWordsArr(resultArr);
-        }
+        await fetchData(item)
+          .then(() => {
+            if (index === idArr.length - 1) {
+              setIsFetching(false);
+              setWordsArr(resultArr);
+            }
+          });
       });
     }
-  }, []);
+  }, [idArr]);
 
   return (
     <div className={style.page_component}>
       { !isFetching && (wordsArr.lenght === idArr.lenght)
         ? (wordsArr.map((item) => (
-          <TextbookWordComponent word={item} type={data.type} key={Math.random()} />
+          <TextbookWordComponent
+            word={item}
+            type={data.type}
+            key={item.id}
+            setIsFetching={setIsFetching}
+          />
         )))
         : ('Слова не найдены')}
     </div>

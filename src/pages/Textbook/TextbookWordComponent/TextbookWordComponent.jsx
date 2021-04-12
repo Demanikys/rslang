@@ -30,35 +30,14 @@ const TextbookWordComponent = (props) => {
     b.addEventListener('ended', () => c.play());
   };
 
-  // const updateWordsCollectonsInState = async () => {
-  //   let deleted;
-  //   let hard;
-
-  //   const fetch = async () => {
-  //     deleted = await firebase.database().ref(`/users/${currentUserId}/deleted`).once('value')
-  //       .then((snapshot) => snapshot.val());
-  //     hard = await firebase.database().ref(`/users/${currentUserId}/hard`).once('value')
-  //       .then((snapshot) => snapshot.val());
-  //   };
-
-  //   const setDate = async () => {
-  //     await fetch();
-  //   };
-
-  //   setDate()
-  //     .then(() => dispatch(setWordsCollection(deleted, hard)));
-  // };
-
   const onDeleteBtnClick = () => {
     userWordsDataSet(currentUserId, item.id, 'deleted');
     dispatch(setDeletedCollection([...deletedWordsList, item.id]));
-    // updateWordsCollectonsInState();
   };
 
   const onHardBtnClick = () => {
     userWordsDataSet(currentUserId, item.id, 'hard');
     dispatch(setHardCollection([...hardWordsList, item.id]));
-    // updateWordsCollectonsInState();
   };
 
   const onRestoreBtnClick = () => {
@@ -71,6 +50,7 @@ const TextbookWordComponent = (props) => {
     });
 
     dispatch(setDeletedCollection([...deletedWordsList]));
+    dataProps.setIsFetching(true);
   };
 
   const onRemoveBtnClick = () => {
@@ -82,53 +62,48 @@ const TextbookWordComponent = (props) => {
       }
     });
 
-    dispatch(setDeletedCollection([...hardWordsList]));
+    dispatch(setHardCollection([...hardWordsList]));
+    dataProps.setIsFetching(true);
   };
 
   useEffect(() => {
-    if (!deletedWordsList || !deletedWordsList.includes(item.id)) {
-      textEx.current.innerHTML = item.textExample;
-      textMeaning.current.innerHTML = item.textMeaning;
-    }
+    textEx.current.innerHTML = item.textExample;
+    textMeaning.current.innerHTML = item.textMeaning;
   }, []);
 
   return (
-
-    deletedWordsList && deletedWordsList.length > 0 && deletedWordsList.includes(item.id) && type === 'normal' && isAuth
-      ? null
-      : (
-        <>
-          <div className={style.textbook_word}>
-            <div className={style.picture}><img src={`https://newrslangapi.herokuapp.com/${item.image}`} alt="word_image" /></div>
-            <div className={style.info}>
-              <ul>
-                <li>
-                  <span>{item.word}</span>
-                  <span>{item.transcription}</span>
-                  <span>{item.wordTranslate}</span>
-                </li>
-                <li ref={textMeaning} />
-                <li>{item.textMeaningTranslate}</li>
-                <li ref={textEx} />
-                <li>{item.textExampleTranslate}</li>
-                {
+    <>
+      <div className={style.textbook_word}>
+        <div className={style.picture}><img src={`https://newrslangapi.herokuapp.com/${item.image}`} alt="word_image" /></div>
+        <div className={style.info}>
+          <ul>
+            <li>
+              <span>{item.word}</span>
+              <span>{item.transcription}</span>
+              <span>{item.wordTranslate}</span>
+            </li>
+            <li ref={textMeaning} />
+            <li>{item.textMeaningTranslate}</li>
+            <li ref={textEx} />
+            <li>{item.textExampleTranslate}</li>
+            {
                 hardWordsList && hardWordsList.length > 0 && type === 'normal' && hardWordsList.includes(item.id) && isAuth
                   ? (<li>VERY HARD WORD</li>)
                   : null
               }
-                <li>
-                  <button type="button" onClick={onPlayBtnClick}>Play</button>
-                  {
+            <li>
+              <button type="button" onClick={onPlayBtnClick}>Play</button>
+              {
                   type === 'deletedWord'
-                    ? <button type="button" onClick={onRestoreBtnClick}>Restore</button>
+                    ? <button type="button" onClick={onRestoreBtnClick}>Restore from deleted</button>
                     : null
               }
-                  {
+              {
                   type === 'hardWord'
-                    ? <button type="button" onClick={onRemoveBtnClick}>Restore</button>
+                    ? <button type="button" onClick={onRemoveBtnClick}>Remove from hard</button>
                     : null
               }
-                  {
+              {
                   type === 'normal'
                     ? (
                       <>
@@ -138,14 +113,12 @@ const TextbookWordComponent = (props) => {
                     )
                     : null
               }
-                </li>
-              </ul>
-            </div>
-          </div>
-          <br />
-        </>
-      )
-
+            </li>
+          </ul>
+        </div>
+      </div>
+      <br />
+    </>
   );
 };
 

@@ -43,7 +43,7 @@ const Textbook = () => {
         <ul className={style.textbook_nav}>
           {
                 pagesArray.map((item) => (
-                  <li key={Math.random()}>
+                  <li key={item}>
                     <Link to={`/textbook/${item}`} onClick={() => setPageNumber(0)}>{`Group ${item}`}</Link>
                   </li>
                 ))
@@ -65,7 +65,7 @@ const Textbook = () => {
           <Switch>
             {
                 pagesArray.map((item, index) => (
-                  <Route key={Math.random()} path={`/textbook/${item}`}>
+                  <Route key={item} path={`/textbook/${item}`}>
                     <TextbookPageComponent
                       groupNumber={index}
                       pageNumber={pageNumber}

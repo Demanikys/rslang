@@ -5,6 +5,7 @@ import TextbookWordComponent from '../TextbookWordComponent';
 
 const TextbookPageComponent = (props) => {
   const dataProps = props;
+  const deletedWordsList = useSelector((state) => state.user.deletedWords) || [];
   const [wordsData, setWordData] = useState();
 
   useEffect(() => {
@@ -24,11 +25,12 @@ const TextbookPageComponent = (props) => {
       ? (
         <div className={style.textbook_page_component}>
           {
-                    wordsData.map((item) => (
-                      <>
-                        <TextbookWordComponent word={item} type="normal" />
-                      </>
-                    ))
+                    wordsData.map((item) => {
+                      if (deletedWordsList.includes(item.id)) {
+                        return null;
+                      }
+                      return <TextbookWordComponent word={item} type="normal" key={item.id} />;
+                    })
                 }
         </div>
       )
