@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-// import { Route } from 'react-router'
+import { useSelector } from 'react-redux';
 import style from './TextbookPageComponent.module.scss';
 import TextbookWordComponent from '../TextbookWordComponent';
 
 const TextbookPageComponent = (props) => {
   const dataProps = props;
+  const deletedWordsList = useSelector((state) => state.user.deletedWords) || [];
   const [wordsData, setWordData] = useState();
 
   useEffect(() => {
@@ -15,23 +16,21 @@ const TextbookPageComponent = (props) => {
     } catch (e) {
       console.log(e);
     }
-  }, [dataProps.pageNumber]);
+  }, [dataProps.pageNumber,
+    useSelector((state) => state.user.deletedWords),
+    useSelector((state) => state.user.hardWords)]);
 
   return (
     wordsData
       ? (
         <div className={style.textbook_page_component}>
           {
-                    wordsData.map((item, index) => (
-                      <>
-                        <TextbookWordComponent word={item} type="normal" key={Math.random()} />
-                        {
-                                    index !== wordsData.length - 1
-                                      ? <br />
-                                      : null
-                                }
-                      </>
-                    ))
+                    wordsData.map((item) => {
+                      if (deletedWordsList.includes(item.id)) {
+                        return null;
+                      }
+                      return <TextbookWordComponent word={item} type="normal" key={item.id} />;
+                    })
                 }
         </div>
       )

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import firebase from 'firebase/app';
 import { useDispatch /* useSelector */ } from 'react-redux';
 import AudioGame from './pages/AudioGame';
 import Footer from './components/Footer';
@@ -15,8 +16,14 @@ import GameSavanna from './pages/GameSavanna';
 import { auth } from './actions/userActions';
 import StartSprintGame from './pages/Sprint';
 import MiniGames from './pages/MiniGames';
+import firebaseConfig from './utilities/firebaseSetings';
 
 const App = () => {
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  } else {
+    firebase.app();
+  }
   // const isAuth = useSelector((state) => state.user.isAuth);
   const dispacth = useDispatch();
 
