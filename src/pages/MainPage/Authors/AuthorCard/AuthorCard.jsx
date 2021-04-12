@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import style from './AuthorCard.module.scss';
-import GitHubLogo from '../../../../assets/images/GitHubLogo/GitHub-Mark-32px.png';
 import AuthorPhoto from '../../../../assets/images/AuthorPhoto/21104.svg';
 
 const AuthorCard = ({
-  name, url, text, isReverse,
+  name, text, isReverse,
 }) => (
   <div className={style.card}>
     <div className={!isReverse ? `${style.card__block} ${style.card__blockReverse}` : `${style.card__block}`}>
@@ -14,14 +13,7 @@ const AuthorCard = ({
       </div>
       <div className={style.card__info}>
         <div className={style.card__authorInfo}>
-          <div>
-            {name}
-          </div>
-          <div>
-            <a href={url}>
-              <img src={GitHubLogo} alt="github url" />
-            </a>
-          </div>
+          <b>{name}</b>
         </div>
         <div className={style.card__desc}>
           {text}
@@ -33,14 +25,12 @@ const AuthorCard = ({
 
 AuthorCard.propTypes = {
   name: PropTypes.string,
-  url: PropTypes.string,
   text: PropTypes.string,
   isReverse: PropTypes.bool,
 };
 
 AuthorCard.defaultProps = {
   name: 'Author of RSLang',
-  url: 'https://github.com/Demanikys/rslang/',
   text: 'Member of a team',
   isReverse: false,
 };

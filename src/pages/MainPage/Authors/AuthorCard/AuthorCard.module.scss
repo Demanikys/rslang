@@ -1,9 +1,9 @@
 .card {
-  width: 80%;
   border: 1px solid black;
   border-radius: 20px;
   margin: 0 auto 20px;
   padding: 15px;
+  width: 90%;
 
   .card__blockReverse {
     flex-direction: row-reverse;
@@ -12,12 +12,13 @@
   .card__block {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    column-gap: 40px;
 
     .card__photo {
-      width: 30%;
-
       .card__author {
-        width: 100%;
+        width: 100px;
+        height: 100px;
       }
     }
 
@@ -28,10 +29,23 @@
       .card__authorInfo {
         display: flex;
         justify-content: space-between;
+        font-size: 25px;
       }
 
       .card__desc {
         line-height: 1.7em;
+        font-size: 20px;
+        text-align: justify;
+      }
+    }
+
+    @media (max-width: 700px) {
+      flex-direction: column;
+      row-gap: 20px;
+
+      .card__author {
+        width: 200px !important;
+        height: 200px !important;
       }
     }
   }

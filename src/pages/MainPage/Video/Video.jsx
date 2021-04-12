@@ -5,14 +5,14 @@ import YoutubeVideo from '../../../components/YoutubeVideo/YoutubeVideo';
 const Video = () => (
   <div className={style.video}>
     <div>
-      <h3>Take a look at example, how you can use RS Lang!</h3>
+      <h3>Пример использования нашего приложения!</h3>
       <div className={style.video__block}>
         <YoutubeVideo embedId="rokGy0huYEA" />
       </div>
-      <div className={style.video__word}>
-        Improve
-      </div>
     </div>
+    <span className={style.video__word}>
+      Совершенствуй
+    </span>
   </div>
 );
 
