@@ -8,6 +8,7 @@ import style from './Textbook.module.scss';
 import TextbookPageComponent from './TextbookPageComponent';
 import Dictionary from './Dictionary';
 import { setWordsCollection } from '../../reducers/userReducer';
+import TextbookSettings from './Settings';
 
 const Textbook = () => {
   const pagesArray = [1, 2, 3, 4, 5, 6];
@@ -51,6 +52,9 @@ const Textbook = () => {
           <li>
             <Link to="/textbook/dictionary/learning">Dictionary</Link>
           </li>
+          <li>
+            <Link to="/textbook/dictionary/settings">settings</Link>
+          </li>
         </ul>
         <div className={style.textbook_content}>
           <div className={style.textbook_page_selectors}>
@@ -75,6 +79,9 @@ const Textbook = () => {
             }
             <Route path="/textbook/dictionary/learning">
               <Dictionary />
+            </Route>
+            <Route path="/textbook/dictionary/settings">
+              <TextbookSettings />
             </Route>
           </Switch>
         </div>
