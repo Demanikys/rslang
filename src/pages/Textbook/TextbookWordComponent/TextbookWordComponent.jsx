@@ -11,9 +11,11 @@ import {
 } from '../../../actions/dictionaryAction';
 import checkDeletedAndDifficultWords from '../../../utilities/checkDeletedAndDifficultWords';
 import { getDeletedWords, getDifficultWords } from '../../../selectors/selectors';
+// import { setUserData } from '../../../actions/userActions';
 
 const TextbookWordComponent = (props) => {
   const { type, word, difficult } = props;
+  // const userId = useSelector((state) => state.user.currentUser.userId);
   const deletedWords = useSelector(getDeletedWords);
   const difficultWords = useSelector(getDifficultWords);
   const textEx = useRef();
@@ -52,8 +54,11 @@ const TextbookWordComponent = (props) => {
   };
 
   const onHardBtnClick = () => {
+    console.log('click');
     if (checkDeletedAndDifficultWords(difficultWords, word)) {
       dispatch(addNewHardWord(word));
+      console.log('async', [...difficultWords, word]);
+      // setUserData(userId, [...difficultWords, word], 'hard');
     }
   };
 
@@ -183,20 +188,20 @@ const TextbookWordComponent = (props) => {
             <div>
               {
                 type === 'deletedWord'
-                  ? <button type="button" onClick={onRestoreBtnClick}>Restore</button>
+                  ? <button type="button" onClick={() => onRestoreBtnClick()}>Restore</button>
                   : null
               }
               {
                 type === 'hardWord'
-                  ? <button type="button" onClick={onRestoreBtnClick}>Restore</button>
+                  ? <button type="button" onClick={() => onRestoreBtnClick()}>Restore</button>
                   : null
               }
               {
                 type === 'normal'
                   ? (
                     <>
-                      <button type="button" onClick={onDeleteBtnClick}>Delete</button>
-                      <button type="button" onClick={onHardBtnClick}>Add to hard</button>
+                      <button type="button" onClick={() => onDeleteBtnClick()}>Delete</button>
+                      <button type="button" onClick={() => onHardBtnClick()}>Add to hard</button>
                     </>
                   )
                   : null

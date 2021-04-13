@@ -8,11 +8,11 @@ import style from './Textbook.module.scss';
 import TextbookPageComponent from './TextbookPageComponent';
 import Dictionary from './Dictionary';
 import { setHardWords, setRemoveWords } from '../../actions/dictionaryAction';
-import { getDeletedWords, getDifficultWords } from '../../selectors/selectors';
+import { getDeletedWords, getDifficultWords, getUserId } from '../../selectors/selectors';
 import { setUserData } from '../../actions/userActions';
 
 const Textbook = () => {
-  const userId = useSelector((state) => state.user.currentUser.userId);
+  const userId = useSelector(getUserId);
   const difficultWords = useSelector(getDifficultWords);
   const deletedWords = useSelector(getDeletedWords);
   const [isFetching, setIsFetching] = useState(false);
@@ -20,24 +20,52 @@ const Textbook = () => {
   const pagesArray = [1, 2, 3, 4, 5, 6];
 
   useEffect(async () => {
-    console.log(userId);
     if (difficultWords.length === 0 && deletedWords.length === 0) {
-      const userDeletedList = await firebase.database().ref(`/users/${userId}/deleted`).once('value')
-        .then((snapshot) => snapshot.val());
-      const userHardList = await firebase.database().ref(`/users/${userId}/hard`).once('value')
-        .then((snapshot) => snapshot.val());
+      if (userId) {
+        await firebase.database().ref(`/users/${userId}/deleted`).once('value')
+          .then((snapshot) => snapshot.val())
+          .then((res) => dispatch(setRemoveWords(res || [])));
 
-      dispatch(setHardWords(userHardList ?? []));
-      dispatch(setRemoveWords(userDeletedList ?? []));
-      setIsFetching(true);
+        await firebase.database().ref(`/users/${userId}/hard`).once('value')
+          .then((snapshot) => snapshot.val())
+          .then((res) => dispatch(setHardWords(res || [])));
+
+        setIsFetching(true);
+      }
     } else {
       setIsFetching(true);
     }
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
-    setUserData(userId, difficultWords, 'hard');
+    if (difficultWords.length > 0) {
+      setUserData(userId, difficultWords, 'hard');
+    }
   }, [difficultWords]);
+
+  useEffect(() => {
+    if (deletedWords.length > 0) {
+      setUserData(userId, deletedWords, 'deleted');
+    }
+  }, [deletedWords]);
+
+  // [{
+  //   audio: 'files/01_0005.mp3',
+  //   audioExample: 'files/01_0005_example.mp3',
+  //   audioMeaning: 'files/01_0005_meaning.mp3',
+  //   group: 0,
+  //   id: '5e9f5ee35eb9e72bc21af4a2',
+  //   image: 'files/01_0005.jpg',
+  //   page: 0,
+  //   textExample: 'There is a small <b>boat</b> on the lake.',
+  //   textExampleTranslate: 'На озере есть маленькая лодка',
+  //   textMeaning: 'A <i>boat</i> is a vehicle that moves across water.',
+  //   textMeaningTranslate: 'Лодка - это транспортное средство, которое движется по воде',
+  //   transcription: '[bout]',
+  //   word: 'boat',
+  //   wordTranslate: 'лодка',
+  // }]
+  console.log(userId, 'id');
 
   return (
     isFetching

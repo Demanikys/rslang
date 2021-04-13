@@ -5,3 +5,4 @@ export const getMiniGameLevel = (state) => state.miniGame.level;
 export const getLearnedWords = (state) => state.dictionary.learnedWords;
 export const getDeletedWords = (state) => state.dictionary.deletedWords;
 export const getDifficultWords = (state) => state.dictionary.difficultWords;
+export const getUserId = (state) => state.user.currentUser.userId;
