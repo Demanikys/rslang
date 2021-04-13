@@ -155,7 +155,7 @@ const TextbookWordComponent = (props) => {
               </div>
               {
                 !difficult
-                  && <i>Сложное слово!</i>
+                && <i>Сложное слово!</i>
               }
             </div>
             <div>

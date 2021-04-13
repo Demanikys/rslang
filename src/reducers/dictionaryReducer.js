@@ -7,6 +7,7 @@ const initialState = {
 };
 
 const dictionaryReducer = (state = initialState, action) => {
+  console.log(state.deletedWords);
   switch (action.type) {
     case ADD_TO_LEARNED_WORDS:
       return {

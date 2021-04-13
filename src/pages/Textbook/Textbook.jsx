@@ -5,7 +5,7 @@ import {
 import style from './Textbook.module.scss';
 import TextbookPageComponent from './TextbookPageComponent';
 import Dictionary from './Dictionary';
-import Pagination from '../../components/Pagination';
+// import Pagination from '../../components/Pagination';
 
 const Textbook = () => {
   const pagesArray = [1, 2, 3, 4, 5, 6];
@@ -29,7 +29,7 @@ const Textbook = () => {
           </li>
         </ul>
         <div className={style.textbook_content}>
-          <Pagination setPageNumber={setPageNumber} />
+          {/* <Pagination setPageNumber={setPageNumber} /> */}
           <Switch>
             {
               pagesArray.map((item, index) => (
@@ -52,3 +52,12 @@ const Textbook = () => {
 };
 
 export default Textbook;
+
+// useEffect(async () => {
+//   const userDeletedList = await firebase.database().ref(`/users/${userId}/deleted`).once('value')
+//     .then((snapshot) => snapshot.val());
+//   const userHardList = await firebase.database().ref(`/users/${userId}/hard`).once('value')
+//     .then((snapshot) => snapshot.val());
+//
+//   dispatch(setWordsCollection(userDeletedList, userHardList));
+// });
