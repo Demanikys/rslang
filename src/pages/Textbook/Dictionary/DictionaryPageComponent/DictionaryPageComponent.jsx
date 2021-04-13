@@ -11,7 +11,6 @@ const DictionaryPageComponent = (props) => {
   const {
     type, words, difficultWords, setPageNumber, length,
   } = props;
-  console.log(words, 'delted');
 
   return (
     <div className={style.page_component}>

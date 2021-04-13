@@ -13,7 +13,7 @@ export const registration = async (email, password, name) => {
       name,
     });
   } catch (e) {
-    alert(e.response.data.message);
+    console.log(e.response.data.message);
   }
 };
 
@@ -29,7 +29,7 @@ export const login = (email, password) => async (dispatch) => {
     dispatch(setUser(response.data));
     localStorage.setItem('user', JSON.stringify(response.data));
   } catch (e) {
-    alert(e.response.data.message);
+    console.log(e.response.data.message);
   }
 };
 
@@ -40,32 +40,41 @@ export const auth = () => async (dispatch) => {
   }
 };
 
-export const userWordsDataSet = async (userId, wordId, typeOfCollection) => {
-  const userList = await firebase.database().ref(`/users/${userId}/${typeOfCollection}`).once('value')
-    .then((snapshot) => snapshot.val());
+// export const userWordsDataSet = async (userId, wordId, typeOfCollection) => {
+//   const userList = await firebase.database().
+//   ref(`/users/${userId}/${typeOfCollection}`).once('value')
+//     .then((snapshot) => snapshot.val());
+//
+//   if (userList) {
+//     firebase.database().ref(`users/${userId}/${typeOfCollection}`).set(
+//       [...userList, wordId],
+//     );
+//   } else {
+//     firebase.database().ref(`users/${userId}/${typeOfCollection}`).set(
+//       [wordId],
+//     );
+//   }
+// };
+//
+// export const userWordsDataRemove = async (userId, wordId, typeOfCollection) => {
+//   const userList = await firebase.database().
+//   ref(`/users/${userId}/${typeOfCollection}`).once('value')
+//     .then((snapshot) => snapshot.val());
+//
+//   userList.forEach((item, index) => {
+//     if (item === wordId) {
+//       userList.splice(index, 1);
+//     }
+//   });
+//
+//   firebase.database().ref(`users/${userId}/${typeOfCollection}`).set(
+//     [...userList],
+//   );
+// };
 
-  if (userList) {
-    firebase.database().ref(`users/${userId}/${typeOfCollection}`).set(
-      [...userList, wordId],
-    );
-  } else {
-    firebase.database().ref(`users/${userId}/${typeOfCollection}`).set(
-      [wordId],
-    );
-  }
-};
-
-export const userWordsDataRemove = async (userId, wordId, typeOfCollection) => {
-  const userList = await firebase.database().ref(`/users/${userId}/${typeOfCollection}`).once('value')
-    .then((snapshot) => snapshot.val());
-
-  userList.forEach((item, index) => {
-    if (item === wordId) {
-      userList.splice(index, 1);
-    }
-  });
-
+export const setUserData = (userId, array, typeOfCollection) => {
+  console.log(userId, array, typeOfCollection);
   firebase.database().ref(`users/${userId}/${typeOfCollection}`).set(
-    [...userList],
-  );
+    [...array],
+  ).then(() => console.log('stanul'));
 };

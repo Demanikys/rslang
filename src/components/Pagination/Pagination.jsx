@@ -7,7 +7,6 @@ const PaginationInTextBook = (props) => {
   const { setPageNumber, length } = props;
   const [item, setItem] = useState(0);
   const [pages, setPages] = useState([]);
-  console.log(length);
 
   useEffect(() => {
     setPages(() => {
