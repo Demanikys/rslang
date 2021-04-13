@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import style from './TextbookPageComponent.module.scss';
 import TextbookWordComponent from '../TextbookWordComponent';
-import checkDeletedAndDifficultWords from '../../../utilities/checkDeletedAndDifficultWords';
+import checkDifficultWords from '../../../utilities/checkDeletedAndDifficultWords';
 import { getDeletedWords, getDifficultWords } from '../../../selectors/selectors';
 import Pagination from '../../../components/Pagination/Pagination';
 
@@ -22,25 +22,23 @@ const TextbookPageComponent = (props) => {
       console.log(e);
     }
   }, [pageNumber]);
-  console.log(wordsData);
 
   return (
     <>
-      <Pagination setPageNumber={setPageNumber} />
       {
         wordsData
           ? (
             <div className={style.textbook_page_component}>
               {
                 wordsData.map((item, index) => {
-                  if (checkDeletedAndDifficultWords(deletedWords, item)) {
+                  if (checkDifficultWords(deletedWords, item)) {
                     return (
                       <>
                         <TextbookWordComponent
                           word={item}
                           type="normal"
                           key={item.word}
-                          difficult={checkDeletedAndDifficultWords(difficultWords, item)}
+                          difficult={checkDifficultWords(difficultWords, item)}
                         />
                         {
                           index !== wordsData.length - 1
@@ -57,6 +55,7 @@ const TextbookPageComponent = (props) => {
           )
           : ('...загрузка...')
       }
+      <Pagination setPageNumber={setPageNumber} length={600} />
     </>
   );
 };

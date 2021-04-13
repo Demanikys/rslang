@@ -3,16 +3,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Howl } from 'howler';
 import PropTypes from 'prop-types';
 import style from './TextbookWordComponent.module.scss';
-import { addNewHardWord, addNewRemovedWord } from '../../../actions/dictionaryAction';
+import {
+  addNewHardWord,
+  addNewRemovedWord,
+  deleteFromHardWords,
+  deleteFromRemovedWords,
+} from '../../../actions/dictionaryAction';
 import checkDeletedAndDifficultWords from '../../../utilities/checkDeletedAndDifficultWords';
 import { getDeletedWords, getDifficultWords } from '../../../selectors/selectors';
 
 const TextbookWordComponent = (props) => {
   const { type, word, difficult } = props;
-  const textEx = useRef();
-  const textMeaning = useRef();
   const deletedWords = useSelector(getDeletedWords);
   const difficultWords = useSelector(getDifficultWords);
+  const textEx = useRef();
+  const textMeaning = useRef();
+  const wordRef = useRef();
   const dispatch = useDispatch();
 
   const wordSound = new Howl({
@@ -28,6 +34,18 @@ const TextbookWordComponent = (props) => {
   });
 
   const onDeleteBtnClick = () => {
+    const inDif = checkDeletedAndDifficultWords(difficultWords, word);
+    if (!inDif) {
+      const array = [];
+
+      for (let i = 0; i < difficultWords.length; i += 1) {
+        if (difficultWords[i].word !== wordRef.current.textContent) {
+          array.push(difficultWords[i]);
+        }
+      }
+
+      dispatch(deleteFromHardWords(array));
+    }
     if (checkDeletedAndDifficultWords(deletedWords, word)) {
       dispatch(addNewRemovedWord(word));
     }
@@ -40,23 +58,27 @@ const TextbookWordComponent = (props) => {
   };
 
   const onRestoreBtnClick = () => {
-    // const deletedWords = JSON.parse(localStorage.getItem('userDeletedWords'));
-    deletedWords.forEach((key, index) => {
-      if (key === word.id) {
-        deletedWords.splice(index, 1);
-      }
-    });
-    localStorage.setItem('userDeletedWords', JSON.stringify(deletedWords));
-  };
+    if (type === 'hardWord') {
+      const array = [];
 
-  const onRemoveBtnClick = () => {
-    const hardWords = JSON.parse(localStorage.getItem('userHardWords'));
-    hardWords.forEach((key, index) => {
-      if (key === word.id) {
-        hardWords.splice(index, 1);
+      for (let i = 0; i < difficultWords.length; i += 1) {
+        if (difficultWords[i].word !== wordRef.current.textContent) {
+          array.push(difficultWords[i]);
+        }
       }
-    });
-    localStorage.setItem('userHardWords', JSON.stringify(hardWords));
+
+      dispatch(deleteFromHardWords(array));
+    } else if (type === 'deletedWord') {
+      const array = [];
+
+      for (let i = 0; i < deletedWords.length; i += 1) {
+        if (deletedWords[i].word !== wordRef.current.textContent) {
+          array.push(deletedWords[i]);
+        }
+      }
+
+      dispatch(deleteFromRemovedWords(array));
+    }
   };
 
   useEffect(() => {
@@ -71,7 +93,7 @@ const TextbookWordComponent = (props) => {
         <section>
           <article>
             <div className={style.header}>
-              <h4>{word.word}</h4>
+              <h4 ref={wordRef}>{word.word}</h4>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="28"
@@ -166,7 +188,7 @@ const TextbookWordComponent = (props) => {
               }
               {
                 type === 'hardWord'
-                  ? <button type="button" onClick={onRemoveBtnClick}>Restore</button>
+                  ? <button type="button" onClick={onRestoreBtnClick}>Restore</button>
                   : null
               }
               {

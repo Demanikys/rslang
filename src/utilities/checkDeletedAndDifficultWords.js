@@ -1,4 +1,4 @@
-function checkDeletedAndDifficultWords(words, resultWords) {
+function checkDifficultWords(words, resultWords) {
   if (words.length === 0) return true;
 
   for (let i = 0; i < words.length; i += 1) {
@@ -10,4 +10,4 @@ function checkDeletedAndDifficultWords(words, resultWords) {
   return true;
 }
 
-export default checkDeletedAndDifficultWords;
+export default checkDifficultWords;
