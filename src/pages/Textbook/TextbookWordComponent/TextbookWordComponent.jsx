@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-// import firebase from 'firebase/app';
 import 'firebase/database';
 import { useSelector, useDispatch } from 'react-redux';
 import style from './TextbookWordComponent.module.scss';
@@ -17,6 +16,8 @@ const TextbookWordComponent = (props) => {
   const hardWordsList = useSelector((state) => state.user.hardWords) || [];
   const isAuth = useSelector((state) => state.user.isAuth);
   const dispatch = useDispatch();
+  const showTranslate = useSelector((state) => state.textbook.showTranslate);
+  const showButtons = useSelector((state) => state.textbook.showButtons);
 
   const onPlayBtnClick = () => {
     const a = new Audio();
@@ -80,12 +81,24 @@ const TextbookWordComponent = (props) => {
             <li>
               <span>{item.word}</span>
               <span>{item.transcription}</span>
-              <span>{item.wordTranslate}</span>
+              {
+                showTranslate
+                  ? <span>{item.wordTranslate}</span>
+                  : null
+              }
             </li>
             <li ref={textMeaning} />
-            <li>{item.textMeaningTranslate}</li>
+            {
+                showTranslate
+                  ? <li>{item.textMeaningTranslate}</li>
+                  : null
+              }
             <li ref={textEx} />
-            <li>{item.textExampleTranslate}</li>
+            {
+                showTranslate
+                  ? <li>{item.textExampleTranslate}</li>
+                  : null
+              }
             {
                 hardWordsList && hardWordsList.length > 0 && type === 'normal' && hardWordsList.includes(item.id) && isAuth
                   ? (<li>VERY HARD WORD</li>)
@@ -104,7 +117,7 @@ const TextbookWordComponent = (props) => {
                     : null
               }
               {
-                  type === 'normal'
+                  type === 'normal' && showButtons
                     ? (
                       <>
                         <button type="button" onClick={onDeleteBtnClick}>Delete</button>
