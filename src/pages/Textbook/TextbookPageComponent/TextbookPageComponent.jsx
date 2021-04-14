@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import style from './TextbookPageComponent.module.scss';
 import TextbookWordComponent from '../TextbookWordComponent';
 import checkDifficultWords from '../../../utilities/checkDeletedAndDifficultWords';
-import { getDeletedWords, getDifficultWords } from '../../../selectors/selectors';
+import { getDeletedWords, getDifficultWords, getUserAuth } from '../../../selectors/selectors';
 import Pagination from '../../../components/Pagination/Pagination';
 import Games from '../Games/Games';
 import {
@@ -22,6 +22,7 @@ const TextbookPageComponent = (props) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [isThereWords, setIsThereWords] = useState(true);
   const [type] = useState('textbook');
+  const isAuth = useSelector(getUserAuth);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -57,7 +58,19 @@ const TextbookPageComponent = (props) => {
             <div className={style.textbook_page_component}>
               {
                 wordsData.map((item) => {
-                  if (checkDifficultWords(deletedWords, item)) {
+                  if (checkDifficultWords(deletedWords, item) ?? isAuth) {
+                    return (
+                      <div key={item.word}>
+                        <TextbookWordComponent
+                          word={item}
+                          type="normal"
+                          difficult={checkDifficultWords(difficultWords, item)}
+                        />
+                        <hr style={{ width: '100%' }} />
+                      </div>
+                    );
+                  }
+                  if (!isAuth) {
                     return (
                       <div key={item.word}>
                         <TextbookWordComponent

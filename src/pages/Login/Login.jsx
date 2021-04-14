@@ -4,12 +4,11 @@ import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
+import { Button } from 'react-bootstrap';
 import { login } from '../../actions/userActions';
 import './Login.scss';
 
 const Login = () => {
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -66,14 +65,14 @@ const Login = () => {
               />
             </p>
             {touched.password && errors.password && <p className="error">{errors.password}</p>}
-            <button
+            <Button
               disabled={!isValid || !dirty}
               onClick={handleSubmit}
               type="submit"
             >
               Войти
 
-            </button>
+            </Button>
           </div>
         )}
       </Formik>

@@ -24,7 +24,6 @@ const App = () => {
   } else {
     firebase.app();
   }
-  // const isAuth = useSelector((state) => state.user.isAuth);
   const dispatch = useDispatch();
 
   useEffect(() => {

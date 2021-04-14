@@ -6,7 +6,7 @@ export const getFakeWords = (level, page, count) => {
   } else {
     wordsLevel = level - 1;
   }
-  console.log(wordsLevel, 'uroven');
+
   for (let i = 0; i < count; i += 1) {
     const number = Math.floor(Math.random() * 30);
     if (number === page || numbers.includes(number)) {
@@ -28,9 +28,6 @@ export const getFakeWords = (level, page, count) => {
 };
 
 export const getWords = (level, page, count) => {
-  console.log(level, 'level get');
-  console.log(page, 'page get');
-  console.log(count, 'count get');
   const promises = [];
   const numbers = [];
 

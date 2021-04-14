@@ -8,19 +8,21 @@ import { Button, ListGroup } from 'react-bootstrap';
 import style from './Textbook.module.scss';
 import TextbookPageComponent from './TextbookPageComponent';
 import Dictionary from './Dictionary';
-import { setHardWords, setRemoveWords } from '../../actions/dictionaryAction';
+import { setHardWords, setLearnedWords, setRemoveWords } from '../../actions/dictionaryAction';
 import {
-  getDeletedWords, getDifficultWords, getUserAuth, getUserId,
+  getDeletedWords, getDifficultWords, getLearnedWords, getUserAuth, getUserId,
 } from '../../selectors/selectors';
 import { setUserData } from '../../actions/userActions';
 import { setGameFromTextbookStatus } from '../../actions/mniGameAction';
 import toggleShowStatus from '../../actions/footerAction';
 import Preloader from '../../components/Preloader/Preloader';
+import TextbookSettings from './Settings';
 
 const Textbook = () => {
   const userId = useSelector(getUserId);
   const difficultWords = useSelector(getDifficultWords);
   const deletedWords = useSelector(getDeletedWords);
+  const learnedWords = useSelector(getLearnedWords);
   const [isFetching, setIsFetching] = useState(false);
   const dispatch = useDispatch();
   const menu = useRef();
@@ -29,7 +31,8 @@ const Textbook = () => {
 
   useEffect(async () => {
     dispatch(setGameFromTextbookStatus(true));
-    if (difficultWords.length === 0 && deletedWords.length === 0 && isAuth) {
+    if (difficultWords.length === 0 && deletedWords.length === 0
+      && learnedWords.length === 0 && isAuth) {
       if (userId) {
         await firebase.database().ref(`/users/${userId}/deleted`).once('value')
           .then((snapshot) => snapshot.val())
@@ -38,6 +41,10 @@ const Textbook = () => {
         await firebase.database().ref(`/users/${userId}/hard`).once('value')
           .then((snapshot) => snapshot.val())
           .then((res) => dispatch(setHardWords(res || [])));
+
+        await firebase.database().ref(`/users/${userId}/learned`).once('value')
+          .then((snapshot) => snapshot.val())
+          .then((res) => dispatch(setLearnedWords(res || [])));
 
         setIsFetching(true);
       }
@@ -49,6 +56,7 @@ const Textbook = () => {
   useEffect(() => {
     if (difficultWords.length > 0) {
       setUserData(userId, difficultWords, 'hard');
+      setUserData(userId, [...learnedWords, ...difficultWords], 'learned');
     }
   }, [difficultWords]);
 
@@ -84,6 +92,9 @@ const Textbook = () => {
             }
             <ListGroup.Item>
               <Link to="/textbook/dictionary/learning">Словарь</Link>
+            </ListGroup.Item>
+            <ListGroup.Item className={style.settings}>
+              <TextbookSettings />
             </ListGroup.Item>
             <ListGroup.Item className={style.closeWrapper}>
               <Button variant="danger" onClick={() => closeMenu()}>Закрыть</Button>

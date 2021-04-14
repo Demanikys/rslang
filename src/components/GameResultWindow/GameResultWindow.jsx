@@ -5,14 +5,16 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import style from './gameResultWindow.module.scss';
 import backImage from '../../assets/backgrounds/bg-result.svg';
-import { getGameFromTextbookStatus, getLearnedWords } from '../../selectors/selectors';
+import { getGameFromTextbookStatus, getLearnedWords, getUserId } from '../../selectors/selectors';
 import checkLearnedWords from '../../utilities/checkLearnedWords';
 import addNewLearnedWords from '../../actions/dictionaryAction';
+import { setUserData } from '../../actions/userActions';
 
 const GameResultWindow = React.memo((props) => {
   const { correctAnswers, wrongAnswers } = props;
   const learnedWords = useSelector(getLearnedWords);
   const textbookStatus = useSelector(getGameFromTextbookStatus);
+  const userId = useSelector(getUserId);
   const words = correctAnswers.concat(wrongAnswers);
   const gameWindow = useRef();
   const dispatch = useDispatch();
@@ -20,7 +22,10 @@ const GameResultWindow = React.memo((props) => {
   useEffect(() => {
     gameWindow.current.style.background = `url('${backImage}')`;
     const setWord = checkLearnedWords(learnedWords, words);
-    if (textbookStatus) dispatch(addNewLearnedWords(setWord));
+    if (textbookStatus) {
+      dispatch(addNewLearnedWords(setWord));
+      setUserData(userId, [...learnedWords, ...setWord], 'learned');
+    }
   }, []);
 
   const createAnswersMarkDown = (array) => array.map((answer, index) => (
