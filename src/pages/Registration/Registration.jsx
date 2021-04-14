@@ -4,12 +4,10 @@ import { useHistory } from 'react-router-dom';
 import './Registration.scss';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import { Button } from 'react-bootstrap';
 import { registration } from '../../actions/userActions';
 
 const Registration = () => {
-  // const [name, setName] = useState('');
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
   const history = useHistory();
 
   const validationsSchema = yup.object().shape({
@@ -82,13 +80,13 @@ const Registration = () => {
               />
             </p>
             {touched.name && errors.name && <p className="error">{errors.name}</p>}
-            <button
+            <Button
               disabled={!isValid || !dirty}
               onClick={handleSubmit}
               type="submit"
             >
               Регистрация
-            </button>
+            </Button>
           </div>
         )}
       </Formik>

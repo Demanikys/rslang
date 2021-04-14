@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../reducers/userReducer';
 import style from './menu.module.scss';
+import { setHardWords, setLearnedWords, setRemoveWords } from '../../actions/dictionaryAction';
 
 const Menu = () => {
   const isAuth = useSelector((state) => state.user.isAuth);
@@ -37,7 +38,15 @@ const Menu = () => {
                     {`Привет, ${user.name}`}
                   </Navbar.Brand>
                   <Navbar.Brand>
-                    <Link to="/login" onClick={() => dispatch(logout())}>
+                    <Link
+                      to="/login"
+                      onClick={() => {
+                        dispatch(logout());
+                        dispatch(setHardWords([]));
+                        dispatch(setRemoveWords([]));
+                        dispatch(setLearnedWords([]));
+                      }}
+                    >
                       Выйти
                     </Link>
                   </Navbar.Brand>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Button } from 'react-bootstrap';
 import style from './TextbookSettings.module.scss';
 import { changeTranslateVis, changeButtonsVis } from '../../../reducers/textbookReducer';
 
@@ -17,20 +18,20 @@ const TextbookSettings = () => {
 
   return (
     <div className={style.textbook_settings}>
-      <button type="button" onClick={onTranslateBtnClick}>
+      <Button type="button" onClick={() => onTranslateBtnClick()}>
         {
-            showTranslate
-              ? 'Скрыть перевод'
-              : 'Показать перевод'
-          }
-      </button>
-      <button type="button" onClick={onShowBtnClick}>
+          showTranslate
+            ? 'Скрыть перевод'
+            : 'Показать перевод'
+        }
+      </Button>
+      <Button type="button" onClick={() => onShowBtnClick()}>
         {
-              showButtons
-                ? 'Скрыть кнопки'
-                : 'Показать кнопки'
-          }
-      </button>
+          showButtons
+            ? 'Скрыть кнопки'
+            : 'Показать кнопки'
+        }
+      </Button>
     </div>
   );
 };

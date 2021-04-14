@@ -18,7 +18,10 @@ const PaginationInTextBook = (props) => {
         paginationItems.push(
           <Pagination.Item
             key={i}
-            onClick={() => setPageNumber(i)}
+            onClick={() => {
+              setPageNumber(i);
+              window.scrollTo(0, 0);
+            }}
             disabled={(length / 20) < i - 1}
           >
             {i}

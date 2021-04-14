@@ -4,14 +4,18 @@ import { Howl } from 'howler';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 import style from './TextbookWordComponent.module.scss';
-import {
+import addNewLearnedWords, {
   addNewHardWord,
   addNewRemovedWord,
   deleteFromHardWords,
   deleteFromRemovedWords,
 } from '../../../actions/dictionaryAction';
 import checkDeletedAndDifficultWords from '../../../utilities/checkDeletedAndDifficultWords';
-import { getDeletedWords, getDifficultWords, getUserAuth } from '../../../selectors/selectors';
+import {
+  getButtonsVisibility,
+  getDeletedWords, getDifficultWords, getLearnedWords, getTranslateVisibility, getUserAuth,
+} from '../../../selectors/selectors';
+import checkLearnedWords from '../../../utilities/checkLearnedWords';
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 
 const TextbookWordComponent = (props) => {
@@ -19,6 +23,9 @@ const TextbookWordComponent = (props) => {
   const deletedWords = useSelector(getDeletedWords);
   const difficultWords = useSelector(getDifficultWords);
   const isAuth = useSelector(getUserAuth);
+  const learnedWords = useSelector(getLearnedWords);
+  const buttonsVisible = useSelector(getButtonsVisibility);
+  const translateVisible = useSelector(getTranslateVisibility);
   const textEx = useRef();
   const textMeaning = useRef();
   const wordRef = useRef();
@@ -57,6 +64,10 @@ const TextbookWordComponent = (props) => {
   const onHardBtnClick = () => {
     if (checkDeletedAndDifficultWords(difficultWords, word)) {
       dispatch(addNewHardWord(word));
+      const setWord = checkLearnedWords(learnedWords, [word]);
+      if (setWord.length > 0) {
+        dispatch(addNewLearnedWords([word]));
+      }
     }
   };
 
@@ -106,12 +117,17 @@ const TextbookWordComponent = (props) => {
                 {word.word}
               </h4>
             </div>
+            {
+              translateVisible
+            && (
             <div className={style.transcript}>
               (
               <p>{word.transcription}</p>
               <p>{word.wordTranslate}</p>
               )
             </div>
+            )
+            }
             <div>
               <div className={style.sentenceAndAudio}>
                 <p
@@ -122,9 +138,14 @@ const TextbookWordComponent = (props) => {
                   className={style.wordWithSound}
                 />
               </div>
-              <div className={style.sentenceAndAudio}>
-                <p>{word.textMeaningTranslate}</p>
-              </div>
+              {
+                translateVisible
+                && (
+                <div className={style.sentenceAndAudio}>
+                  <p>{word.textMeaningTranslate}</p>
+                </div>
+                )
+              }
               <div className={style.sentenceAndAudio}>
                 <p
                   ref={textEx}
@@ -134,41 +155,51 @@ const TextbookWordComponent = (props) => {
                   className={style.wordWithSound}
                 />
               </div>
-              <div className={style.sentenceAndAudio}>
-                <p>{word.textExampleTranslate}</p>
-              </div>
+              {
+                translateVisible
+                && (
+                <div className={style.sentenceAndAudio}>
+                  <p>{word.textExampleTranslate}</p>
+                </div>
+                )
+              }
               {
                 !difficult
                 && <i>Сложное слово!</i>
               }
             </div>
-            <div>
-              {
-                type === 'deletedWord'
-                  ? <Button disabled={!isAuth} type="button" onClick={() => onRestoreBtnClick()}>Restore</Button>
-                  : null
-              }
-              {
-                type === 'hardWord'
-                  ? <Button disabled={!isAuth} type="button" onClick={() => onRestoreBtnClick()}>Restore</Button>
-                  : null
-              }
-              {
-                type === 'normal'
-                  ? (
-                    <>
-                      <Button disabled={!isAuth} variant="danger" onClick={() => onDeleteBtnClick()}>Delete</Button>
-                      <Button
-                        disabled={!isAuth}
-                        onClick={() => onHardBtnClick()}
-                      >
-                        Add to hard
-                      </Button>
-                    </>
-                  )
-                  : null
-              }
-            </div>
+            {
+              buttonsVisible
+              && (
+              <div>
+                {
+                  type === 'deletedWord'
+                    ? <Button disabled={!isAuth} type="button" onClick={() => onRestoreBtnClick()}>Восстановить</Button>
+                    : null
+                }
+                {
+                  type === 'hardWord'
+                    ? <Button disabled={!isAuth} type="button" onClick={() => onRestoreBtnClick()}>Восстановить</Button>
+                    : null
+                }
+                {
+                  type === 'normal'
+                    ? (
+                      <>
+                        <Button disabled={!isAuth} variant="danger" onClick={() => onDeleteBtnClick()}>Удалить</Button>
+                        <Button
+                          disabled={!isAuth || !difficult}
+                          onClick={() => onHardBtnClick()}
+                        >
+                          Сложное слово
+                        </Button>
+                      </>
+                    )
+                    : null
+                }
+              </div>
+              )
+            }
           </article>
         </section>
       </div>
