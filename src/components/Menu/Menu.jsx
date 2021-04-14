@@ -18,27 +18,27 @@ const Menu = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
-            <Navbar.Text>
+          <Nav className={style.contentWrapper}>
+            <Navbar.Text className={style.content}>
               <Link to="/textbook/1">Учебник</Link>
               <Link to="/mini-games">Мини-игры</Link>
               {!isAuth ? (
                 <>
                   <Navbar.Brand>
-                    <Link to="/registration">Sign Up</Link>
+                    <Link to="/registration">Зарегистрироваться</Link>
                   </Navbar.Brand>
                   <Navbar.Brand>
-                    <Link to="/login">Sign In</Link>
+                    <Link to="/login">Войти</Link>
                   </Navbar.Brand>
                 </>
               ) : (
                 <>
                   <Navbar.Brand>
-                    {`Hello, ${user.name}`}
+                    {`Привет, ${user.name}`}
                   </Navbar.Brand>
                   <Navbar.Brand>
                     <Link to="/login" onClick={() => dispatch(logout())}>
-                      Logout
+                      Выйти
                     </Link>
                   </Navbar.Brand>
                 </>

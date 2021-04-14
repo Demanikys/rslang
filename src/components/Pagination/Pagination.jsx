@@ -31,7 +31,7 @@ const PaginationInTextBook = (props) => {
   }, [item, length]);
 
   return (
-    <Pagination className={style.pagination}>
+    <Pagination size="md" className={style.pagination}>
       <Pagination.First onClick={() => setItem(0)} />
       <Pagination.Prev disabled={!item} onClick={() => setItem(item - 1)} />
 

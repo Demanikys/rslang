@@ -12,6 +12,7 @@ import {
   setGamePage,
   setWordsFromTextbook,
 } from '../../../actions/mniGameAction';
+import Preloader from '../../../components/Preloader/Preloader';
 
 const TextbookPageComponent = (props) => {
   const dataProps = props;
@@ -19,6 +20,8 @@ const TextbookPageComponent = (props) => {
   const deletedWords = useSelector(getDeletedWords);
   const difficultWords = useSelector(getDifficultWords);
   const [pageNumber, setPageNumber] = useState(1);
+  const [isThereWords, setIsThereWords] = useState(true);
+  const [type] = useState('textbook');
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -37,7 +40,11 @@ const TextbookPageComponent = (props) => {
   useEffect(() => {
     if (wordsData) {
       const setWords = wordsData.filter((el) => checkDifficultWords(deletedWords, el));
-      console.log(setWords);
+      if (setWords.length === 0) {
+        setIsThereWords(false);
+      } else {
+        setIsThereWords(true);
+      }
       dispatch(setWordsFromTextbook(setWords));
     }
   }, [deletedWords, pageNumber, dataProps.groupNumber, wordsData]);
@@ -49,7 +56,7 @@ const TextbookPageComponent = (props) => {
           ? (
             <div className={style.textbook_page_component}>
               {
-                wordsData.map((item, index) => {
+                wordsData.map((item) => {
                   if (checkDifficultWords(deletedWords, item)) {
                     return (
                       <div key={item.word}>
@@ -58,23 +65,29 @@ const TextbookPageComponent = (props) => {
                           type="normal"
                           difficult={checkDifficultWords(difficultWords, item)}
                         />
-                        {
-                          index !== wordsData.length - 1
-                            ? <br />
-                            : null
-                        }
+                        <hr style={{ width: '100%' }} />
                       </div>
                     );
                   }
                   return <div style={{ display: 'none' }} />;
                 })
               }
-              <Games />
+              {
+                !isThereWords
+                  && (
+                  <div className={style.noWords}>
+                    <h4>Слов нет!</h4>
+                  </div>
+                  )
+              }
             </div>
           )
-          : ('...загрузка...')
+          : (
+            <Preloader />
+          )
       }
       <Pagination setPageNumber={setPageNumber} length={600} />
+      <Games type={type} />
     </>
   );
 };

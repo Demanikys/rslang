@@ -1,5 +1,10 @@
 .navigation{
   background: #343a40;
+  width: 100%;
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 110;
 
   .menu{
     z-index: 110;
@@ -25,6 +30,26 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         font-size: 20px;
+      }
+    }
+  }
+}
+
+.contentWrapper{
+  width: 100%;
+
+  .content{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+
+    @media (max-width: 767px) {
+      flex-direction: column;
+      justify-content: start;
+
+      a, span{
+        margin-right: auto;
       }
     }
   }

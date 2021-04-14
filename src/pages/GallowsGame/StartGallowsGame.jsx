@@ -7,8 +7,8 @@ import toggleShowStatus from '../../actions/footerAction';
 import {
   getGameFromDictStatus,
   getGameFromTextbookStatus,
-  getGameGroupNumber,
-  getGamePageNumber, getGameWordsFromDict, getGameWordsFromTextbook,
+  getGameWordsFromDict,
+  getGameWordsFromTextbook,
   getMiniGameLevel,
 } from '../../selectors/selectors';
 import { getWords } from '../../utilities/getData';
@@ -18,8 +18,6 @@ const StartGallowsGame = () => {
   const [startGame, setStartGame] = useState(false);
   const level = useSelector(getMiniGameLevel);
   const textbookStatus = useSelector(getGameFromTextbookStatus);
-  const pageNumber = useSelector(getGamePageNumber);
-  const groupNumber = useSelector(getGameGroupNumber);
   const dictionaryStatus = useSelector(getGameFromDictStatus);
   const wordsFromDictionary = useSelector(getGameWordsFromDict);
   const wordsFromTextbook = useSelector(getGameWordsFromTextbook);
@@ -30,13 +28,10 @@ const StartGallowsGame = () => {
     let currentLevel;
     let data;
     if (textbookStatus) {
-      page = pageNumber;
-      currentLevel = groupNumber + 1;
       if (dictionaryStatus) {
         data = wordsFromDictionary;
       } else {
         data = wordsFromTextbook;
-        // data = await getWords(currentLevel, page, 1);
       }
     } else {
       page = Math.floor(Math.random() * 30);
@@ -44,10 +39,8 @@ const StartGallowsGame = () => {
       data = await getWords(currentLevel, page, 1);
     }
 
-    // const data = await getWords(currentLevel, page, 1);
     const localData = data.flat();
     const sliceData = [];
-    console.log(localData);
     for (let i = 0; i < localData.length; i += 1) {
       const word = localData[Math.floor(Math.random() * localData.length)];
       if (!sliceData.includes(word)) {
@@ -55,7 +48,6 @@ const StartGallowsGame = () => {
       } else {
         i -= 1;
       }
-      console.log('wats wrong');
     }
     setWords(sliceData.sort(() => Math.random() - 0.5));
     dispatch(toggleShowStatus(false));

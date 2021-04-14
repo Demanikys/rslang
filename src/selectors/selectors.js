@@ -13,3 +13,4 @@ export const getGameFromDictStatus = (state) => state.miniGame.fromDictionary;
 export const getGameWordsFromDict = (state) => state.miniGame.wordsFromDictionary;
 export const getGameWordsFromTextbook = (state) => state.miniGame.wordsFromTextbook;
 export const getType = (state) => state.dictionary.type;
+export const getUserAuth = (state) => state.user.isAuth;

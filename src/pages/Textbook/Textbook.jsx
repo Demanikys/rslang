@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Link, Switch, Route,
 } from 'react-router-dom';
 import firebase from 'firebase/app';
 import { useDispatch, useSelector } from 'react-redux';
+import { Button, ListGroup } from 'react-bootstrap';
 import style from './Textbook.module.scss';
 import TextbookPageComponent from './TextbookPageComponent';
 import Dictionary from './Dictionary';
 import { setHardWords, setRemoveWords } from '../../actions/dictionaryAction';
-import { getDeletedWords, getDifficultWords, getUserId } from '../../selectors/selectors';
+import {
+  getDeletedWords, getDifficultWords, getUserAuth, getUserId,
+} from '../../selectors/selectors';
 import { setUserData } from '../../actions/userActions';
 import { setGameFromTextbookStatus } from '../../actions/mniGameAction';
+import toggleShowStatus from '../../actions/footerAction';
+import Preloader from '../../components/Preloader/Preloader';
 
 const Textbook = () => {
   const userId = useSelector(getUserId);
@@ -18,11 +23,13 @@ const Textbook = () => {
   const deletedWords = useSelector(getDeletedWords);
   const [isFetching, setIsFetching] = useState(false);
   const dispatch = useDispatch();
+  const menu = useRef();
+  const isAuth = useSelector(getUserAuth);
   const pagesArray = [1, 2, 3, 4, 5, 6];
 
   useEffect(async () => {
     dispatch(setGameFromTextbookStatus(true));
-    if (difficultWords.length === 0 && deletedWords.length === 0) {
+    if (difficultWords.length === 0 && deletedWords.length === 0 && isAuth) {
       if (userId) {
         await firebase.database().ref(`/users/${userId}/deleted`).once('value')
           .then((snapshot) => snapshot.val())
@@ -51,22 +58,37 @@ const Textbook = () => {
     }
   }, [deletedWords]);
 
+  useEffect(() => {
+    dispatch(toggleShowStatus(true));
+  }, []);
+
+  const showMenu = () => {
+    menu.current.classList.add(style.show);
+  };
+  const closeMenu = () => {
+    menu.current.classList.remove(style.show);
+  };
+
   return (
     isFetching
       ? (
         <div className={style.textbook}>
-          <ul className={style.textbook_nav}>
+          <Button className={style.showBtn} onClick={() => showMenu()}>Меню</Button>
+          <ListGroup className={style.nav} ref={menu}>
             {
-                pagesArray.map((item) => (
-                  <li key={item}>
-                    <Link id={item} to={`/textbook/${item}`}>{`Group ${item}`}</Link>
-                  </li>
-                ))
-              }
-            <li>
+              pagesArray.map((item) => (
+                <ListGroup.Item key={item}>
+                  <Link id={item} to={`/textbook/${item}`}>{`Группа ${item}`}</Link>
+                </ListGroup.Item>
+              ))
+            }
+            <ListGroup.Item>
               <Link to="/textbook/dictionary/learning">Словарь</Link>
-            </li>
-          </ul>
+            </ListGroup.Item>
+            <ListGroup.Item className={style.closeWrapper}>
+              <Button variant="danger" onClick={() => closeMenu()}>Закрыть</Button>
+            </ListGroup.Item>
+          </ListGroup>
           <div className={style.textbook_content}>
             <Switch>
               {
@@ -86,7 +108,7 @@ const Textbook = () => {
         </div>
       )
       : (
-        <div>Loader</div>
+        <Preloader />
       )
   );
 };

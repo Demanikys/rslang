@@ -51,6 +51,7 @@ const StartAudioGame = () => {
     setWords(data.flat().sort(() => Math.random() - 0.5));
     const fake = await getFakeWords(currentLevel, page, 4);
     setFakeWords(fake.flat().sort(() => Math.random() - 0.5));
+    dispatch(toggleShowStatus(false));
   }, []);
 
   return (

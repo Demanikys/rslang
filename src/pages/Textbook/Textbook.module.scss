@@ -1,29 +1,40 @@
-.textbook{
+.textbook {
+  display: flex;
+  min-height: 100vh;
+
+  .nav {
+    min-width: 120px;
+    max-width: 120px;
+    width: 120px;
+    transition: all 0.5s;
+
+    @media (max-width: 550px) {
+      position: absolute;
+      left: -120px;
+    }
+  }
+}
+
+.show {
+  left: 0 !important;
+}
+
+.showBtn {
+  position: absolute;
+
+  @media (min-width: 550px) {
+    display: none;
+  }
+}
+
+.closeWrapper{
     display: flex;
-    min-height: 100vh;
-    &_nav{
-        flex-basis: 150px;
-        background: rgb(149, 238, 6);
-        margin-bottom: 0;
-        flex-grow: 0;
-        flex-shrink: 0;
-        padding: 10px;
+    justify-content: center;
+    @media (min-width: 550px) {
+        display: none;
     }
-    &_content{
-        flex-grow: 1;
-        background: rgb(255, 230, 0);
-        padding-bottom: 20px;
-    }
-    &_page_selectors{
-        display: flex;
-        justify-content: space-around;
-        .page_button:hover{
-            cursor: pointer;
-        }
-        margin-bottom: 20px;
-        padding: 5px;
-    }
-    .page_button{
-        padding: 5px;
-    }
+}
+
+.textbook_content{
+  width: 100%;
 }

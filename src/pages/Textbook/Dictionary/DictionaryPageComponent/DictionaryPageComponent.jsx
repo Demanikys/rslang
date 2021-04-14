@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import style from './DictionaryPageComponent.module.scss';
@@ -13,6 +13,7 @@ const DictionaryPageComponent = (props) => {
     type, words, difficultWords, setPageNumber, length, topic,
   } = props;
   const dispatch = useDispatch();
+  const [isThereWords, setIsThereWords] = useState(true);
 
   useEffect(() => {
     dispatch(setGameFromDictionaryStatus(true));
@@ -22,19 +23,34 @@ const DictionaryPageComponent = (props) => {
     dispatch(setWordsFromDictionary(words));
     dispatch(setGameGroup(topic - 1));
     dispatch(setType(type));
+    if (words.length === 0) {
+      setIsThereWords(false);
+    } else {
+      setIsThereWords(true);
+    }
   }, [words]);
 
   return (
     <div className={style.page_component}>
       {
         words.map((word) => (
-          <TextbookWordComponent
-            word={word}
-            type={type}
-            key={word.id}
-            difficult={type === 'deletedWord' ? true : checkDifficultWords(difficultWords, word)}
-          />
+          <div key={word.id}>
+            <TextbookWordComponent
+              word={word}
+              type={type}
+              difficult={type === 'deletedWord' ? true : checkDifficultWords(difficultWords, word)}
+            />
+            <hr />
+          </div>
         ))
+      }
+      {
+        !isThereWords
+        && (
+          <div className={style.noWords}>
+            <h4>Слов нет!</h4>
+          </div>
+        )
       }
       <Pagination setPageNumber={setPageNumber} length={length} />
     </div>
