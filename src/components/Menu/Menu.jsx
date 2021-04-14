@@ -14,7 +14,7 @@ const Menu = () => {
     <div className={style.navigation}>
       <Navbar bg="dark" variant="dark" expand="md" className={style.menu}>
         <Navbar.Brand className={style.rslang}>
-          <Link to="/">Rslang</Link>
+          <Link to="/">Rs Lang</Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">

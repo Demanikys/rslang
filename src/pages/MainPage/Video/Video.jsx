@@ -10,9 +10,6 @@ const Video = () => (
         <YoutubeVideo embedId="rokGy0huYEA" />
       </div>
     </div>
-    <span className={style.video__word}>
-      Совершенствуй
-    </span>
   </div>
 );
 

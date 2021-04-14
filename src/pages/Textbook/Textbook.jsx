@@ -92,14 +92,14 @@ const Textbook = () => {
           <div className={style.textbook_content}>
             <Switch>
               {
-                  pagesArray.map((item, index) => (
-                    <Route key={item} path={`/textbook/${item}`}>
-                      <TextbookPageComponent
-                        groupNumber={index}
-                      />
-                    </Route>
-                  ))
-                }
+                pagesArray.map((item, index) => (
+                  <Route key={item} path={`/textbook/${item}`}>
+                    <TextbookPageComponent
+                      groupNumber={index}
+                    />
+                  </Route>
+                ))
+              }
               <Route path="/textbook/dictionary/learning">
                 <Dictionary pageNumber={1} />
               </Route>

@@ -17,7 +17,6 @@ const Description = () => (
       </p>
       <h4>Добро пожаловать!</h4>
     </div>
-    <span className={style.description__word}>Изучай</span>
   </div>
 );
 
