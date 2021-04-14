@@ -58,7 +58,6 @@ const TextbookWordComponent = (props) => {
     if (checkDeletedAndDifficultWords(difficultWords, word)) {
       dispatch(addNewHardWord(word));
       console.log('async', [...difficultWords, word]);
-      // setUserData(userId, [...difficultWords, word], 'hard');
     }
   };
 

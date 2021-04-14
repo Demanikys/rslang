@@ -6,7 +6,12 @@ import checkDifficultWords from '../../../utilities/checkDeletedAndDifficultWord
 import { getDeletedWords, getDifficultWords } from '../../../selectors/selectors';
 import Pagination from '../../../components/Pagination/Pagination';
 import Games from '../Games/Games';
-import { setGameFromDictionaryStatus, setGameGroup, setGamePage } from '../../../actions/mniGameAction';
+import {
+  setGameFromDictionaryStatus,
+  setGameGroup,
+  setGamePage,
+  setWordsFromTextbook,
+} from '../../../actions/mniGameAction';
 
 const TextbookPageComponent = (props) => {
   const dataProps = props;
@@ -28,6 +33,14 @@ const TextbookPageComponent = (props) => {
       console.log(e);
     }
   }, [pageNumber]);
+
+  useEffect(() => {
+    if (wordsData) {
+      const setWords = wordsData.filter((el) => checkDifficultWords(deletedWords, el));
+      console.log(setWords);
+      dispatch(setWordsFromTextbook(setWords));
+    }
+  }, [deletedWords, pageNumber, dataProps.groupNumber, wordsData]);
 
   return (
     <>

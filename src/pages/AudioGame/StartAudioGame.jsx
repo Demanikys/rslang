@@ -9,7 +9,7 @@ import {
   getGameFromDictStatus,
   getGameFromTextbookStatus,
   getGameGroupNumber,
-  getGamePageNumber, getGameWordsFromDict,
+  getGamePageNumber, getGameWordsFromDict, getGameWordsFromTextbook,
   getMiniGameLevel,
 } from '../../selectors/selectors';
 
@@ -23,6 +23,7 @@ const StartAudioGame = () => {
   const groupNumber = useSelector(getGameGroupNumber);
   const dictionaryStatus = useSelector(getGameFromDictStatus);
   const wordsFromDictionary = useSelector(getGameWordsFromDict);
+  const wordsFromTextbook = useSelector(getGameWordsFromTextbook);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -39,7 +40,7 @@ const StartAudioGame = () => {
       if (dictionaryStatus) {
         data = wordsFromDictionary;
       } else {
-        data = await getWords(currentLevel, page, 1);
+        data = wordsFromTextbook;
       }
     } else {
       page = Math.floor(Math.random() * 30);

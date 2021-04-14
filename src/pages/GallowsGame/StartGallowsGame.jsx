@@ -8,7 +8,7 @@ import {
   getGameFromDictStatus,
   getGameFromTextbookStatus,
   getGameGroupNumber,
-  getGamePageNumber, getGameWordsFromDict,
+  getGamePageNumber, getGameWordsFromDict, getGameWordsFromTextbook,
   getMiniGameLevel,
 } from '../../selectors/selectors';
 import { getWords } from '../../utilities/getData';
@@ -22,6 +22,7 @@ const StartGallowsGame = () => {
   const groupNumber = useSelector(getGameGroupNumber);
   const dictionaryStatus = useSelector(getGameFromDictStatus);
   const wordsFromDictionary = useSelector(getGameWordsFromDict);
+  const wordsFromTextbook = useSelector(getGameWordsFromTextbook);
   const dispatch = useDispatch();
 
   useEffect(async () => {
@@ -34,7 +35,8 @@ const StartGallowsGame = () => {
       if (dictionaryStatus) {
         data = wordsFromDictionary;
       } else {
-        data = await getWords(currentLevel, page, 1);
+        data = wordsFromTextbook;
+        // data = await getWords(currentLevel, page, 1);
       }
     } else {
       page = Math.floor(Math.random() * 30);

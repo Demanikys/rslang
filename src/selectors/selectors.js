@@ -11,4 +11,5 @@ export const getGamePageNumber = (state) => state.miniGame.pageNumber;
 export const getGameGroupNumber = (state) => state.miniGame.groupNumber;
 export const getGameFromDictStatus = (state) => state.miniGame.fromDictionary;
 export const getGameWordsFromDict = (state) => state.miniGame.wordsFromDictionary;
+export const getGameWordsFromTextbook = (state) => state.miniGame.wordsFromTextbook;
 export const getType = (state) => state.dictionary.type;

@@ -4,11 +4,13 @@ import {
   SET_GROUP_NUMBER, SET_LEVEL,
   SET_PAGE_NUMBER,
   SET_WORDS_FROM_DICTIONARY,
+  SET_WORDS_FROM_TEXTBOOK,
 } from '../actions/mniGameAction';
 
 const initialState = {
   level: null,
   fromTextbook: false,
+  wordsFromTextbook: null,
   pageNumber: null,
   groupNumber: null,
   wordsFromDictionary: null,
@@ -46,6 +48,11 @@ const miniGameReducer = (state = initialState, action) => {
       return {
         ...state,
         fromDictionary: action.status,
+      };
+    case SET_WORDS_FROM_TEXTBOOK:
+      return {
+        ...state,
+        wordsFromTextbook: [...action.array],
       };
     default:
       return state;

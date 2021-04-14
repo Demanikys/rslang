@@ -9,7 +9,7 @@ import {
   getGameFromDictStatus,
   getGameFromTextbookStatus,
   getGameGroupNumber,
-  getGamePageNumber, getGameWordsFromDict,
+  getGamePageNumber, getGameWordsFromDict, getGameWordsFromTextbook,
   getMiniGameLevel,
 } from '../../selectors/selectors';
 
@@ -23,6 +23,7 @@ const GameSavannaContainer = () => {
   const groupNumber = useSelector(getGameGroupNumber);
   const dictionaryStatus = useSelector(getGameFromDictStatus);
   const wordsFromDictionary = useSelector(getGameWordsFromDict);
+  const wordsFromTextbook = useSelector(getGameWordsFromTextbook);
   const dispatch = useDispatch();
 
   useEffect(async () => {
@@ -35,7 +36,7 @@ const GameSavannaContainer = () => {
       if (dictionaryStatus) {
         data = wordsFromDictionary;
       } else {
-        data = await getWords(currentLevel, page, 1);
+        data = wordsFromTextbook;
       }
     } else {
       page = Math.floor(Math.random() * 30);
@@ -43,7 +44,6 @@ const GameSavannaContainer = () => {
       data = await getWords(currentLevel, page, 1);
     }
 
-    // const data = await getWords(currentLevel, page, 1);
     setWords(data.flat().sort(() => Math.random() - 0.5));
     const fake = await getFakeWords(currentLevel, page, 3);
     setFakeWords(fake.flat().sort(() => Math.random() - 0.5));

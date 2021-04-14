@@ -5,17 +5,35 @@ import Sprint from './actuallySprintGame';
 import backImage from '../../assets/backgrounds/bg-sprint-game.svg';
 import toggleShowStatus from '../../actions/footerAction';
 import { getWords } from '../../utilities/getData';
-import { getMiniGameLevel } from '../../selectors/selectors';
+import {
+  getGameFromTextbookStatus,
+  getGameGroupNumber,
+  getGamePageNumber,
+  getMiniGameLevel,
+} from '../../selectors/selectors';
 
 const StartSprintGame = () => {
   const [words, setWords] = useState([]);
   const [startGame, setStartGame] = useState(false);
   const level = useSelector(getMiniGameLevel);
+  const textbookStatus = useSelector(getGameFromTextbookStatus);
+  const pageNumber = useSelector(getGamePageNumber);
+  const groupNumber = useSelector(getGameGroupNumber);
   const dispatch = useDispatch();
 
   useEffect(async () => {
-    const page = Math.floor(Math.random() * 30);
-    const data = await getWords(level, page, 10);
+    let page;
+    let currentLevel;
+
+    if (textbookStatus) {
+      page = pageNumber;
+      currentLevel = groupNumber + 1;
+    } else {
+      page = Math.floor(Math.random() * 30);
+      currentLevel = level;
+    }
+
+    const data = await getWords(currentLevel, page, 10);
     setWords(data.flat().sort(() => Math.random() - 0.5));
     dispatch(toggleShowStatus(false));
   }, []);
