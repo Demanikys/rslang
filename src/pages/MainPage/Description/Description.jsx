@@ -3,21 +3,19 @@ import style from './Description.module.scss';
 
 const Description = () => (
   <div className={style.description}>
-    <div className={style.description__block}>
-      <h3 className={style.description__title}>
-        RS Lang
-      </h3>
-      <p className={style.description__p}>
-        Start learning english today! RS Lang is an app that allows you to join huge and
-        permanently growing community around the globe. Learning english with RS Lang is
-        easy! There are several games available for you to enjoy. All of them you can
-        find at the upper part of site. You can play different games to learn and
-        repeat new words. Or maybe you want to see all you statistics? Know which
-        words are most difficult for you? Then page of statistics is for you please!
-        You can also learn new words the olw-fashioned way: through our dictionary!
-        All in all - you are most welcomed!
+    <h3>RS Lang</h3>
+    <div className={style.description__words}>
+      <p>
+        Начинай учить английский уже сегодня! Rs Lang - это приложение, которое позволяет тебе
+        присоедениться к невероятно большому и постоянно ростущему сообществу по всему миру.
+        Изучение английского языка с помощью Rs Lang - это легко! В приложении доступно
+        несколько игр, в которых ты можешь провести время с пользой (игры ты можешь найти
+        в разделе &quot;МИНИ_ИГРЫ&quot;). Также для изучения новых слов зайди в раздел
+        &quot;УЧЕБНИК&quot;. С помощью него ты можешь повторять слова, выбирать
+        наиболее сложные и вынести их на отдельную страницу. А когда какое-нибудь
+        слово станет для тебя знакомым - удали его!
       </p>
-      <span className={style.description__word}>Learn</span>
+      <h4>Добро пожаловать!</h4>
     </div>
   </div>
 );

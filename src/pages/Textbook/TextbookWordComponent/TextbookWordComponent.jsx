@@ -1,138 +1,185 @@
 import React, { useEffect, useRef } from 'react';
-import 'firebase/database';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Howl } from 'howler';
+import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
 import style from './TextbookWordComponent.module.scss';
-import { setDeletedCollection, setHardCollection } from '../../../reducers/userReducer';
-import { userWordsDataSet, userWordsDataRemove } from '../../../actions/userActions';
+import {
+  addNewHardWord,
+  addNewRemovedWord,
+  deleteFromHardWords,
+  deleteFromRemovedWords,
+} from '../../../actions/dictionaryAction';
+import checkDeletedAndDifficultWords from '../../../utilities/checkDeletedAndDifficultWords';
+import { getDeletedWords, getDifficultWords, getUserAuth } from '../../../selectors/selectors';
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 
 const TextbookWordComponent = (props) => {
-  const dataProps = props;
-  const { type } = dataProps;
-  const item = dataProps.word;
+  const { type, word, difficult } = props;
+  const deletedWords = useSelector(getDeletedWords);
+  const difficultWords = useSelector(getDifficultWords);
+  const isAuth = useSelector(getUserAuth);
   const textEx = useRef();
   const textMeaning = useRef();
-  const currentUserId = useSelector((state) => state.user.currentUser.userId);
-  const deletedWordsList = useSelector((state) => state.user.deletedWords) || [];
-  const hardWordsList = useSelector((state) => state.user.hardWords) || [];
-  const isAuth = useSelector((state) => state.user.isAuth);
+  const wordRef = useRef();
   const dispatch = useDispatch();
-  const showTranslate = useSelector((state) => state.textbook.showTranslate);
-  const showButtons = useSelector((state) => state.textbook.showButtons);
 
-  const onPlayBtnClick = () => {
-    const a = new Audio();
-    const b = new Audio();
-    const c = new Audio();
-    a.src = `https://newrslangapi.herokuapp.com/${item.audio}`;
-    b.src = `https://newrslangapi.herokuapp.com/${item.audioMeaning}`;
-    c.src = `https://newrslangapi.herokuapp.com/${item.audioExample}`;
-    a.play();
-    a.addEventListener('ended', () => b.play());
-    b.addEventListener('ended', () => c.play());
-  };
+  const wordSound = new Howl({
+    src: `https://newrslangapi.herokuapp.com/${word.audio}`,
+  });
+
+  const wordExampleSound = new Howl({
+    src: `https://newrslangapi.herokuapp.com/${word.audioExample}`,
+  });
+
+  const wordMeaningSound = new Howl({
+    src: `https://newrslangapi.herokuapp.com/${word.audioMeaning}`,
+  });
 
   const onDeleteBtnClick = () => {
-    userWordsDataSet(currentUserId, item.id, 'deleted');
-    dispatch(setDeletedCollection([...deletedWordsList, item.id]));
+    const inDif = checkDeletedAndDifficultWords(difficultWords, word);
+    if (!inDif) {
+      const array = [];
+
+      for (let i = 0; i < difficultWords.length; i += 1) {
+        if (difficultWords[i].word !== wordRef.current.textContent) {
+          array.push(difficultWords[i]);
+        }
+      }
+
+      dispatch(deleteFromHardWords(array));
+    }
+    if (checkDeletedAndDifficultWords(deletedWords, word)) {
+      dispatch(addNewRemovedWord(word));
+    }
   };
 
   const onHardBtnClick = () => {
-    userWordsDataSet(currentUserId, item.id, 'hard');
-    dispatch(setHardCollection([...hardWordsList, item.id]));
+    if (checkDeletedAndDifficultWords(difficultWords, word)) {
+      dispatch(addNewHardWord(word));
+    }
   };
 
   const onRestoreBtnClick = () => {
-    userWordsDataRemove(currentUserId, item.id, 'deleted');
+    if (type === 'hardWord') {
+      const array = [];
 
-    deletedWordsList.forEach((word, index) => {
-      if (word === item.id) {
-        deletedWordsList.splice(index, 1);
+      for (let i = 0; i < difficultWords.length; i += 1) {
+        if (difficultWords[i].word !== wordRef.current.textContent) {
+          array.push(difficultWords[i]);
+        }
       }
-    });
 
-    dispatch(setDeletedCollection([...deletedWordsList]));
-    dataProps.setIsFetching(true);
-  };
+      dispatch(deleteFromHardWords(array));
+    } else if (type === 'deletedWord') {
+      const array = [];
 
-  const onRemoveBtnClick = () => {
-    userWordsDataRemove(currentUserId, item.id, 'hard');
-
-    hardWordsList.forEach((word, index) => {
-      if (word === item.id) {
-        hardWordsList.splice(index, 1);
+      for (let i = 0; i < deletedWords.length; i += 1) {
+        if (deletedWords[i].word !== wordRef.current.textContent) {
+          array.push(deletedWords[i]);
+        }
       }
-    });
 
-    dispatch(setHardCollection([...hardWordsList]));
-    dataProps.setIsFetching(true);
+      dispatch(deleteFromRemovedWords(array));
+    }
   };
 
   useEffect(() => {
-    textEx.current.innerHTML = item.textExample;
-    textMeaning.current.innerHTML = item.textMeaning;
+    textEx.current.innerHTML = word.textExample;
+    textMeaning.current.innerHTML = word.textMeaning;
   }, []);
 
   return (
-    <>
-      <div className={style.textbook_word}>
-        <div className={style.picture}><img src={`https://newrslangapi.herokuapp.com/${item.image}`} alt="word_image" /></div>
-        <div className={style.info}>
-          <ul>
-            <li>
-              <span>{item.word}</span>
-              <span>{item.transcription}</span>
+    <div className={style.textbook_word}>
+      <div className={style.picture}><img src={`https://newrslangapi.herokuapp.com/${word.image}`} alt="word_image" /></div>
+      <div className={style.info}>
+        <section>
+          <article>
+            <div className={style.header}>
+              <h4
+                ref={wordRef}
+                onClick={() => {
+                  wordSound.play();
+                }}
+                className={style.wordWithSound}
+              >
+                {word.word}
+              </h4>
+            </div>
+            <div className={style.transcript}>
+              (
+              <p>{word.transcription}</p>
+              <p>{word.wordTranslate}</p>
+              )
+            </div>
+            <div>
+              <div className={style.sentenceAndAudio}>
+                <p
+                  ref={textMeaning}
+                  onClick={() => {
+                    wordMeaningSound.play();
+                  }}
+                  className={style.wordWithSound}
+                />
+              </div>
+              <div className={style.sentenceAndAudio}>
+                <p>{word.textMeaningTranslate}</p>
+              </div>
+              <div className={style.sentenceAndAudio}>
+                <p
+                  ref={textEx}
+                  onClick={() => {
+                    wordExampleSound.play();
+                  }}
+                  className={style.wordWithSound}
+                />
+              </div>
+              <div className={style.sentenceAndAudio}>
+                <p>{word.textExampleTranslate}</p>
+              </div>
               {
-                showTranslate
-                  ? <span>{item.wordTranslate}</span>
+                !difficult
+                && <i>Сложное слово!</i>
+              }
+            </div>
+            <div>
+              {
+                type === 'deletedWord'
+                  ? <Button disabled={!isAuth} type="button" onClick={() => onRestoreBtnClick()}>Restore</Button>
                   : null
               }
-            </li>
-            <li ref={textMeaning} />
-            {
-                showTranslate
-                  ? <li>{item.textMeaningTranslate}</li>
+              {
+                type === 'hardWord'
+                  ? <Button disabled={!isAuth} type="button" onClick={() => onRestoreBtnClick()}>Restore</Button>
                   : null
               }
-            <li ref={textEx} />
-            {
-                showTranslate
-                  ? <li>{item.textExampleTranslate}</li>
+              {
+                type === 'normal'
+                  ? (
+                    <>
+                      <Button disabled={!isAuth} variant="danger" onClick={() => onDeleteBtnClick()}>Delete</Button>
+                      <Button
+                        disabled={!isAuth}
+                        onClick={() => onHardBtnClick()}
+                      >
+                        Add to hard
+                      </Button>
+                    </>
+                  )
                   : null
               }
-            {
-                hardWordsList && hardWordsList.length > 0 && type === 'normal' && hardWordsList.includes(item.id) && isAuth
-                  ? (<li>VERY HARD WORD</li>)
-                  : null
-              }
-            <li>
-              <button type="button" onClick={onPlayBtnClick}>Play</button>
-              {
-                  type === 'deletedWord'
-                    ? <button type="button" onClick={onRestoreBtnClick}>Restore from deleted</button>
-                    : null
-              }
-              {
-                  type === 'hardWord'
-                    ? <button type="button" onClick={onRemoveBtnClick}>Remove from hard</button>
-                    : null
-              }
-              {
-                  type === 'normal' && showButtons
-                    ? (
-                      <>
-                        <button type="button" onClick={onDeleteBtnClick}>Delete</button>
-                        <button type="button" onClick={onHardBtnClick}>Add to hard</button>
-                      </>
-                    )
-                    : null
-              }
-            </li>
-          </ul>
-        </div>
+            </div>
+          </article>
+        </section>
       </div>
-      <br />
-    </>
+    </div>
   );
+};
+
+TextbookWordComponent.propTypes = {
+  type: PropTypes.string.isRequired,
+  word: PropTypes.objectOf(PropTypes.any).isRequired,
+  difficult: PropTypes.bool.isRequired,
 };
 
 export default TextbookWordComponent;

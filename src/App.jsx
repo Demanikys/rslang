@@ -25,10 +25,10 @@ const App = () => {
     firebase.app();
   }
   // const isAuth = useSelector((state) => state.user.isAuth);
-  const dispacth = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispacth(auth());
+    dispatch(auth());
   }, []);
 
   return (

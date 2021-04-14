@@ -1,92 +1,115 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  Link, Switch, Route, BrowserRouter,
+  Link, Switch, Route,
 } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import firebase from 'firebase/app';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button, ListGroup } from 'react-bootstrap';
 import style from './Textbook.module.scss';
 import TextbookPageComponent from './TextbookPageComponent';
 import Dictionary from './Dictionary';
-import { setWordsCollection } from '../../reducers/userReducer';
-import TextbookSettings from './Settings';
+import { setHardWords, setRemoveWords } from '../../actions/dictionaryAction';
+import {
+  getDeletedWords, getDifficultWords, getUserAuth, getUserId,
+} from '../../selectors/selectors';
+import { setUserData } from '../../actions/userActions';
+import { setGameFromTextbookStatus } from '../../actions/mniGameAction';
+import toggleShowStatus from '../../actions/footerAction';
+import Preloader from '../../components/Preloader/Preloader';
 
 const Textbook = () => {
-  const pagesArray = [1, 2, 3, 4, 5, 6];
-  const [pageNumber, setPageNumber] = useState(0);
-
-  const userId = useSelector((state) => state.user.currentUser.userId);
+  const userId = useSelector(getUserId);
+  const difficultWords = useSelector(getDifficultWords);
+  const deletedWords = useSelector(getDeletedWords);
+  const [isFetching, setIsFetching] = useState(false);
   const dispatch = useDispatch();
+  const menu = useRef();
+  const isAuth = useSelector(getUserAuth);
+  const pagesArray = [1, 2, 3, 4, 5, 6];
 
   useEffect(async () => {
-    const userDeletedList = await firebase.database().ref(`/users/${userId}/deleted`).once('value')
-      .then((snapshot) => snapshot.val());
-    const userHardList = await firebase.database().ref(`/users/${userId}/hard`).once('value')
-      .then((snapshot) => snapshot.val());
+    dispatch(setGameFromTextbookStatus(true));
+    if (difficultWords.length === 0 && deletedWords.length === 0 && isAuth) {
+      if (userId) {
+        await firebase.database().ref(`/users/${userId}/deleted`).once('value')
+          .then((snapshot) => snapshot.val())
+          .then((res) => dispatch(setRemoveWords(res || [])));
 
-    dispatch(setWordsCollection(userDeletedList, userHardList));
-  });
+        await firebase.database().ref(`/users/${userId}/hard`).once('value')
+          .then((snapshot) => snapshot.val())
+          .then((res) => dispatch(setHardWords(res || [])));
 
-  const onPreviousBtnClick = () => {
-    if (pageNumber > 0) {
-      setPageNumber(pageNumber - 1);
+        setIsFetching(true);
+      }
+    } else {
+      setIsFetching(true);
     }
+  }, [userId]);
+
+  useEffect(() => {
+    if (difficultWords.length > 0) {
+      setUserData(userId, difficultWords, 'hard');
+    }
+  }, [difficultWords]);
+
+  useEffect(() => {
+    if (deletedWords.length > 0) {
+      setUserData(userId, deletedWords, 'deleted');
+    }
+  }, [deletedWords]);
+
+  useEffect(() => {
+    dispatch(toggleShowStatus(true));
+  }, []);
+
+  const showMenu = () => {
+    menu.current.classList.add(style.show);
   };
-
-  const onNextBtnClick = () => {
-    if (pageNumber < 29) {
-      setPageNumber(pageNumber + 1);
-    }
+  const closeMenu = () => {
+    menu.current.classList.remove(style.show);
   };
 
   return (
-    <div className={style.textbook}>
-      <BrowserRouter>
-        <ul className={style.textbook_nav}>
-          {
-                pagesArray.map((item) => (
-                  <li key={item}>
-                    <Link to={`/textbook/${item}`} onClick={() => setPageNumber(0)}>{`Group ${item}`}</Link>
-                  </li>
-                ))
-            }
-          <li>
-            <Link to="/textbook/dictionary/learning">Dictionary</Link>
-          </li>
-          <li>
-            <Link to="/textbook/dictionary/settings">settings</Link>
-          </li>
-        </ul>
-        <div className={style.textbook_content}>
-          <div className={style.textbook_page_selectors}>
-            <button type="button" className={style.page_button} onClick={onPreviousBtnClick}>
-              previous
-            </button>
-            <div>{pageNumber + 1}</div>
-            <button type="button" className={style.page_button} onClick={onNextBtnClick}>
-              next
-            </button>
-          </div>
-          <Switch>
+    isFetching
+      ? (
+        <div className={style.textbook}>
+          <Button className={style.showBtn} onClick={() => showMenu()}>Меню</Button>
+          <ListGroup className={style.nav} ref={menu}>
             {
+              pagesArray.map((item) => (
+                <ListGroup.Item key={item}>
+                  <Link id={item} to={`/textbook/${item}`}>{`Группа ${item}`}</Link>
+                </ListGroup.Item>
+              ))
+            }
+            <ListGroup.Item>
+              <Link to="/textbook/dictionary/learning">Словарь</Link>
+            </ListGroup.Item>
+            <ListGroup.Item className={style.closeWrapper}>
+              <Button variant="danger" onClick={() => closeMenu()}>Закрыть</Button>
+            </ListGroup.Item>
+          </ListGroup>
+          <div className={style.textbook_content}>
+            <Switch>
+              {
                 pagesArray.map((item, index) => (
                   <Route key={item} path={`/textbook/${item}`}>
                     <TextbookPageComponent
                       groupNumber={index}
-                      pageNumber={pageNumber}
                     />
                   </Route>
                 ))
-            }
-            <Route path="/textbook/dictionary/learning">
-              <Dictionary />
-            </Route>
-            <Route path="/textbook/dictionary/settings">
-              <TextbookSettings />
-            </Route>
-          </Switch>
+              }
+              <Route path="/textbook/dictionary/learning">
+                <Dictionary pageNumber={1} />
+              </Route>
+            </Switch>
+          </div>
         </div>
-      </BrowserRouter>
-    </div>
+      )
+      : (
+        <Preloader />
+      )
   );
 };
 

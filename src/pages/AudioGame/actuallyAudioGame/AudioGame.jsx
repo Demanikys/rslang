@@ -54,7 +54,7 @@ const AudioGame = (props) => {
   };
 
   return (
-    activeStage !== 21
+    activeStage !== words.length + 1
       ? (
         <div ref={gameWindow} className={style.wrapper}>
           <h2 className={style.header}>Аудиовызов</h2>

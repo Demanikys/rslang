@@ -7,7 +7,7 @@ const PresentComponent = (props) => {
   const {
     words, setStartGame, gameName,
     gameDescription, gameRules, gameOpportunityOne,
-    gameOpportunityTwo, back,
+    gameOpportunityTwo, back, fakeWords,
   } = props;
   const gameBack = useRef();
 
@@ -25,7 +25,7 @@ const PresentComponent = (props) => {
       <p>{gameOpportunityOne}</p>
       <p>{gameOpportunityTwo}</p>
       {
-          (words.length
+          (words.length > 0 && fakeWords.length > 0
             ? <Button onClick={() => setStartGame(true)} variant="primary">Начать игру</Button>
             : (
               <Button variant="primary" disabled>
@@ -47,6 +47,7 @@ const PresentComponent = (props) => {
 
 PresentComponent.propTypes = {
   words: PropTypes.arrayOf(PropTypes.object).isRequired,
+  fakeWords: PropTypes.arrayOf(PropTypes.object).isRequired,
   setStartGame: PropTypes.func.isRequired,
   gameName: PropTypes.string.isRequired,
   gameDescription: PropTypes.string.isRequired,

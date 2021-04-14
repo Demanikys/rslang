@@ -1,57 +1,69 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import style from './DictionaryPageComponent.module.scss';
 import TextbookWordComponent from '../../TextbookWordComponent';
+import checkDifficultWords from '../../../../utilities/checkDeletedAndDifficultWords';
+import Pagination from '../../../../components/Pagination';
+import { setGameFromDictionaryStatus, setGameGroup, setWordsFromDictionary } from '../../../../actions/mniGameAction';
+import { setType } from '../../../../actions/dictionaryAction';
 
 const DictionaryPageComponent = (props) => {
-  const data = props;
-  const [wordsArr, setWordsArr] = useState([]);
-  const [isFetching, setIsFetching] = useState(true);
-  const idArr = useSelector((state) => {
-    if (data.type === 'hardWord') {
-      return state.user.hardWords;
-    } if (data.type === 'deletedWord') {
-      return state.user.deletedWords;
-    }
-  });
+  const {
+    type, words, difficultWords, setPageNumber, length, topic,
+  } = props;
+  const dispatch = useDispatch();
+  const [isThereWords, setIsThereWords] = useState(true);
 
   useEffect(() => {
-    const resultArr = [];
+    dispatch(setGameFromDictionaryStatus(true));
+  }, []);
 
-    const fetchData = async (url) => {
-      const responce = await axios.get(`https://newrslangapi.herokuapp.com/words/${url}`);
-      resultArr.push(responce.data);
-      setWordsArr(resultArr);
-    };
-
-    if (idArr) {
-      idArr.forEach(async (item, index) => {
-        await fetchData(item)
-          .then(() => {
-            if (index === idArr.length - 1) {
-              setIsFetching(false);
-              setWordsArr(resultArr);
-            }
-          });
-      });
+  useEffect(() => {
+    dispatch(setWordsFromDictionary(words));
+    dispatch(setGameGroup(topic - 1));
+    dispatch(setType(type));
+    if (words.length === 0) {
+      setIsThereWords(false);
+    } else {
+      setIsThereWords(true);
     }
-  }, [idArr]);
+  }, [words]);
 
   return (
     <div className={style.page_component}>
-      { !isFetching && (wordsArr.lenght === idArr.lenght)
-        ? (wordsArr.map((item) => (
-          <TextbookWordComponent
-            word={item}
-            type={data.type}
-            key={item.id}
-            setIsFetching={setIsFetching}
-          />
-        )))
-        : ('Слова не найдены')}
+      {
+        words.map((word) => (
+          <div key={word.id}>
+            <TextbookWordComponent
+              word={word}
+              type={type}
+              difficult={type === 'deletedWord' ? true : checkDifficultWords(difficultWords, word)}
+            />
+            <hr />
+          </div>
+        ))
+      }
+      {
+        !isThereWords
+        && (
+          <div className={style.noWords}>
+            <h4>Слов нет!</h4>
+          </div>
+        )
+      }
+      <Pagination setPageNumber={setPageNumber} length={length} />
     </div>
   );
+};
+
+DictionaryPageComponent.propTypes = {
+  type: PropTypes.string.isRequired,
+  words: PropTypes.arrayOf(PropTypes.object).isRequired,
+  difficultWords: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setPageNumber: PropTypes.func.isRequired,
+  length: PropTypes.number.isRequired,
+  topic: PropTypes.number.isRequired,
 };
 
 export default DictionaryPageComponent;

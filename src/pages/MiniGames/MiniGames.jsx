@@ -7,6 +7,7 @@ import audioSrc from '../../assets/backgrounds/bg-audiocall-game.svg';
 import style from './miniGames.module.scss';
 import ChooseLevel from './ChooseLevel/ChooseLevel';
 import toggleShowStatus from '../../actions/footerAction';
+import { setGameFromTextbookStatus } from '../../actions/mniGameAction';
 
 const MiniGames = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -31,6 +32,7 @@ const MiniGames = () => {
     };
     dispatch(toggleShowStatus(true));
     document.addEventListener('keydown', keyDownEvent);
+    dispatch(setGameFromTextbookStatus(false));
     return () => {
       document.removeEventListener('keydown', keyDownEvent);
       document.body.style.overflow = 'auto';

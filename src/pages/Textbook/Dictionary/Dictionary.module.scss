@@ -1,4 +1,51 @@
-.dictionary {
-    background: black;
-    height: 300px;
+.dictionary_nav{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    align-items: center;
+    grid-template-rows: 40px;
+
+    a{
+        display: flex;
+        justify-content: center;
+        border: 1px solid black;
+        align-items: center;
+        height: 100%;
+        text-decoration: none;
+        color: black;
+        text-transform: uppercase;
+        transition: all 0.3s;
+
+        &:hover{
+            background: rgba(0, 0, 0, 0.5);
+        }
+    }
+}
+
+.topic{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: 30px;
+
+    span{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: 1px solid grey;
+        font-size: 20px;
+
+        &:hover{
+            background: rgba(0, 0, 0, 0.2);
+        }
+    };
+}
+
+.registerPlease{
+    font-size: 30px;
+    text-transform: uppercase;
+    margin: 100px auto;
+    text-align: center;
 }

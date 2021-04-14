@@ -11,42 +11,43 @@ const Menu = () => {
   const dispatch = useDispatch();
 
   return (
-
-    <Navbar bg="dark" variant="dark" expand="md" className={style.menu}>
-      <Navbar.Brand className={style.rslang}>
-        <Link to="/">Rslang</Link>
-      </Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="mr-auto">
-          <Navbar.Text>
-            <Link to="/textbook/1">Учебник</Link>
-            <Link to="/mini-games">Мини-игры</Link>
-            {!isAuth ? (
-              <>
-                <Navbar.Brand>
-                  <Link to="/registration">Sign Up</Link>
-                </Navbar.Brand>
-                <Navbar.Brand>
-                  <Link to="/login">Sign In</Link>
-                </Navbar.Brand>
-              </>
-            ) : (
-              <>
-                <Navbar.Brand>
-                  {`Hello, ${user.name}`}
-                </Navbar.Brand>
-                <Navbar.Brand>
-                  <Link to="/login" onClick={() => dispatch(logout())}>
-                    Logout
-                  </Link>
-                </Navbar.Brand>
-              </>
-            )}
-          </Navbar.Text>
-        </Nav>
-      </Navbar.Collapse>
-    </Navbar>
+    <div className={style.navigation}>
+      <Navbar bg="dark" variant="dark" expand="md" className={style.menu}>
+        <Navbar.Brand className={style.rslang}>
+          <Link to="/">Rs Lang</Link>
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className={style.contentWrapper}>
+            <Navbar.Text className={style.content}>
+              <Link to="/textbook/1">Учебник</Link>
+              <Link to="/mini-games">Мини-игры</Link>
+              {!isAuth ? (
+                <>
+                  <Navbar.Brand>
+                    <Link to="/registration">Зарегистрироваться</Link>
+                  </Navbar.Brand>
+                  <Navbar.Brand>
+                    <Link to="/login">Войти</Link>
+                  </Navbar.Brand>
+                </>
+              ) : (
+                <>
+                  <Navbar.Brand>
+                    {`Привет, ${user.name}`}
+                  </Navbar.Brand>
+                  <Navbar.Brand>
+                    <Link to="/login" onClick={() => dispatch(logout())}>
+                      Выйти
+                    </Link>
+                  </Navbar.Brand>
+                </>
+              )}
+            </Navbar.Text>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+    </div>
   );
 };
 

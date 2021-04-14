@@ -1,33 +1,79 @@
-.textbook_word{
-    display: flex;
-    padding-left: 20px;
+p {
+  margin: 0 !important;
+}
 
-    .info ul{
-        list-style: none;
-    }
+.textbook_word {
+  display: flex;
 
-    .info ul li:not(:last-child){
-        margin-bottom: 3px;
-    }
+  @media (max-width: 750px) {
+    flex-direction: column;
+    row-gap: 20px;
+    text-align: center;
+  }
 
-    .info ul li:first-child{
-        display: flex;
-        justify-content: space-around;
-    }
+  .info {
+    section {
+      article {
+        font-size: 16px;
 
-    .info ul li:last-child{
-        display: flex;
-        // justify-content: start;
-    }
+        .header{
+          display: flex;
+          align-items: center;
+          margin: 0 0 0 10px;
+          text-transform: uppercase;
 
-    button{
-        padding: 2px;
-        margin-left: 20px;
-    }
+          h4 {
+            margin: 0;
+          }
 
-    img{
-        width: 300px;
-        height: auto;
-        margin-right: 15px;
+          @media (max-width: 750px) {
+            margin: 0;
+
+            h4{
+              margin: 0 auto !important;
+            }
+          }
+        }
+        .transcript{
+          display: flex;
+          align-items: center;
+          column-gap: 20px;
+
+          @media (max-width: 750px) {
+            justify-content: center;
+          }
+        }
+        .sentenceAndAudio {
+          display: flex;
+          align-items: center;
+
+          @media (max-width: 750px) {
+            justify-content: center;
+          }
+        }
+
+        .wordWithSound{
+          cursor: pointer;
+
+          &:hover{
+            font-weight: bold;
+          }
+        }
+
+        button{
+          margin: 2px 5px;
+        }
+      }
     }
+  }
+
+  img {
+    width: 300px;
+    height: auto;
+    margin-right: 15px;
+
+    @media (max-width: 750px) {
+      margin-right: 0px;
+    }
+  }
 }

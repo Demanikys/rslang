@@ -1,11 +1,18 @@
 .authors {
   border-top: 1px solid black;
-  width: 100%;
   min-height: 600px;
   margin: 0 auto;
   padding: 20px 100px;
 
+  @media (max-width: 1230px) {
+    padding: 50px 15px;
+  }
+
   .authors__h3 {
     margin-bottom: 30px;
+  }
+
+  @media (max-width: 600px) {
+    padding: 30px 5px 130px 5px;
   }
 }

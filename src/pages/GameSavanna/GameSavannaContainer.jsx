@@ -5,20 +5,47 @@ import PresentComponent from '../../components/PresentComponent';
 import backImage from '../../assets/backgrounds/bg-savanna-game.svg';
 import toggleShowStatus from '../../actions/footerAction';
 import { getFakeWords, getWords } from '../../utilities/getData';
-import { getMiniGameLevel } from '../../selectors/selectors';
+import {
+  getGameFromDictStatus,
+  getGameFromTextbookStatus,
+  getGameGroupNumber,
+  getGamePageNumber, getGameWordsFromDict, getGameWordsFromTextbook,
+  getMiniGameLevel,
+} from '../../selectors/selectors';
 
 const GameSavannaContainer = () => {
   const [words, setWords] = useState([]);
   const [fakeWords, setFakeWords] = useState([]);
   const [isGameStarted, setIsGameStarted] = useState(false);
   const level = useSelector(getMiniGameLevel);
+  const textbookStatus = useSelector(getGameFromTextbookStatus);
+  const pageNumber = useSelector(getGamePageNumber);
+  const groupNumber = useSelector(getGameGroupNumber);
+  const dictionaryStatus = useSelector(getGameFromDictStatus);
+  const wordsFromDictionary = useSelector(getGameWordsFromDict);
+  const wordsFromTextbook = useSelector(getGameWordsFromTextbook);
   const dispatch = useDispatch();
 
   useEffect(async () => {
-    const page = Math.floor(Math.random() * 30);
-    const data = await getWords(level, page, 1);
+    let page;
+    let currentLevel;
+    let data;
+    if (textbookStatus) {
+      page = pageNumber;
+      currentLevel = groupNumber + 1;
+      if (dictionaryStatus) {
+        data = wordsFromDictionary;
+      } else {
+        data = wordsFromTextbook;
+      }
+    } else {
+      page = Math.floor(Math.random() * 30);
+      currentLevel = level;
+      data = await getWords(currentLevel, page, 1);
+    }
+
     setWords(data.flat().sort(() => Math.random() - 0.5));
-    const fake = await getFakeWords(level, page, 3);
+    const fake = await getFakeWords(currentLevel, page, 3);
     setFakeWords(fake.flat().sort(() => Math.random() - 0.5));
     dispatch(toggleShowStatus(false));
   }, []);
@@ -30,15 +57,15 @@ const GameSavannaContainer = () => {
         <PresentComponent
           setStartGame={setIsGameStarted}
           words={words}
+          fakeWords={fakeWords}
           gameName="Саванна"
           gameDescription="Мини-игра «Саванна» - это тренировка по переводу пассивного изученного словаря в активную стадию."
-          gameRules="После запуска игры вы увидите падающее слово на английском (или русском, если режим игры RU-> EN) и четыре варианта перевода. Выбрать правильный ответ можно двумя способами:"
+          gameRules="После запуска игры вы увидите падающее слово на английском и четыре варианта перевода. Выбрать правильный ответ можно двумя способами:"
           gameOpportunityOne="1. Кликните по нему мышью;"
           gameOpportunityTwo="2. Используйте клавиши 1, 2, 3, 4."
           back={backImage}
         />
       )
-
   );
 };
 
