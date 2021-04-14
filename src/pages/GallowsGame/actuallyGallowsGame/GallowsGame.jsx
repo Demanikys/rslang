@@ -43,7 +43,7 @@ const GallowsGame = (props) => {
   };
 
   return (
-    activeStage !== 6
+    activeStage !== words.length + 1
       ? (
         <div ref={gameWindow} className={style.wrapper}>
           <h2 className={style.header}>Виселица</h2>

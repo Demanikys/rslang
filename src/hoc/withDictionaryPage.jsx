@@ -23,6 +23,7 @@ const withDictionaryPage = (Component) => {
         difficultWords={difficultWords}
         setPageNumber={setPageNumber}
         length={type === 'learnedWords' ? words.length : wordsToShow.length}
+        topic={topic}
       />
     );
   }

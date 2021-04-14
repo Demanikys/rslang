@@ -5,20 +5,47 @@ import PresentComponent from '../../components/PresentComponent';
 import backImage from '../../assets/backgrounds/bg-savanna-game.svg';
 import toggleShowStatus from '../../actions/footerAction';
 import { getFakeWords, getWords } from '../../utilities/getData';
-import { getMiniGameLevel } from '../../selectors/selectors';
+import {
+  getGameFromDictStatus,
+  getGameFromTextbookStatus,
+  getGameGroupNumber,
+  getGamePageNumber, getGameWordsFromDict,
+  getMiniGameLevel,
+} from '../../selectors/selectors';
 
 const GameSavannaContainer = () => {
   const [words, setWords] = useState([]);
   const [fakeWords, setFakeWords] = useState([]);
   const [isGameStarted, setIsGameStarted] = useState(false);
   const level = useSelector(getMiniGameLevel);
+  const textbookStatus = useSelector(getGameFromTextbookStatus);
+  const pageNumber = useSelector(getGamePageNumber);
+  const groupNumber = useSelector(getGameGroupNumber);
+  const dictionaryStatus = useSelector(getGameFromDictStatus);
+  const wordsFromDictionary = useSelector(getGameWordsFromDict);
   const dispatch = useDispatch();
 
   useEffect(async () => {
-    const page = Math.floor(Math.random() * 30);
-    const data = await getWords(level, page, 1);
+    let page;
+    let currentLevel;
+    let data;
+    if (textbookStatus) {
+      page = pageNumber;
+      currentLevel = groupNumber + 1;
+      if (dictionaryStatus) {
+        data = wordsFromDictionary;
+      } else {
+        data = await getWords(currentLevel, page, 1);
+      }
+    } else {
+      page = Math.floor(Math.random() * 30);
+      currentLevel = level;
+      data = await getWords(currentLevel, page, 1);
+    }
+
+    // const data = await getWords(currentLevel, page, 1);
     setWords(data.flat().sort(() => Math.random() - 0.5));
-    const fake = await getFakeWords(level, page, 3);
+    const fake = await getFakeWords(currentLevel, page, 3);
     setFakeWords(fake.flat().sort(() => Math.random() - 0.5));
     dispatch(toggleShowStatus(false));
   }, []);
@@ -39,7 +66,6 @@ const GameSavannaContainer = () => {
           back={backImage}
         />
       )
-
   );
 };
 

@@ -4,27 +4,56 @@ import GallowsGame from './actuallyGallowsGame/GallowsGame';
 import PresentComponent from '../../components/PresentComponent';
 import backImage from '../../assets/backgrounds/bg-gallows-game.svg';
 import toggleShowStatus from '../../actions/footerAction';
-import { getMiniGameLevel } from '../../selectors/selectors';
+import {
+  getGameFromDictStatus,
+  getGameFromTextbookStatus,
+  getGameGroupNumber,
+  getGamePageNumber, getGameWordsFromDict,
+  getMiniGameLevel,
+} from '../../selectors/selectors';
 import { getWords } from '../../utilities/getData';
 
 const StartGallowsGame = () => {
   const [words, setWords] = useState([]);
   const [startGame, setStartGame] = useState(false);
   const level = useSelector(getMiniGameLevel);
+  const textbookStatus = useSelector(getGameFromTextbookStatus);
+  const pageNumber = useSelector(getGamePageNumber);
+  const groupNumber = useSelector(getGameGroupNumber);
+  const dictionaryStatus = useSelector(getGameFromDictStatus);
+  const wordsFromDictionary = useSelector(getGameWordsFromDict);
   const dispatch = useDispatch();
 
   useEffect(async () => {
-    const page = Math.floor(Math.random() * 30);
-    const data = await getWords(level, page, 1);
+    let page;
+    let currentLevel;
+    let data;
+    if (textbookStatus) {
+      page = pageNumber;
+      currentLevel = groupNumber + 1;
+      if (dictionaryStatus) {
+        data = wordsFromDictionary;
+      } else {
+        data = await getWords(currentLevel, page, 1);
+      }
+    } else {
+      page = Math.floor(Math.random() * 30);
+      currentLevel = level;
+      data = await getWords(currentLevel, page, 1);
+    }
+
+    // const data = await getWords(currentLevel, page, 1);
     const localData = data.flat();
     const sliceData = [];
-    for (let i = 0; i < 5; i += 1) {
-      const word = localData[Math.floor(Math.random() * 20)];
+    console.log(localData);
+    for (let i = 0; i < localData.length; i += 1) {
+      const word = localData[Math.floor(Math.random() * localData.length)];
       if (!sliceData.includes(word)) {
         sliceData.push(word);
       } else {
         i -= 1;
       }
+      console.log('wats wrong');
     }
     setWords(sliceData.sort(() => Math.random() - 0.5));
     dispatch(toggleShowStatus(false));

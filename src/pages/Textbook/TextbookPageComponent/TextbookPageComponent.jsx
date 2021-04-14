@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import style from './TextbookPageComponent.module.scss';
 import TextbookWordComponent from '../TextbookWordComponent';
 import checkDifficultWords from '../../../utilities/checkDeletedAndDifficultWords';
 import { getDeletedWords, getDifficultWords } from '../../../selectors/selectors';
 import Pagination from '../../../components/Pagination/Pagination';
+import Games from '../Games/Games';
+import { setGameFromDictionaryStatus, setGameGroup, setGamePage } from '../../../actions/mniGameAction';
 
 const TextbookPageComponent = (props) => {
   const dataProps = props;
@@ -12,8 +14,12 @@ const TextbookPageComponent = (props) => {
   const deletedWords = useSelector(getDeletedWords);
   const difficultWords = useSelector(getDifficultWords);
   const [pageNumber, setPageNumber] = useState(1);
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(setGamePage(pageNumber - 1));
+    dispatch(setGameGroup(dataProps.groupNumber));
+    dispatch(setGameFromDictionaryStatus(false));
     try {
       fetch(`https://newrslangapi.herokuapp.com/words/?group=${dataProps.groupNumber}&page=${pageNumber - 1}`)
         .then((response) => response.json())
@@ -33,11 +39,10 @@ const TextbookPageComponent = (props) => {
                 wordsData.map((item, index) => {
                   if (checkDifficultWords(deletedWords, item)) {
                     return (
-                      <>
+                      <div key={item.word}>
                         <TextbookWordComponent
                           word={item}
                           type="normal"
-                          key={item.word}
                           difficult={checkDifficultWords(difficultWords, item)}
                         />
                         {
@@ -45,12 +50,13 @@ const TextbookPageComponent = (props) => {
                             ? <br />
                             : null
                         }
-                      </>
+                      </div>
                     );
                   }
                   return <div style={{ display: 'none' }} />;
                 })
               }
+              <Games />
             </div>
           )
           : ('...загрузка...')

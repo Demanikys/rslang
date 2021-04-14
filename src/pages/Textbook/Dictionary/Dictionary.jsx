@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 import Switch from 'react-bootstrap/esm/Switch';
 import { BrowserRouter, Link, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-// import PropTypes from 'prop-types';
 import style from './Dictionary.module.scss';
 import DictionaryPageComponent from './DictionaryPageComponent';
-import { getDeletedWords, getDifficultWords, getLearnedWords } from '../../../selectors/selectors';
-// import Pagination from '../../../components/Pagination/Pagination';
+import {
+  getDeletedWords, getDifficultWords, getLearnedWords, getType,
+} from '../../../selectors/selectors';
 import withDictionaryPage from '../../../hoc/withDictionaryPage';
+import Games from '../Games/Games';
 
 const Dictionary = () => {
   const learnedWords = useSelector(getLearnedWords);
   const difficultWords = useSelector(getDifficultWords);
   const deletedWords = useSelector(getDeletedWords);
+  const type = useSelector(getType);
   const [pageNumber, setPageNumber] = useState(1);
   const [topic, setTopic] = useState(1);
-  // const [wordsToShow, setWordsToShow] = useState(words);
   const topics = [1, 2, 3, 4, 5, 6].map((i) => (
     <span
       onClick={() => {
@@ -72,6 +73,8 @@ const Dictionary = () => {
           </Switch>
         </div>
       </BrowserRouter>
+      {type !== 'learnedWords'
+      && <Games />}
     </div>
   );
 };

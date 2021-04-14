@@ -7,12 +7,14 @@ import {
   SET_TO_HARD_WORDS,
   SET_TO_LEARNED_WORDS,
   SET_TO_REMOVE_WORDS,
+  SET_TYPE,
 } from '../actions/dictionaryAction';
 
 const initialState = {
   difficultWords: [],
   deletedWords: [],
   learnedWords: [],
+  type: 'unknown',
 };
 
 const dictionaryReducer = (state = initialState, action) => {
@@ -56,6 +58,11 @@ const dictionaryReducer = (state = initialState, action) => {
       return {
         ...state,
         deletedWords: [...action.array],
+      };
+    case SET_TYPE:
+      return {
+        ...state,
+        type: action.meaning,
       };
     default:
       return state;

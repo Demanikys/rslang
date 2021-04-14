@@ -216,7 +216,7 @@ const TextbookWordComponent = (props) => {
 
 TextbookWordComponent.propTypes = {
   type: PropTypes.string.isRequired,
-  word: PropTypes.objectOf(PropTypes.object).isRequired,
+  word: PropTypes.objectOf(PropTypes.any).isRequired,
   difficult: PropTypes.bool.isRequired,
 };
 

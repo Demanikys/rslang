@@ -5,13 +5,24 @@ import { getFakeWords, getWords } from '../../utilities/getData';
 import PresentComponent from '../../components/PresentComponent';
 import backImage from '../../assets/backgrounds/bg-audiocall-game.svg';
 import toggleShowStatus from '../../actions/footerAction';
-import { getMiniGameLevel } from '../../selectors/selectors';
+import {
+  getGameFromDictStatus,
+  getGameFromTextbookStatus,
+  getGameGroupNumber,
+  getGamePageNumber, getGameWordsFromDict,
+  getMiniGameLevel,
+} from '../../selectors/selectors';
 
 const StartAudioGame = () => {
   const [words, setWords] = useState([]);
   const [fakeWords, setFakeWords] = useState([]);
   const [startGame, setStartGame] = useState(false);
   const level = useSelector(getMiniGameLevel);
+  const textbookStatus = useSelector(getGameFromTextbookStatus);
+  const pageNumber = useSelector(getGamePageNumber);
+  const groupNumber = useSelector(getGameGroupNumber);
+  const dictionaryStatus = useSelector(getGameFromDictStatus);
+  const wordsFromDictionary = useSelector(getGameWordsFromDict);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -19,10 +30,25 @@ const StartAudioGame = () => {
   }, []);
 
   useEffect(async () => {
-    const page = Math.floor(Math.random() * 30);
-    const data = await getWords(level, page, 1);
+    let page;
+    let currentLevel;
+    let data;
+    if (textbookStatus) {
+      page = pageNumber;
+      currentLevel = groupNumber + 1;
+      if (dictionaryStatus) {
+        data = wordsFromDictionary;
+      } else {
+        data = await getWords(currentLevel, page, 1);
+      }
+    } else {
+      page = Math.floor(Math.random() * 30);
+      currentLevel = level;
+      data = await getWords(currentLevel, page, 1);
+    }
+
     setWords(data.flat().sort(() => Math.random() - 0.5));
-    const fake = await getFakeWords(level, page, 4);
+    const fake = await getFakeWords(currentLevel, page, 4);
     setFakeWords(fake.flat().sort(() => Math.random() - 0.5));
   }, []);
 

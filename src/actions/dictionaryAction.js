@@ -6,6 +6,7 @@ export const DELETE_FROM_REMOVED_WORDS = 'DELETE_FROM_REMOVED_WORDS';
 export const SET_TO_LEARNED_WORDS = 'SET_TO_LEARNED_WORDS';
 export const SET_TO_HARD_WORDS = 'SET_TO_HARD_WORDS';
 export const SET_TO_REMOVE_WORDS = 'SET_TO_REMOVE_WORDS';
+export const SET_TYPE = 'SET_TYPE';
 
 const addNewLearnedWords = (words) => ({
   type: ADD_TO_LEARNED_WORDS,
@@ -37,18 +38,19 @@ export const setLearnedWords = (array) => ({
   array,
 });
 
-export const setHardWords = (array) => {
-  console.log(array, 'dispatcher');
-
-  return {
-    type: SET_TO_HARD_WORDS,
-    array,
-  };
-};
+export const setHardWords = (array) => ({
+  type: SET_TO_HARD_WORDS,
+  array,
+});
 
 export const setRemoveWords = (array) => ({
   type: SET_TO_REMOVE_WORDS,
   array,
+});
+
+export const setType = (meaning) => ({
+  type: SET_TYPE,
+  meaning,
 });
 
 export default addNewLearnedWords;

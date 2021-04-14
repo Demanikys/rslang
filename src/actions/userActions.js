@@ -35,13 +35,11 @@ export const login = (email, password) => async (dispatch) => {
 export const auth = () => async (dispatch) => {
   const response = localStorage.getItem('user');
   if (response) {
-    console.log(response, 'response');
     dispatch(setUser(JSON.parse(response)));
   }
 };
 
 export const setUserData = (userId, array, typeOfCollection) => {
-  console.log(typeof userId, [...array], typeOfCollection, 'setau null');
   firebase.database().ref(`users/${userId}/${typeOfCollection}`).set(
     [...array],
   ).catch((err) => console.log(err));

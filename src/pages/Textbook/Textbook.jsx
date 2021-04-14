@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Link, Switch, Route, BrowserRouter,
+  Link, Switch, Route,
 } from 'react-router-dom';
 import firebase from 'firebase/app';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,7 @@ import Dictionary from './Dictionary';
 import { setHardWords, setRemoveWords } from '../../actions/dictionaryAction';
 import { getDeletedWords, getDifficultWords, getUserId } from '../../selectors/selectors';
 import { setUserData } from '../../actions/userActions';
+import { setGameFromTextbookStatus } from '../../actions/mniGameAction';
 
 const Textbook = () => {
   const userId = useSelector(getUserId);
@@ -20,6 +21,7 @@ const Textbook = () => {
   const pagesArray = [1, 2, 3, 4, 5, 6];
 
   useEffect(async () => {
+    dispatch(setGameFromTextbookStatus(true));
     if (difficultWords.length === 0 && deletedWords.length === 0) {
       if (userId) {
         await firebase.database().ref(`/users/${userId}/deleted`).once('value')
@@ -49,44 +51,25 @@ const Textbook = () => {
     }
   }, [deletedWords]);
 
-  // [{
-  //   audio: 'files/01_0005.mp3',
-  //   audioExample: 'files/01_0005_example.mp3',
-  //   audioMeaning: 'files/01_0005_meaning.mp3',
-  //   group: 0,
-  //   id: '5e9f5ee35eb9e72bc21af4a2',
-  //   image: 'files/01_0005.jpg',
-  //   page: 0,
-  //   textExample: 'There is a small <b>boat</b> on the lake.',
-  //   textExampleTranslate: 'На озере есть маленькая лодка',
-  //   textMeaning: 'A <i>boat</i> is a vehicle that moves across water.',
-  //   textMeaningTranslate: 'Лодка - это транспортное средство, которое движется по воде',
-  //   transcription: '[bout]',
-  //   word: 'boat',
-  //   wordTranslate: 'лодка',
-  // }]
-  console.log(userId, 'id');
-
   return (
     isFetching
       ? (
         <div className={style.textbook}>
-          <BrowserRouter>
-            <ul className={style.textbook_nav}>
-              {
+          <ul className={style.textbook_nav}>
+            {
                 pagesArray.map((item) => (
                   <li key={item}>
                     <Link id={item} to={`/textbook/${item}`}>{`Group ${item}`}</Link>
                   </li>
                 ))
               }
-              <li>
-                <Link to="/textbook/dictionary/learning">Dictionary</Link>
-              </li>
-            </ul>
-            <div className={style.textbook_content}>
-              <Switch>
-                {
+            <li>
+              <Link to="/textbook/dictionary/learning">Словарь</Link>
+            </li>
+          </ul>
+          <div className={style.textbook_content}>
+            <Switch>
+              {
                   pagesArray.map((item, index) => (
                     <Route key={item} path={`/textbook/${item}`}>
                       <TextbookPageComponent
@@ -95,12 +78,11 @@ const Textbook = () => {
                     </Route>
                   ))
                 }
-                <Route path="/textbook/dictionary/learning">
-                  <Dictionary pageNumber={1} />
-                </Route>
-              </Switch>
-            </div>
-          </BrowserRouter>
+              <Route path="/textbook/dictionary/learning">
+                <Dictionary pageNumber={1} />
+              </Route>
+            </Switch>
+          </div>
         </div>
       )
       : (
