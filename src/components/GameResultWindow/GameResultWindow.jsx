@@ -22,8 +22,10 @@ const GameResultWindow = React.memo((props) => {
   useEffect(() => {
     gameWindow.current.style.background = `url('${backImage}')`;
     const setWord = checkLearnedWords(learnedWords, words);
+    console.log(textbookStatus);
     if (textbookStatus) {
       dispatch(addNewLearnedWords(setWord));
+      console.log(setWord);
       setUserData(userId, [...learnedWords, ...setWord], 'learned');
     }
   }, []);

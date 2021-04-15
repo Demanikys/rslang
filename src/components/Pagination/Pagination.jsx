@@ -38,7 +38,9 @@ const PaginationInTextBook = (props) => {
 
   useEffect(() => {
     if (type && (type === 'deletedWord' || type === 'hardWord')) {
-      console.log(type);
+      pagination.current.style.paddingBottom = '20px';
+    }
+    if (type === undefined) {
       pagination.current.style.paddingBottom = '20px';
     }
   }, [type]);

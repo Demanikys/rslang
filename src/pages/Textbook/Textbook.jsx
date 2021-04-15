@@ -17,6 +17,7 @@ import { setGameFromTextbookStatus } from '../../actions/mniGameAction';
 import toggleShowStatus from '../../actions/footerAction';
 import Preloader from '../../components/Preloader/Preloader';
 import TextbookSettings from './Settings';
+import checkLearnedWords from '../../utilities/checkLearnedWords';
 
 const Textbook = () => {
   const userId = useSelector(getUserId);
@@ -44,7 +45,9 @@ const Textbook = () => {
 
         await firebase.database().ref(`/users/${userId}/learned`).once('value')
           .then((snapshot) => snapshot.val())
-          .then((res) => dispatch(setLearnedWords(res || [])));
+          .then((res) => {
+            dispatch(setLearnedWords(res || []));
+          });
 
         setIsFetching(true);
       }
@@ -56,7 +59,9 @@ const Textbook = () => {
   useEffect(() => {
     if (difficultWords.length > 0) {
       setUserData(userId, difficultWords, 'hard');
-      setUserData(userId, [...learnedWords, ...difficultWords], 'learned');
+
+      const setWord = checkLearnedWords(learnedWords, difficultWords);
+      setUserData(userId, [...learnedWords, ...setWord], 'learned');
     }
   }, [difficultWords]);
 
