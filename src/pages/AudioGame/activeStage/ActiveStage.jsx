@@ -7,13 +7,14 @@ import playAnswerSound from '../../../utilities/audioPlayer';
 
 const ActiveStage = React.memo((props) => {
   const {
-    word, fakeWords, correct, setCorrectOrNot,
+    word, correct, setCorrectOrNot,
     setNextBtnStatus, setCorrectAnswers, setWrongAnswers,
     wrongAnswers, correctAnswers, setActiveStage,
-    activeStage, soundStatus,
+    activeStage, soundStatus, testWords,
   } = props;
   const [randomNumber, setRandomNumber] = useState();
   const textEx = useRef();
+  const [words, setWords] = useState(testWords);
   const correctAnswerRef = useRef();
   const wordSound = new Howl({
     src: `https://newrslangapi.herokuapp.com/${word.audio}`,
@@ -23,9 +24,13 @@ const ActiveStage = React.memo((props) => {
   });
 
   useEffect(() => {
-    const random = Math.floor(Math.random() * 5);
-    setRandomNumber(random);
-    fakeWords.splice(random, 0, word);
+    setWords(testWords);
+    for (let i = 0; i < testWords.length; i += 1) {
+      if (testWords[i].word === word.word) {
+        setRandomNumber(i);
+        break;
+      }
+    }
     wordSound.play();
   }, [word]);
 
@@ -68,11 +73,11 @@ const ActiveStage = React.memo((props) => {
     return () => document.removeEventListener('keydown', keyDownHandler);
   });
 
-  const renderButtons = fakeWords.map((el, i) => {
+  const renderButtons = words.map((el, i) => {
     if (el.word === word.word) {
       return (
         <Button
-          key={word.word}
+          key={el.word}
           ref={correctAnswerRef}
           onClick={() => {
             setCorrectOrNot('right');
@@ -86,13 +91,13 @@ const ActiveStage = React.memo((props) => {
         >
           {i + 1}
           .
-          {word.wordTranslate}
+          {el.wordTranslate}
         </Button>
       );
     }
     return (
       <Button
-        key={fakeWords[i].word}
+        key={el.word}
         onClick={() => {
           setCorrectOrNot('wrong');
           setNextBtnStatus(true);
@@ -105,7 +110,7 @@ const ActiveStage = React.memo((props) => {
       >
         {i + 1}
         .
-        {fakeWords[i].wordTranslate}
+        {el.wordTranslate}
       </Button>
     );
   });
@@ -206,7 +211,8 @@ const ActiveStage = React.memo((props) => {
 
 ActiveStage.propTypes = {
   word: PropTypes.objectOf(PropTypes.any).isRequired,
-  fakeWords: PropTypes.arrayOf(PropTypes.object).isRequired,
+  testWords: PropTypes.arrayOf(PropTypes.object).isRequired,
+  // fakeWords: PropTypes.arrayOf(PropTypes.object).isRequired,
   correct: PropTypes.string.isRequired,
   setCorrectOrNot: PropTypes.func.isRequired,
   setNextBtnStatus: PropTypes.func.isRequired,

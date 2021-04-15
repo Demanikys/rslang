@@ -61,6 +61,8 @@ const AudioGame = (props) => {
           {
             words && fakeWords && (
               <ActiveStage
+                testWords={[words[activeStage - 1], ...currentFakeWords[activeStage - 1]]
+                  .sort(() => Math.random() - 0.5)}
                 word={words[activeStage - 1]}
                 fakeWords={currentFakeWords[activeStage - 1]}
                 correct={correct}

@@ -16,6 +16,7 @@ const GallowsGame = (props) => {
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const [wrongAnswers, setWrongAnswers] = useState([]);
   const [newGame, setNewGame] = useState(true);
+  const [length] = useState(words.length > 6 ? 6 : words.length + 1);
   const [value] = useState(20);
   const [fullScreenStatus, setFullScreenStatus] = useState(false);
   const [soundStatus, setSoundStatus] = useState(true);
@@ -41,9 +42,9 @@ const GallowsGame = (props) => {
       setFullScreenStatus(true);
     }
   };
-
+  console.log(words.length, 'lenga');
   return (
-    activeStage !== words.length + 1
+    activeStage !== length
       ? (
         <div ref={gameWindow} className={style.wrapper}>
           <h2 className={style.header}>Виселица</h2>
