@@ -25,6 +25,8 @@ const Textbook = () => {
   const deletedWords = useSelector(getDeletedWords);
   const learnedWords = useSelector(getLearnedWords);
   const [isFetching, setIsFetching] = useState(false);
+  const [checkDifficultWords, setCheckDifficultWords] = useState(false);
+  const [checkDeletedWords, setCheckDeletedWords] = useState(false);
   const dispatch = useDispatch();
   const menu = useRef();
   const isAuth = useSelector(getUserAuth);
@@ -57,19 +59,23 @@ const Textbook = () => {
   }, [userId]);
 
   useEffect(() => {
-    if (difficultWords.length > 0) {
+    if (checkDifficultWords) {
       setUserData(userId, difficultWords, 'hard');
 
       if (learnedWords.length > 0) {
         const setWord = checkLearnedWords(learnedWords, difficultWords);
         setUserData(userId, [...learnedWords, ...setWord], 'learned');
       }
+    } else {
+      setCheckDifficultWords(true);
     }
   }, [difficultWords]);
 
   useEffect(() => {
-    if (deletedWords.length > 0) {
+    if (checkDeletedWords) {
       setUserData(userId, deletedWords, 'deleted');
+    } else {
+      setCheckDeletedWords(true);
     }
   }, [deletedWords]);
 

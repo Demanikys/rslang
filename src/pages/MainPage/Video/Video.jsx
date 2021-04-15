@@ -7,7 +7,7 @@ const Video = () => (
     <div>
       <h3>Пример использования нашего приложения!</h3>
       <div className={style.video__block}>
-        <YoutubeVideo embedId="rokGy0huYEA" />
+        <YoutubeVideo embedId="b3iBZU7FIYY" />
       </div>
     </div>
   </div>
