@@ -16,6 +16,11 @@
         color: black;
         text-transform: uppercase;
         transition: all 0.3s;
+        
+        @media (max-width: 350px) {
+            font-size: 14px;
+            text-transform: lowercase;
+        }
 
         &:hover{
             background: rgba(0, 0, 0, 0.5);

@@ -52,7 +52,7 @@ const DictionaryPageComponent = (props) => {
           </div>
         )
       }
-      <Pagination setPageNumber={setPageNumber} length={length} />
+      <Pagination type={type} setPageNumber={setPageNumber} length={length} />
     </div>
   );
 };
