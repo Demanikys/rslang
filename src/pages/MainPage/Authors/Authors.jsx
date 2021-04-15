@@ -4,9 +4,11 @@ import { data } from './data';
 import AuthorCard from './AuthorCard';
 import one from '../../../assets/photos/one.jpeg';
 import two from '../../../assets/photos/two.jpg';
+import three from '../../../assets/photos/three.png';
+import four from '../../../assets/photos/four.svg';
 
 const Authors = () => {
-  const [images] = useState([one, two]);
+  const [images] = useState([one, two, three, four]);
 
   return (
     <div className={style.authors}>

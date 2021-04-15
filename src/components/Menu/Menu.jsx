@@ -39,7 +39,7 @@ const Menu = () => {
                   </Navbar.Brand>
                   <Navbar.Brand>
                     <Link
-                      to="/login"
+                      to="/"
                       onClick={() => {
                         dispatch(logout());
                         dispatch(setHardWords([]));

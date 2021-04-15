@@ -99,8 +99,15 @@ const TextbookPageComponent = (props) => {
             <Preloader />
           )
       }
-      <Pagination setPageNumber={setPageNumber} length={600} />
-      <Games type={type} />
+      {
+        wordsData
+        && (
+        <>
+          <Pagination setPageNumber={setPageNumber} length={600} />
+          <Games type={type} />
+        </>
+        )
+      }
     </>
   );
 };
