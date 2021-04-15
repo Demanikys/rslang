@@ -42,7 +42,7 @@ const GallowsGame = (props) => {
       setFullScreenStatus(true);
     }
   };
-  console.log(words.length, 'lenga');
+
   return (
     activeStage !== length
       ? (

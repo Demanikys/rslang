@@ -82,7 +82,7 @@ const TextbookPageComponent = (props) => {
                       </div>
                     );
                   }
-                  return <div style={{ display: 'none' }} />;
+                  return <div key={item.word} style={{ display: 'none' }} />;
                 })
               }
               {

@@ -21,6 +21,7 @@ const Authors = () => {
           text={elem.text}
           image={images[index]}
           isReverse={index % 2 === 0}
+          key={elem.name}
         />
       ))}
     </div>

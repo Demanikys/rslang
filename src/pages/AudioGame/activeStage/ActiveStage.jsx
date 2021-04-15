@@ -16,23 +16,40 @@ const ActiveStage = React.memo((props) => {
   const textEx = useRef();
   const [words, setWords] = useState(testWords);
   const correctAnswerRef = useRef();
-  const wordSound = new Howl({
+  const [playAudio, setPlayAudio] = useState(false);
+  const [wordSound, setWordSound] = useState(new Howl({
     src: `https://newrslangapi.herokuapp.com/${word.audio}`,
-  });
-  const wordExampleSound = new Howl({
+  }));
+  const [wordExampleSound, setWordExampleSound] = useState(new Howl({
     src: `https://newrslangapi.herokuapp.com/${word.audioExample}`,
-  });
+  }));
 
   useEffect(() => {
     setWords(testWords);
+    setWordSound(new Howl({
+      src: `https://newrslangapi.herokuapp.com/${word.audio}`,
+    }));
+    setWordExampleSound(new Howl({
+      src: `https://newrslangapi.herokuapp.com/${word.audioExample}`,
+    }));
     for (let i = 0; i < testWords.length; i += 1) {
       if (testWords[i].word === word.word) {
         setRandomNumber(i);
         break;
       }
     }
-    wordSound.play();
   }, [word]);
+
+  useEffect(() => {
+    if (playAudio) wordSound.play();
+  }, [wordSound]);
+
+  useEffect(() => {
+    wordSound.play();
+    setTimeout(() => {
+      setPlayAudio(true);
+    }, 500);
+  }, []);
 
   useEffect(() => {
     if (correct !== 'default') {
@@ -212,7 +229,6 @@ const ActiveStage = React.memo((props) => {
 ActiveStage.propTypes = {
   word: PropTypes.objectOf(PropTypes.any).isRequired,
   testWords: PropTypes.arrayOf(PropTypes.object).isRequired,
-  // fakeWords: PropTypes.arrayOf(PropTypes.object).isRequired,
   correct: PropTypes.string.isRequired,
   setCorrectOrNot: PropTypes.func.isRequired,
   setNextBtnStatus: PropTypes.func.isRequired,
