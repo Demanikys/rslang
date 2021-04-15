@@ -60,8 +60,10 @@ const Textbook = () => {
     if (difficultWords.length > 0) {
       setUserData(userId, difficultWords, 'hard');
 
-      const setWord = checkLearnedWords(learnedWords, difficultWords);
-      setUserData(userId, [...learnedWords, ...setWord], 'learned');
+      if (learnedWords.length > 0) {
+        const setWord = checkLearnedWords(learnedWords, difficultWords);
+        setUserData(userId, [...learnedWords, ...setWord], 'learned');
+      }
     }
   }, [difficultWords]);
 

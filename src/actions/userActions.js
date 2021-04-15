@@ -40,6 +40,7 @@ export const auth = () => async (dispatch) => {
 };
 
 export const setUserData = (userId, array, typeOfCollection) => {
+  // console.log(array);
   firebase.database().ref(`users/${userId}/${typeOfCollection}`).set(
     [...array],
   ).catch((err) => console.log(err));
