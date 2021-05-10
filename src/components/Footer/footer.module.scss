@@ -1,0 +1,72 @@
+.footer {
+  background: #343a40;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+
+  .footerContent {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    max-width: 1500px;
+    color: white;
+    text-transform: uppercase;
+    flex-wrap: wrap;
+    padding: 5px 0;
+    margin: 0 auto;
+
+    @media (max-width: 600px) {
+      display: grid;
+      grid-template-columns: 1fr;
+      row-gap: 20px;
+      text-align: center;
+
+      img{
+        margin: 0 auto;
+      }
+    }
+
+    .githubs {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 15px;
+
+      a{
+        text-decoration: none;
+        color: white;
+
+        figure{
+          text-align: center;
+          margin: 0;
+        }
+      }
+
+      a:nth-child(1) {
+        svg {
+          fill: red;
+        }
+      }
+      a:nth-child(2) {
+        svg {
+          fill: blue;
+        }
+      }
+      a:nth-child(3) {
+        svg {
+          fill: lime;
+        }
+      }
+      a:nth-child(4) {
+        svg {
+          fill: blueviolet;
+        }
+      }
+    }
+
+    p{
+      margin: 0;
+      font-size: 26px;
+    }
+  }
+}

@@ -1,0 +1,79 @@
+p {
+  margin: 0 !important;
+}
+
+.textbook_word {
+  display: flex;
+
+  @media (max-width: 750px) {
+    flex-direction: column;
+    row-gap: 20px;
+    text-align: center;
+  }
+
+  .info {
+    section {
+      article {
+        font-size: 16px;
+
+        .header{
+          display: flex;
+          align-items: center;
+          margin: 0 0 0 10px;
+          text-transform: uppercase;
+
+          h4 {
+            margin: 0;
+          }
+
+          @media (max-width: 750px) {
+            margin: 0;
+
+            h4{
+              margin: 0 auto !important;
+            }
+          }
+        }
+        .transcript{
+          display: flex;
+          align-items: center;
+          column-gap: 20px;
+
+          @media (max-width: 750px) {
+            justify-content: center;
+          }
+        }
+        .sentenceAndAudio {
+          display: flex;
+          align-items: center;
+
+          @media (max-width: 750px) {
+            justify-content: center;
+          }
+        }
+
+        .wordWithSound{
+          cursor: pointer;
+
+          &:hover{
+            font-weight: bold;
+          }
+        }
+
+        button{
+          margin: 2px 5px;
+        }
+      }
+    }
+  }
+
+  img {
+    width: 300px;
+    height: auto;
+    margin-right: 15px;
+
+    @media (max-width: 750px) {
+      margin-right: 0px;
+    }
+  }
+}

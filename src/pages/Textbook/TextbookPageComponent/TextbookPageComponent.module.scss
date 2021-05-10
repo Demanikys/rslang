@@ -1,0 +1,12 @@
+.textbook_page_component{
+    padding: 20px 10px;
+
+    @media (max-width: 550px) {
+        padding: 20px 0px;
+    }
+
+    .noWords{
+        height: 300px;
+        text-align: center;
+    }
+}

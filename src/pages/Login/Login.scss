@@ -1,0 +1,23 @@
+.Login {
+  margin-top: 50px;
+  text-align: center;
+  padding-bottom: 250px;
+
+  input{
+    height: 40px;
+    border-radius: 7px;
+    outline: none;
+    border: none;
+    width: 300px;
+    padding-left: 10px;
+  }
+
+  button{
+    margin-top: 50px;
+  }
+
+  p{
+    text-transform: uppercase;
+    color: red;
+  }
+}

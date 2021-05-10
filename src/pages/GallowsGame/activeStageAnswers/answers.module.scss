@@ -1,0 +1,44 @@
+.lettersWrapper {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 0 auto;
+
+  @media (max-width: 600px) {
+    gap: 10px;
+  }
+
+  @media (max-width: 600px) {
+    gap: 5px;
+  }
+
+  .letter {
+    width: 30px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: relative;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+
+    &:after{
+      content: '';
+      position: absolute;
+      top: 100%;
+      width: 100%;
+      height: 5px;
+      left: 0;
+      background-color: #414040;
+    }
+  }
+}
+
+.correct{
+  background-color: green !important;
+}
+
+.wrong{
+  background-color: red !important;
+}

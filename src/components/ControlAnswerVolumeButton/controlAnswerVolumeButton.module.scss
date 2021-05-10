@@ -1,0 +1,14 @@
+.game_control_sound_btn{
+  position: absolute;
+  top: 80px;
+  right: 70px;
+  z-index: 100;
+  padding: 0 !important;
+  text-align: center !important;
+  width: 42px;
+  height: 42px;
+
+  @media (max-width: 620px) {
+    right: 20px;
+  }
+}

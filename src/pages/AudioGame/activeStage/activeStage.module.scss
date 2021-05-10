@@ -1,0 +1,92 @@
+.soundIcon {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  transition-duration: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid black;
+  margin: 20px auto;
+
+  &:hover{
+    background-color: black;
+  }
+}
+
+.chooseAnswer {
+  display: flex;
+  column-gap: 40px;
+  row-gap: 20px;
+  justify-content: center;
+  align-items: center;
+  margin: 15px 0;
+  padding: 0 20px;
+  flex-wrap: wrap;
+
+  @media (max-width: 450px) {
+    flex-direction: column;
+  }
+
+  button {
+    font-size: 21px;
+    width: 230px;
+    padding: 7px 0;
+  }
+}
+
+
+.rightAnswer{
+  background-color: green !important;
+}
+
+.wrongAnswer{
+  background-color: red !important;
+}
+
+.image {
+  width: 200px;
+  height: auto;
+}
+
+.wordSoundWrapper,
+.textSoundWrapper{
+  margin: 20px 0;
+  display: flex;
+  column-gap: 10px;
+  justify-content: center;
+  align-items: center;
+
+  p, h4{
+    margin: 0;
+  }
+
+  p{
+    font-size: 25px;
+  }
+
+  .soundIconSmall {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 0;
+    border: none;
+
+    svg{
+      transition-duration: 0.3s;
+      &:hover{
+        fill: #969696;
+      }
+    }
+  }
+
+  .textExample{
+    font-size: 22px;
+
+    @media (max-width: 500px) {
+      font-size: 17px;
+    }
+  }
+}
